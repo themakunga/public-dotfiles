@@ -1,10 +1,6 @@
 local M = {}
 
 M.plugin = function()
-  if not require('utils.path').is_grainger() then
-    return
-  end
-
   vim.pack.add({
     { src = 'https://github.com/yetone/avante.nvim' },
     { src = 'https://github.com/stevearc/dressing.nvim' },

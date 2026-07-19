@@ -1,10 +1,6 @@
 local M = {}
 
 M.plugin = function()
-  if not require('utils.path').is_grainger() then
-    return
-  end
-
   vim.pack.add({
     { src = 'https://github.com/zbirendaum/copilot.lua' },
   })

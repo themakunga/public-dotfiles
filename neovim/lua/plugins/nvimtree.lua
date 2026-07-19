@@ -9,7 +9,7 @@ M.plugin = function()
   local ok, nvim_tree = pcall(require, 'nvim-tree')
 
   if not ok then
-    vim.notify("[CHECK REQUIRE FAILED] nvim_tree " .. debug.getinfo(2).source, vim.log.levels.WARN)
+    vim.notify('[CHECK REQUIRE FAILED] nvim_tree ' .. debug.getinfo(2).source, vim.log.levels.WARN)
     return
   end
 
@@ -22,27 +22,27 @@ M.plugin = function()
   local view = {
     width = 35,
     relativenumber = false,
-    side = "left",
+    side = 'left',
   }
 
   local icons = {
     glyphs = {
-      default = "",
-      symlink = "",
-      bookmark = "◉",
+      default = '',
+      symlink = '',
+      bookmark = '◉',
       folder = {
-        default = "",
-        open = "",
-        symlink = "",
+        default = '',
+        open = '',
+        symlink = '',
       },
       git = {
-        deleted = "",
-        ignored = "◌",
-        renamed = "➜",
-        staged = "✓",
-        unmerged = "",
-        unstaged = "✗",
-        untracked = "★",
+        deleted = '',
+        ignored = '◌',
+        renamed = '➜',
+        staged = '✓',
+        unmerged = '',
+        unstaged = '✗',
+        untracked = '★',
       },
     },
     show = {
@@ -55,7 +55,7 @@ M.plugin = function()
 
   local renderer = {
     highlight_git = true,
-    root_folder_modifier = ":t",
+    root_folder_modifier = ':t',
     indent_markers = {
       enable = true,
     },
@@ -73,7 +73,7 @@ M.plugin = function()
 
   local filters = {
     custom = {
-      ".DS_Store",
+      '.DS_Store',
     },
     dotfiles = false,
   }
@@ -95,8 +95,7 @@ M.plugin = function()
 
   nvim_tree.setup(opts)
 
-
-  vim.keymap.set('n', '<leader>ee', '<cmd>NvimTreeFocus<cr>', { desc = "Toggle Nvim Tree" })
+  vim.keymap.set('n', '<leader>ee', '<cmd>NvimTreeFocus<cr>', { desc = 'Toggle Nvim Tree' })
 end
 
 return M
