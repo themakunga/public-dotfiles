@@ -2,14 +2,14 @@ local M = {}
 
 M.plugin = function()
   vim.pack.add({
-    { src = 'https://github.com/stevearc/oil.nvim', },
+    { src = 'https://github.com/stevearc/oil.nvim' },
   })
 
   --@module 'oil'
   local ok, oil = pcall(require, 'oil')
 
   if not ok then
-    vim.notify("[CHECK REQUIRE FAILED] oil " .. debug.getinfo(2).source, vim.log.levels.WARN)
+    vim.notify('[CHECK REQUIRE FAILED] oil ' .. debug.getinfo(2).source, vim.log.levels.WARN)
     return
   end
 
@@ -24,13 +24,12 @@ M.plugin = function()
       is_always_hidden = function(name, _)
         return name == '..' or name == '.git'
       end,
-    }
+    },
   }
 
   oil.setup(opts)
 
-
-  vim.keymap.set('n', '<leader>eo', '<cmd>Oil<cr>', { desc = "Open parent directory" })
+  vim.keymap.set('n', '<leader>eo', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
 end
 
 return M

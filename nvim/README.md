@@ -1,8 +1,9 @@
 # NeoVim Config
+
 packkc
+
 > [!WARN]
 > This config only works with neovim nightly from 0.12, in < of that its gonna crash
-
 
 ## Dependencies
 
