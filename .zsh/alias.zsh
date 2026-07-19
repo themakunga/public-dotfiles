@@ -1,0 +1,6 @@
+alias drun="docker compose -f compose.yml run --rm"
+alias nixedit="cd ~/.nix-systems/ && nvim"
+alias dotedit="cd ~/.public-dotfiles/ && nvim"
+alias sdotedit="cd ~/.private-dotfiles/ && nvim"
+alias secretsedit="cd ~/.secrets/ && nvim"
+alias chat="cd ~/Downloads/ && nchat"
