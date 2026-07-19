@@ -59,6 +59,10 @@ require('plugins.tuxedo').plugin()
 require('plugins.noice').plugin()
 require('plugins.comment').plugin()
 
+-- AI
+require('plugins.copilot').plugin()
+require('plugins.avante').plugin()
+
 require('plugins.accesibility').plugin()
 
 -- fallando
