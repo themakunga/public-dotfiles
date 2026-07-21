@@ -1,0 +1,44 @@
+# =========================================================
+# Archivo: dotfiles/gh/config.yml
+# Configuración global de GitHub CLI
+# =========================================================
+
+# El protocolo que GH usará para clonar/crear repositorios.
+# Como ya tienes configuradas tus llaves SSH en TheMakunga, 'ssh' es la mejor opción.
+git_protocol: ssh
+
+# Tu editor de texto por defecto para escribir PRs, issues, etc.
+editor: nvim
+
+# Activa los menús interactivos en la terminal
+prompt: enabled
+
+# El paginador para leer logs o PRs largos
+pager: less
+
+# Preferencias del navegador (para cuando ejecutas comandos como 'gh pr view --web')
+# Si lo dejas vacío, usará el navegador por defecto del sistema operativo.
+browser:
+
+# =========================================================
+# ALIASES
+# Atajos personalizados para comandos largos de 'gh'
+# =========================================================
+aliases:
+  # Clonar un repo rápidamente
+  cl: repo clone
+
+  # Ver tus pull requests abiertos
+  prs: pr list --author "@me"
+
+  # Crear un Pull Request abriendo Neovim para el título y descripción
+  prc: pr create -a "@me"
+
+  # Revisar el estado de las GitHub Actions de la rama actual
+  run: run list --branch "@current"
+
+  # Ver un issue específico en la terminal
+  iv: issue view
+
+  # Ver qué pasa con el repo actual
+  st: status
