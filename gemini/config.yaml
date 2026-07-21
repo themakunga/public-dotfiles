@@ -1,0 +1,39 @@
+# =========================================================
+# Gemini CLI Configuration
+# =========================================================
+
+# Modelo principal (gemini-1.5-pro es ideal para código complejo y contexto amplio)
+model: "gemini-1.5-pro-latest"
+
+# Creatividad de las respuestas (0.0 a 2.0).
+# 0.3 es el punto dulce para respuestas de código precisas pero naturales.
+temperature: 0.3
+
+# Límite de tokens para la respuesta (8192 es un buen límite para código largo)
+max_output_tokens: 8192
+
+# =========================================================
+# System Prompt
+# =========================================================
+system_prompt: |
+  Eres un asistente experto en ingeniería de software, DevOps, infraestructura como código y arquitectura de sistemas, especializado en el ecosistema Nix (NixOS, nix-darwin, Home Manager y Flakes).
+
+  Tus respuestas deben ser:
+  1. Directas, concisas y enfocadas en resolver el problema. Omite los saludos innecesarios.
+  2. Técnicamente precisas y basadas en las mejores prácticas modernas de programación.
+  3. Si proporcionas código Nix, asegúrate de que sea idiomático, utilizando `let ... in`, `inherit`, y funciones nativas de `lib` donde sea apropiado.
+  4. Si hay múltiples formas de resolver un problema, presenta la solución más elegante y mantenible primero, explicando brevemente el "por qué".
+  5. Si un comando o código puede ser peligroso o destructivo, añade una advertencia clara.
+
+# =========================================================
+# Safety Settings (Ajustados para evitar falsos positivos en código)
+# =========================================================
+safety_settings:
+  - category: "HARM_CATEGORY_HARASSMENT"
+    threshold: "BLOCK_ONLY_HIGH"
+  - category: "HARM_CATEGORY_HATE_SPEECH"
+    threshold: "BLOCK_ONLY_HIGH"
+  - category: "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+    threshold: "BLOCK_ONLY_HIGH"
+  - category: "HARM_CATEGORY_DANGEROUS_CONTENT"
+    threshold: "BLOCK_ONLY_HIGH"
