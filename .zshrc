@@ -43,7 +43,7 @@ zinit light Aloxaf/fzf-tab
 
 # Carga diferida (Turbo Mode) para acelerar drásticamente el inicio de la terminal
 zinit wait lucid for \
-  atinit"zicompinit; zicmddef" zsh-users/zsh-syntax-highlighting \
+  atinit"zicompinit" zsh-users/zsh-syntax-highlighting \
   blockf zsh-users/zsh-completions \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions
 
@@ -103,6 +103,4 @@ clear
 # fastfetch es la alternativa moderna y ultra rápida instalada mediante tu Nix Flake
 if command -v fastfetch &> /dev/null; then
   fastfetch
-elif command -v neofetch &> /dev/null; then
-  neofetch
 fi
