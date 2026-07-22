@@ -19,12 +19,24 @@ M.plugin = function()
 
   local avante = require('avante')
 
+  local hostname = vim.uv.os_gethostname() or ''
+  local current_provider = 'claude'
+
+  if hostname:match('outer%-heaven') then
+    current_provider = 'gemini'
+  end
+
   local opts = {
-    provider = 'clade',
+    provider = current_provider,
     claude = {
       endpoint = 'https://api.anthropic.com',
       model = 'claude-sonnet-4-6',
       api_key = os.getenv('ANTHOPIC_API_KEY'),
+    },
+    gemini = {
+      endpoint = 'https://generativelanguage.googleapis.com/v1beta/models',
+      model = 'gemini-1.5-pro-latest',
+      api_key_name = 'GEMINI_API_KEY',
     },
 
     -- provider= 'openai',

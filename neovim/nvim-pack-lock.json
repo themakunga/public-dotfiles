@@ -12,6 +12,10 @@
       "rev": "bafd0368716216fa6a7bb2a43ecd889b44efdb46",
       "src": "https://github.com/m4xshen/autoclose.nvim"
     },
+    "avante.nvim": {
+      "rev": "90a0e77c63251c367935caeaa0070670522c960b",
+      "src": "https://github.com/yetone/avante.nvim"
+    },
     "bafa": {
       "rev": "0b45231d0bd17b47e67dc7a7294b8887e23b38d2",
       "src": "https://github.com/mistweaverco/bafa.nvim",
@@ -21,10 +25,18 @@
       "rev": "655133c",
       "src": "https://github.com/akinsho/bufferline.nvim"
     },
+    "copilot.lua": {
+      "rev": "760912b5992e1d6437378a9c7f2b0cb950966cf5",
+      "src": "https://github.com/zbirenbaum/copilot.lua"
+    },
     "dapview": {
       "rev": "af144cfbdeafd90dfdaa3d406e3f8e06ddc4f0e3",
       "src": "https://github.com/igorlfs/nvim-dap-view",
       "version": "1.0.0 - 1.1.0"
+    },
+    "dressing.nvim": {
+      "rev": "2d7c2db2507fa3c4956142ee607431ddb2828639",
+      "src": "https://github.com/stevearc/dressing.nvim"
     },
     "git-blame.nvim": {
       "rev": "5c536e2",
@@ -210,6 +222,10 @@
     "tuxedo.nvim": {
       "rev": "847aa130ad1ccd22722c1e8ee3084ec70764270e",
       "src": "https://github.com/IogaMaster/tuxedo.nvim"
+    },
+    "vim-tmux-navigator": {
+      "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
+      "src": "https://github.com/christoomey/vim-tmux-navigator"
     },
     "which-key.nvim": {
       "rev": "3aab214",
