@@ -67,4 +67,6 @@ require('plugins.accesibility').plugin()
 
 -- fallando
 
+require('plugins.tmux-navigator').plugin()
+
 -- require('plugins.package').plugin()
