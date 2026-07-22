@@ -20,7 +20,7 @@ M.plugin = function()
   local avante = require('avante')
 
   local opts = {
-    provider = 'clade',
+    provider = 'claude',
     claude = {
       endpoint = 'https://api.anthropic.com',
       model = 'claude-sonnet-4-6',
