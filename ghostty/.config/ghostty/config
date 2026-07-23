@@ -1,0 +1,12 @@
+font-family = "Hack Nerd Font"
+font-size = 14
+theme = tokyonight-storm
+
+# Ocultar barra de titulo y pestañas, ideal para usar con tmux
+macos-titlebar-style = hidden
+window-decoration = false
+
+# Apariencia similar a wezterm
+background-opacity = 1
+window-padding-x = 10
+window-padding-y = 10
