@@ -94,6 +94,7 @@ fi
 # ===== CARGA DE MÓDULOS MODULARES (.ZSH) =====
 [[ -f "$ZDOTDIR_LOCAL/.zsh/aliases.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/aliases.zsh"
 [[ -f "$ZDOTDIR_LOCAL/.zsh/functions.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/functions.zsh"
+[[ -f "$ZDOTDIR_LOCAL/.zsh_scripts/profile-env.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh_scripts/profile-env.zsh"
 
 # Ejecutar el hook de nvm por primera vez para la sesión actual si existe
 (( $+functions[load-nvmrc] )) && load-nvmrc
