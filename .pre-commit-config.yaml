@@ -3,15 +3,21 @@ repos:
     rev: v4.6.0
     hooks:
       - id: check-yaml
+        stages: [pre-commit]
       - id: check-json
+        stages: [pre-commit]
       - id: end-of-file-fixer
+        stages: [pre-commit]
       - id: trailing-whitespace
+        stages: [pre-commit]
       - id: check-added-large-files
+        stages: [pre-commit]
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.18.2
     hooks:
       - id: gitleaks
+        stages: [pre-push]
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.16.0
@@ -21,10 +27,11 @@ repos:
         additional_dependencies: ["@commitlint/config-conventional"]
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8 # Mantiene a Prettier oficial corrigiendo y re-stageando solo
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        additional_dependencies: ["prettier@3.2.5"] # Puedes fijar la versión que gustes
+        stages: [pre-commit]
+        additional_dependencies: ["prettier@3.2.5"]
         files: '\.(md|yaml|yml|json)$'
 
   - repo: local
@@ -35,9 +42,11 @@ repos:
         language: system
         always_run: true
         pass_filenames: false
+        stages: [pre-commit]
 
       - id: stylua
         name: StyLua Format
         entry: stylua
         language: system
         files: '\.lua$'
+        stages: [pre-commit]
