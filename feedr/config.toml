@@ -1,0 +1,20 @@
+# Feedr Configuration File
+
+[general]
+max_dashboard_items = 100       # Maximum number of items shown on dashboard
+auto_refresh_interval = 0       # Auto-refresh interval in seconds (0 = disabled)
+refresh_enabled = false         # Enable automatic background refresh
+refresh_rate_limit_delay = 2000 # Delay in milliseconds between requests to same domain
+
+[network]
+http_timeout = 15                                                                      # HTTP request timeout in seconds
+user_agent = "Mozilla/5.0 (compatible; Feedr/1.0; +https://github.com/bahdotsh/feedr)"
+
+[ui]
+tick_rate = 100              # UI update rate in milliseconds
+error_display_timeout = 3000 # Error message duration in milliseconds
+
+# Optional: Define default feeds to load on first run
+[[default_feeds]]
+url = "https://example.com/feed.xml"
+category = "News"
