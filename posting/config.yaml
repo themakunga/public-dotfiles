@@ -1,0 +1,10 @@
+theme: galaxy
+layout: horizontal
+response:
+  prettify_json: true
+heading:
+  visible: true
+  show_host: false
+keymap:
+  save-request: alt+s
+  quit: ctrl+q

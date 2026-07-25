@@ -1,0 +1,92 @@
+apps:
+  pages:
+    - number: 1
+      items:
+        - App Store
+        - Safari
+        - Mail
+        - Calendar
+        - FaceTime
+        - Messages
+        - Maps
+        - Find My
+        - Music
+        - Podcasts
+        - Weather
+        - Clock
+        - Home
+        - iPhone Mirroring
+        - Passwords
+        - System Settings
+        - folder: Other
+          pages:
+            - number: 1
+              items:
+                - Dictionary
+                - Font Book
+                - Screen Sharing
+                - Mission Control
+                - Time Machine
+                - Preview
+                - Screenshot
+                - Image Capture
+                - Digital Color Meter
+                - ColorSync Utility
+                - Grapher
+                - VoiceOver Utility
+                - Print Center
+                - Automator
+                - Script Editor
+                - Audio MIDI Setup
+                - Bluetooth File Exchange
+                - Disk Utility
+                - System Information
+                - Activity Monitor
+                - Console
+                - Terminal
+                - AirPort Utility
+                - Migration Assistant
+                - Tips
+                - Chess
+                - Voice Memos
+                - XQuartz
+        - folder: Video
+          pages:
+            - number: 1
+              items:
+                - QuickTime Player
+                - TV
+        - folder: Photography
+          pages:
+            - number: 1
+              items:
+                - Photos
+                - Photo Booth
+        - folder: Productivity
+          pages:
+            - number: 1
+              items:
+                - Reminders
+                - Notes
+                - TextEdit
+                - Freeform
+                - Contacts
+                - Stickies
+                - Shortcuts
+                - Kap
+                - KeyCastr
+                - Raycast
+        - folder: Reference
+          pages:
+            - number: 1
+              items:
+                - Books
+                - News
+                - Stocks
+        - folder: Utilities
+          pages:
+            - number: 1
+              items:
+                - Calculator
+                - Siri
+                - Rectangle
