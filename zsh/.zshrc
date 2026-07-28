@@ -60,7 +60,7 @@ zinit wait lucid for \
   OMZP::node
 
 # ===== PROMPT Y INTEGRACIONES =====
-eval "$(oh-my-posh init zsh --config "${HOME}/.config/ohmyposh/config.yml")"
+eval "$(oh-my-posh init zsh --config "${HOME}/.config/ohmyposh/config.yaml")"
 eval "$(fzf --zsh)"
 
 # ===== SISTEMA DE COMPLETADO =====
