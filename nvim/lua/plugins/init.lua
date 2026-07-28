@@ -37,6 +37,8 @@ require('plugins.sort').plugin()
 require('plugins.gitsigns').plugin()
 require('plugins.lazygit').plugin()
 require('plugins.gitblame').plugin()
+require('plugins.github-actions').plugin()
+require('plugins.octo').plugin()
 
 -- format
 require('plugins.log-highlight').plugin()
@@ -52,21 +54,11 @@ require('plugins.mardownpdf').plugin()
 
 require('plugins.sops').plugin()
 
-require('plugins.github-actions').plugin()
-require('plugins.octo').plugin()
 require('plugins.tuxedo').plugin()
 -- messages
 require('plugins.noice').plugin()
 require('plugins.comment').plugin()
 
--- AI
-require('plugins.copilot').plugin()
-require('plugins.avante').plugin()
 
-require('plugins.accesibility').plugin()
-
--- fallando
-
-require('plugins.tmux-navigator').plugin()
 
 -- require('plugins.package').plugin()
