@@ -1,12 +1,13 @@
+--- Archivo: ./lua/plugins/coding/cmp.lua
 local M = {}
 
 M.plugin = function()
   vim.pack.add({
     { src = 'https://github.com/folke/lazydev.nvim' },
+    { src = 'https://github.com/saghen/blink.lib' },
     { src = 'https://github.com/saghen/blink.cmp' },
   })
 
-  ---@module 'blink.cmp'
   local ok, blink = pcall(require, 'blink.cmp')
 
   if not ok then
@@ -14,10 +15,14 @@ M.plugin = function()
     return
   end
 
-  ---@type blink.cmp.Config
+  -- Comando para compilar/descargar el motor de Rust manualmente
+  vim.api.nvim_create_user_command('BlinkBuild', function()
+    vim.notify('Descargando/Construyendo binario de Blink.cmp...', vim.log.levels.INFO)
+    require('blink.cmp').build():pwait()
+    vim.notify('¡Blink.cmp compilado con éxito! Reinicia Neovim.', vim.log.levels.INFO)
+  end, { desc = 'Build blink.cmp native Rust fuzzy matcher' })
+
   local opts = {
-    -- Default preset: <C-y> accept, <C-n>/<C-p> select, <C-space> open/docs,
-    -- <C-e> hide, <C-b>/<C-f> scroll docs, <Tab>/<S-Tab> snippet jump.
     keymap = { preset = 'default' },
     appearance = { nerd_font_variant = 'mono' },
     completion = {
@@ -26,8 +31,6 @@ M.plugin = function()
     sources = {
       default = { 'lsp', 'path', 'snippets', 'lazydev' },
       providers = {
-        -- lazydev completions for editing this Neovim config; high score so
-        -- they outrank (and dedupe) lua_ls's own suggestions.
         lazydev = {
           name = 'LazyDev',
           module = 'lazydev.integrations.blink',
@@ -35,7 +38,6 @@ M.plugin = function()
         },
       },
     },
-    -- Use blink's built-in snippet engine (no LuaSnip).
     snippets = { preset = 'default' },
     fuzzy = { implementation = 'prefer_rust_with_warning' },
   }

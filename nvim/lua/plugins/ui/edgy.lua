@@ -1,3 +1,4 @@
+--- Archivo: ./lua/plugins/ui/edgy.lua
 local M = {}
 
 M.plugin = function()
@@ -13,23 +14,26 @@ M.plugin = function()
   end
 
   local opts = {
-    -- Configuramos específicamente el panel derecho
+    -- Configuración del panel derecho
     right = {
-      -- 1. NvimTree arriba a la derecha
       {
         title = 'NvimTree',
         ft = 'NvimTree',
-        size = { height = 0.75 }, -- Ocupa el 50% del espacio vertical
-        pinned = true, -- Mantiene la posición
+        size = { height = 0.65 }, -- 65% del alto
+        pinned = true, -- Siempre mantiene su lugar
       },
-      -- 2. Trouble (Errores) abajo a la derecha
       {
         title = 'Trouble',
         ft = 'trouble',
-        size = { height = 0.25 }, -- Ocupa el 50% restante
+        size = { height = 0.35 }, -- 35% del alto
       },
     },
-    -- Otras opciones de edgy (opcionales)
+    -- Opcional: animaciones más rápidas o desactivadas para mayor fluidez
+    animate = {
+      enabled = true,
+      cps = 120,
+      fps = 60,
+    },
     options = {
       left_window_fault_tolerance = 1,
       right_window_fault_tolerance = 1,

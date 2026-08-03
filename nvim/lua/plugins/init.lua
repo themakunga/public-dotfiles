@@ -1,6 +1,7 @@
+--- Archivo: ./lua/plugins/init.lua
 local M = {}
 
--- 1. Dependencias globales a instalar primero
+-- 1. Dependencias globales (se instalan una sola vez)
 M.global_dependencies = {
   'https://github.com/MunifTanjim/nui.nvim',
   'https://github.com/nvim-lua/plenary.nvim',
@@ -9,108 +10,123 @@ M.global_dependencies = {
   'https://github.com/rcarriga/nvim-notify',
 }
 
--- 2. Orden estricto y lógico: Primero motores, luego UI.
-M.group_order = {
-  'editor', -- Telescope, Treesitter, Lsp (Requeridos por la UI)
-  'coding', -- Autocompletado (Blink)
-  'formatter', -- Conform
-  'git', -- Octo, Gitsigns
-  'ui', -- Dashboard, Temas, Barra de estado (Cargan al final, cuando todo existe)
-  'markdown',
-  'testing',
-}
+-- 2. Sistema de Carga Diferida (Lazy Loading) por eventos
+M.lazy_groups = {
+  -- UI Base (Carga instantánea)
+  immediate = {
+    'ui.tokyonight',
+  },
 
--- 3. Listado de plugins ordenado lógicamente por dependencias internas
-M.plugins_groups = {
-  editor = {
-    'treesitter', -- AST base (debe ir muy al principio)
-    'nvim-treesitter', -- Contexto (depende de treesitter)
-    'telescope', -- Buscador (Usado por Dashboard y Octo)
-    'fzf', -- UI Select y buscador alternativo
-    'lspconfig', -- Servidores y Mason
-    'mini', -- Herramientas de texto
-    'tmux',
-    'toggle-term',
-    'grug-far',
-    'sort',
-    'sops',
+  -- Cuando la interfaz está lista
+  vimenter = {
+    'ui.lualine-theme',
+    'ui.lualine',
+    'ui.snacks',
+    'ui.noice',
+    'ui.nvim-tree',
+    'ui.bufferline',
+    'ui.bafa',
+    'ui.colorizer',
+    'ui.which-key',
   },
-  coding = {
-    'blink', -- Motor de autocompletado rápido
-    'autopairs',
-    'mini-hipatterns',
+
+  -- Antes de leer un archivo (LSP, Git, Herramientas pesadas)
+  bufread = {
+    'editor.treesitter',
+    'editor.nvim-treesitter',
+    'editor.fzf',
+    'editor.lspconfig',
+    'editor.mini',
+    'editor.sort',
+    'editor.sops',
+    'formatter.conform',
+    'git.gitsigns',
+    'git.octo',
+    'git.gitblame',
+    'git.github-actions',
+    'ui.todo-comments',
+    'ui.trouble',
+    'ui.ufo',
+    'ui.comment',
+    'testing.neotest',
   },
-  formatter = {
-    'conform',
+
+  -- Al empezar a escribir (Autocompletado)
+  insertenter = {
+    'coding.cmp',
+    'coding.autopairs',
+    'coding.mini-hipatterns',
   },
-  git = {
-    'gitsigns',
-    'lazygit',
-    'octo', -- Requiere Telescope
-    'gitblame',
-    'github-actions',
-  },
-  ui = {
-    'tokyonight', -- Tema (Debe cargar antes que Lualine)
-    'lualine-theme',
-    'lualine',
-    'snacks', -- DASHBOARD y Notificaciones
-    'noice', -- UI de cmdline (Depende de notificaciones)
-    'nvim-tree', -- Explorador de archivos
-    'bufferline',
-    'bafa',
-    'dressing',
-    'edgy',
-    'colorizer',
-    'comment',
-    'log-highlight',
-    'todo-comments',
-    'trouble',
-    'tuxedo',
-    'ufo',
-    'which-key', -- Atajos (Debe ir al final para detectar todos los mapeos de la UI)
-  },
+
+  -- Específicos por tipo de archivo
   markdown = {
-    'rendermarkdown',
-    'markdown-toc',
-    'mardownpdf',
-  },
-  testing = {
-    'neotest',
+    'markdown.rendermarkdown',
+    'markdown.markdown-toc',
+    'markdown.mardownpdf',
   },
 }
 
-M.init = function()
-  -- PASO A: Instalar todas las dependencias globales primero
-  for _, url in ipairs(M.global_dependencies) do
-    vim.pack.add({
-      { src = url },
-    })
-  end
-
-  -- PASO B: Cargar los plugins respetando el orden de los grupos y de las listas
-  for _, group_name in ipairs(M.group_order) do
-    local plugins = M.plugins_groups[group_name]
-
-    if plugins then
-      for _, plugin_name in ipairs(plugins) do
-        local module_name = 'plugins.' .. group_name .. '.' .. plugin_name
-
-        local ok, plugin_module = pcall(require, module_name)
-
-        if ok then
-          if type(plugin_module) == 'table' and type(plugin_module.plugin) == 'function' then
-            plugin_module.plugin()
-          end
-        else
-          vim.notify(
-            '[ERROR CARGANDO PLUGIN] No se pudo cargar: ' .. module_name .. '\nDetalle: ' .. tostring(plugin_module),
-            vim.log.levels.ERROR
-          )
-        end
-      end
+local function load_plugin(module_name)
+  local ok, plugin_module = pcall(require, 'plugins.' .. module_name)
+  if ok and type(plugin_module) == 'table' and type(plugin_module.plugin) == 'function' then
+    plugin_module.plugin()
+  else
+    if not ok then
+      vim.notify('[ERROR CARGANDO PLUGIN] ' .. module_name, vim.log.levels.ERROR)
     end
   end
+end
+
+M.init = function()
+  -- A: Instalar globales
+  for _, url in ipairs(M.global_dependencies) do
+    vim.pack.add({ { src = url } })
+  end
+
+  -- B: Carga inmediata
+  for _, plugin in ipairs(M.lazy_groups.immediate) do
+    load_plugin(plugin)
+  end
+
+  -- C: Autocommands para carga diferida
+  local autocmd = vim.api.nvim_create_autocmd
+
+  autocmd('VimEnter', {
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.vimenter) do
+        load_plugin(plugin)
+      end
+    end,
+  })
+
+  autocmd({ 'BufReadPre', 'BufNewFile' }, {
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.bufread) do
+        load_plugin(plugin)
+      end
+    end,
+  })
+
+  autocmd('InsertEnter', {
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.insertenter) do
+        load_plugin(plugin)
+      end
+    end,
+  })
+
+  autocmd('FileType', {
+    pattern = 'markdown',
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.markdown) do
+        load_plugin(plugin)
+      end
+    end,
+  })
 end
 
 return M

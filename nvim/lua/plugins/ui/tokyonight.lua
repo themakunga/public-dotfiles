@@ -1,9 +1,13 @@
+--- Archivo: ./lua/plugins/ui/tokyonight.lua
 local M = {}
 
 M.plugin = function()
   vim.pack.add({
     { src = 'https://github.com/folke/tokyonight.nvim' },
   })
+
+  -- 1. Asegurar explícitamente que los colores de GUI están activos
+  vim.opt.termguicolors = true
 
   local ok, tokyonight = pcall(require, 'tokyonight')
   if not ok then
@@ -22,7 +26,14 @@ M.plugin = function()
 
   tokyonight.setup(opts)
 
-  vim.cmd('colorscheme tokyonight')
+  -- 2. Posponer la aplicación del tema una fracción de milisegundo
+  -- para asegurar que Neovim haya procesado el runtimepath correctamente.
+  vim.schedule(function()
+    local status_ok, _ = pcall(vim.cmd, 'colorscheme tokyonight')
+    if not status_ok then
+      vim.notify('Fallo al aplicar el colorscheme tokyonight', vim.log.levels.ERROR)
+    end
+  end)
 end
 
 return M
