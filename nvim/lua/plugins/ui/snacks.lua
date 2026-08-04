@@ -1,3 +1,4 @@
+--- Archivo: ./lua/plugins/ui/snacks.lua
 local M = {}
 
 M.plugin = function()
@@ -55,9 +56,15 @@ M.plugin = function()
     pane_gap = 4,
     autokeys = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
     preset = {
-      pick = 'telescope.nvim',
+      pick = 'fzf-lua', -- <-- Actualizado para usar fzf-lua en lugar de telescope
       keys = {
-        { icon = ' ', key = 'e', desc = 'Open Sidebar Menu', action = '<cmd>NvimTreeFocus<cr>' },
+        {
+          icon = ' ',
+          key = 'e',
+          desc = 'Toggle/Focus Sidebar Menu',
+          -- <-- Lógica inteligente de apertura, cierre y foco
+          action = ':lua local api = require(\'nvim-tree.api\'); if api.tree.is_visible() then if vim.bo.filetype == \'NvimTree\' then api.tree.close() else api.tree.focus() end else api.tree.open() end',
+        },
         { icon = ' ', key = 'f', desc = 'Find File', action = ':lua Snacks.dashboard.pick(\'files\')' },
         { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
         { icon = ' ', key = 'g', desc = 'Find Text', action = ':lua Snacks.dashboard.pick(\'live_grep\')' },
@@ -129,7 +136,6 @@ M.plugin = function()
 
   local map = vim.keymap.set
 
-  -- map('n', '<leader>', function() Snacks. , {desc = ""})
   map('n', '<leader>n', function()
     Snacks.notifier.show_history()
   end, { desc = 'Show notification history' })

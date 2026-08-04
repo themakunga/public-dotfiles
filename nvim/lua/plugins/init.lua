@@ -1,64 +1,134 @@
--- common packages to use and dont re declare it
+--- Archivo: ./lua/plugins/init.lua
+local M = {}
 
-vim.pack.add({
-  { src = 'https://github.com/nvim-lua/plenary.nvim' },
-  { src = 'https://github.com/rcarriga/nvim-notify' },
-  { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
-  { src = 'https://github.com/nvim-mini/mini.icons' },
-  { src = 'https://github.com/MunifTanjim/nui.nvim' },
-  { src = 'https://github.com/rcarriga/nvim-notify' },
+-- 1. Dependencias globales (se instalan una sola vez)
+M.global_dependencies = {
+  'https://github.com/MunifTanjim/nui.nvim',
+  'https://github.com/nvim-lua/plenary.nvim',
+  'https://github.com/nvim-mini/mini.icons',
+  'https://github.com/nvim-tree/nvim-web-devicons',
+  'https://github.com/rcarriga/nvim-notify',
+}
 
-  -- {src = ""},
-})
+-- 2. Sistema de Carga Diferida (Lazy Loading) por eventos
+M.lazy_groups = {
+  -- UI Base (Carga instantánea)
+  immediate = {
+    'ui.tokyonight',
+  },
 
--- ui
-require('plugins.tokyonight').plugin()
-require('plugins.snacks').plugin()
-require('plugins.bufferline').plugin()
-require('plugins.lualine').plugin()
-require('plugins.whichkey').plugin()
--- require('plugins.spell').plugin()
-require('plugins.bafa').plugin()
--- require('plugins.neominimap').plugin()
+  -- Cuando la interfaz está lista
+  vimenter = {
+    'ui.lualine-theme',
+    'ui.lualine',
+    'ui.snacks',
+    'ui.noice',
+    'ui.nvim-tree',
+    'ui.bufferline',
+    'ui.bafa',
+    'ui.colorizer',
+    'ui.which-key',
+  },
 
--- navigation
-require('plugins.oil').plugin()
-require('plugins.nvimtree').plugin()
-require('plugins.telescope').plugin()
+  -- Antes de leer un archivo (LSP, Git, Herramientas pesadas)
+  bufread = {
+    'editor.treesitter',
+    'editor.nvim-treesitter',
+    'editor.fzf',
+    'editor.lspconfig',
+    'editor.mini',
+    'editor.sort',
+    'editor.sops',
+    'editor.toggle-term',
+    'formatter.conform',
+    'git.gitsigns',
+    'git.octo',
+    'git.gitblame',
+    'git.lazygit',
+    'git.github-actions',
+    'ui.todo-comments',
+    'ui.trouble',
+    'ui.ufo',
+    'ui.comment',
+    'testing.neotest',
+  },
 
--- lsp
-require('plugins.trouble').plugin()
-require('plugins.lsp').plugin()
-require('plugins.treesitter').plugin()
--- require('plugins.dap').plugin()
-require('plugins.sort').plugin()
+  -- Al empezar a escribir (Autocompletado)
+  insertenter = {
+    'coding.cmp',
+    'coding.autopairs',
+    'coding.mini-hipatterns',
+  },
 
--- git
-require('plugins.gitsigns').plugin()
-require('plugins.lazygit').plugin()
-require('plugins.gitblame').plugin()
-require('plugins.github-actions').plugin()
-require('plugins.octo').plugin()
+  -- Específicos por tipo de archivo
+  markdown = {
+    'markdown.rendermarkdown',
+    'markdown.markdown-toc',
+    'markdown.mardownpdf',
+  },
+}
 
--- format
-require('plugins.log-highlight').plugin()
-require('plugins.autoclose').plugin()
+local function load_plugin(module_name)
+  local ok, plugin_module = pcall(require, 'plugins.' .. module_name)
+  if ok and type(plugin_module) == 'table' and type(plugin_module.plugin) == 'function' then
+    plugin_module.plugin()
+  else
+    if not ok then
+      vim.notify('[ERROR CARGANDO PLUGIN] ' .. module_name, vim.log.levels.ERROR)
+    end
+  end
+end
 
--- terminal
-require('plugins.toggle-term').plugin()
+M.init = function()
+  -- A: Instalar globales
+  for _, url in ipairs(M.global_dependencies) do
+    vim.pack.add({ { src = url } })
+  end
 
--- markdown
-require('plugins.rendermarkdown').plugin()
-require('plugins.markdown-toc').plugin()
-require('plugins.mardownpdf').plugin()
+  -- B: Carga inmediata
+  for _, plugin in ipairs(M.lazy_groups.immediate) do
+    load_plugin(plugin)
+  end
 
-require('plugins.sops').plugin()
+  -- C: Autocommands para carga diferida
+  local autocmd = vim.api.nvim_create_autocmd
 
-require('plugins.tuxedo').plugin()
--- messages
-require('plugins.noice').plugin()
-require('plugins.comment').plugin()
+  autocmd('VimEnter', {
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.vimenter) do
+        load_plugin(plugin)
+      end
+    end,
+  })
 
+  autocmd({ 'BufReadPre', 'BufNewFile' }, {
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.bufread) do
+        load_plugin(plugin)
+      end
+    end,
+  })
 
+  autocmd('InsertEnter', {
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.insertenter) do
+        load_plugin(plugin)
+      end
+    end,
+  })
 
--- require('plugins.package').plugin()
+  autocmd('FileType', {
+    pattern = 'markdown',
+    once = true,
+    callback = function()
+      for _, plugin in ipairs(M.lazy_groups.markdown) do
+        load_plugin(plugin)
+      end
+    end,
+  })
+end
+
+return M
