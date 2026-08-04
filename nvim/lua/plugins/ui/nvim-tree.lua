@@ -70,7 +70,7 @@ M.plugin = function()
   nvimtree.setup(opts)
 
   -- Lógica del Smart Toggle Global (Para usar <leader>e desde cualquier otro archivo)
-  vim.keymap.set('n', '<leader>e', function()
+  vim.keymap.set('n', '<leader>ee', function()
     local api = require('nvim-tree.api')
 
     if api.tree.is_visible() then
