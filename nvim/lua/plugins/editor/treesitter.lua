@@ -1,3 +1,4 @@
+--- Archivo: ./lua/plugins/editor/treesitter.lua
 local M = {}
 
 M.plugin = function()
@@ -5,7 +6,6 @@ M.plugin = function()
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
   })
 
-  ---@module 'nvim-treesitter.configs'
   local ok, treesitter = pcall(require, 'nvim-treesitter.configs')
 
   if not ok then
@@ -13,11 +13,19 @@ M.plugin = function()
     return
   end
 
+  -- Detección de archivos personalizados (Modelfile)
   vim.filetype.add({
     pattern = {
-      ['config'] = 'dosini', -- better syntax highlighting for config files
+      ['config'] = 'dosini',
+      ['[mM]odelfile.*'] = 'modelfile',
+    },
+    filename = {
+      ['Modelfile'] = 'modelfile',
     },
   })
+
+  -- Enlazar Modelfile con el parser de Dockerfile
+  vim.treesitter.language.register('dockerfile', 'modelfile')
 
   local opts = {
     ensure_installed = {
@@ -40,7 +48,7 @@ M.plugin = function()
       'luadoc',
       'markdown',
       'markdown_inline',
-      'nix', -- Soporte añadido para Nix
+      'nix',
       'python',
       'sql',
       'tsx',
@@ -49,13 +57,9 @@ M.plugin = function()
       'vimdoc',
       'yaml',
     },
-    -- Install only the parsers listed above; no surprise background installs.
     auto_install = false,
     highlight = {
       enable = true,
-      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-      --  If you are experiencing weird indenting issues, add the language to
-      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
       additional_vim_regex_highlighting = { 'ruby' },
     },
     indent = { enable = true, disable = { 'ruby' } },

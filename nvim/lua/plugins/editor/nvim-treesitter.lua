@@ -1,3 +1,4 @@
+--- Archivo: ./lua/plugins/editor/nvim-treesitter.lua
 local M = {}
 
 M.plugin = function()
