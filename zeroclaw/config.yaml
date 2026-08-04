@@ -1,0 +1,29 @@
+# =========================================================
+# GLaDOS Zeroclaw Configuration - Optimized for Apple M4 Max
+# =========================================================
+environment: "production"
+workspace: "/opt/glados"
+restricted_mode: true
+
+hardware:
+  # El M4 Max tiene 14 núcleos (10 Performance, 4 Efficiency)
+  # Fijamos 10 hilos para evitar que las tareas pesadas caigan en los E-cores y causen cuellos de botella.
+  cpu_threads: 10
+
+  # Forzar el uso del motor neuronal y GPU de Apple
+  acceleration: "metal"
+
+  # De los 36GB de RAM unificada, macOS reserva una parte.
+  # 24GB-26GB es el "sweet spot" para mantener el sistema 100% estable.
+  max_memory_gb: 26
+
+execution:
+  parallel_workers: 4
+  timeout_seconds: 300
+  log_level: "info"
+
+llm_integration:
+  provider: "ollama"
+  endpoint: "http://127.0.0.1:11434"
+  default_model: "llama3.1:latest" # o el que prefieras
+  context_window: 16384 # El M4 Max maneja contextos largos sin transpirar
