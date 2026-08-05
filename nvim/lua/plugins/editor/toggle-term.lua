@@ -27,6 +27,7 @@ M.plugin = function()
 
   vim.keymap.set('n', '<A-t>', '<cmd>ToggleTerm direction=float<cr>', { desc = 'Toggle Terminal' })
   vim.keymap.set('t', '<A-t>', '<C-\\><C-n> :ToggleTerm<CR>', { desc = 'Close Terminal' })
+  vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n><cmd>ToggleTerm<CR>', { desc = 'Hide Terminal' })
 end
 
 return M

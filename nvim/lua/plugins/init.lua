@@ -62,7 +62,7 @@ M.lazy_groups = {
 
   -- Específicos por tipo de archivo
   markdown = {
-    'markdown.rendermarkdown',
+    --   'markdown.rendermarkdown',
     'markdown.markdown-toc',
     'markdown.mardownpdf',
   },
