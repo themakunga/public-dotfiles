@@ -1,3 +1,4 @@
+--- Archivo: ./lua/plugins/editor/fzf.lua
 local M = {}
 
 M.plugin = function()
@@ -43,7 +44,6 @@ M.plugin = function()
       'Method',
       'Module',
       'Namespace',
-      -- "Package", -- luals uses it for control-flow structures
       'Property',
       'Struct',
       'Trait',
@@ -75,10 +75,12 @@ M.plugin = function()
 
   local opts = {
     files = {
-      fd_opts = '--color=never --type f --hidden --follow',
+      -- NUEVO: --exclude .git ignora el directorio git pero sigue buscando en otros archivos ocultos
+      fd_opts = '--color=never --type f --hidden --follow --exclude .git',
     },
     grep = {
-      rg_opts = '--column --line-number --hidden',
+      -- NUEVO: -g "!.git" es un patrón glob que le dice a ripgrep que omita esa carpeta
+      rg_opts = '--column --line-number --hidden -g "!.git"',
     },
   }
 

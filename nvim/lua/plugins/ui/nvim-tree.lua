@@ -65,6 +65,12 @@ M.plugin = function()
       indent_markers = { enable = false },
     },
     git = { enable = true },
+
+    -- NUEVA CONFIGURACIÓN: Mostrar todo excepto .git
+    filters = {
+      dotfiles = false, -- Muestra archivos ocultos (.env, .config, etc)
+      custom = { '^\\.git$' }, -- Oculta ESTRICTAMENTE la carpeta .git mediante Regex
+    },
   }
 
   nvimtree.setup(opts)
