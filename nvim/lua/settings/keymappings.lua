@@ -84,6 +84,10 @@ M.init = function()
 
   map('n', '<leader>R', ':restart<CR>', { desc = 'Restart NeoVim' })
   map('n', '<leader>so', ':source<cr>', { desc = 'Source current file' })
+
+  -- control add
+  map('n', '<leader>n+', '<C-a>', { desc = 'Increase Number under cursor' })
+  map('n', '<leader>n-', '<C-x>', { desc = 'Decreadse numer under cursor' })
 end
 
 return M
