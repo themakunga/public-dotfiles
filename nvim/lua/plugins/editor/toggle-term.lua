@@ -17,7 +17,11 @@ M.plugin = function()
   local opts = {
     direction = 'float',
     close_on_exit = false,
-    persist_mode = true,
+
+    -- NUEVA CONFIGURACIÓN:
+    start_in_insert = true, -- Fuerza a que siempre inicie lista para escribir
+    persist_mode = false, -- Evita que recuerde el modo Normal al ocultarla
+
     float_opts = {
       border = 'curved',
     },
@@ -26,7 +30,9 @@ M.plugin = function()
   toggleterm.setup(opts)
 
   vim.keymap.set('n', '<A-t>', '<cmd>ToggleTerm direction=float<cr>', { desc = 'Toggle Terminal' })
-  vim.keymap.set('t', '<A-t>', '<C-\\><C-n> :ToggleTerm<CR>', { desc = 'Close Terminal' })
+
+  -- Se limpió el espacio extra y se unificó usando <cmd>
+  vim.keymap.set('t', '<A-t>', '<C-\\><C-n><cmd>ToggleTerm<CR>', { desc = 'Hide Terminal' })
   vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n><cmd>ToggleTerm<CR>', { desc = 'Hide Terminal' })
 end
 
