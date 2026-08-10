@@ -1,3 +1,4 @@
+--- Archivo: ./lua/plugins/editor/lspconfig.lua
 local M = {}
 
 M.plugin = function()
@@ -37,28 +38,23 @@ M.plugin = function()
     -- Install the binaries the servers + formatters need.
     mti.setup({
       ensure_installed = {
-        -- language servers
         'lua-language-server',
         'vtsls',
         'eslint-lsp',
         'tailwindcss-language-server',
         'css-lsp',
-        -- gopls is provided by mise (go: backend) so it lands on PATH as a
-        -- shim; mason can't install it because mise overrides GOBIN.
         'pyright',
         'ruff',
         'astro-language-server',
         'dockerfile-language-server',
         'docker-compose-language-service',
         'neocmakelsp',
-        'nil', -- Nix language server
-
-        -- formatters
+        'nil',
         'stylua',
         'prettier',
         'prettierd',
         'biome',
-        'alejandra', -- Nix flake formatter
+        'alejandra',
       },
     })
   end
@@ -70,8 +66,71 @@ M.plugin = function()
     return
   end
 
-  -- Servers to activate. Servers without a file in `lsp/` use
-  -- nvim-lspconfig's bundled defaults as-is.
+  -- ==========================================
+  -- CONFIGURACIÓN GLOBAL DE DIAGNÓSTICOS
+  -- ==========================================
+  vim.diagnostic.config({
+    virtual_text = false, -- LO APAGAMOS GLOBALMENTE AQUÍ
+    update_in_insert = false,
+    underline = true,
+    severity_sort = true,
+    float = {
+      border = 'rounded',
+      source = 'always',
+    },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = '■',
+        [vim.diagnostic.severity.WARN] = '■',
+        [vim.diagnostic.severity.INFO] = '■',
+        [vim.diagnostic.severity.HINT] = '■',
+      },
+    },
+  })
+
+  -- ==========================================
+  -- VIRTUAL TEXT SOLO EN LA LÍNEA ACTUAL
+  -- ==========================================
+  local cursor_diag_group = vim.api.nvim_create_augroup('CursorDiagnostics', { clear = true })
+  local cursor_diag_ns = vim.api.nvim_create_namespace('CursorVirtualText')
+
+  local function show_cursor_diagnostics()
+    local bufnr = vim.api.nvim_get_current_buf()
+
+    -- Ignorar si no es un buffer válido
+    if not vim.api.nvim_buf_is_valid(bufnr) then
+      return
+    end
+
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local line = cursor[1] - 1
+
+    -- Limpiamos el texto virtual que hayamos puesto antes en este buffer
+    vim.api.nvim_buf_clear_namespace(bufnr, cursor_diag_ns, 0, -1)
+
+    -- Obtenemos los diagnósticos de la línea actual
+    local diagnostics = vim.diagnostic.get(bufnr, { lnum = line })
+
+    if #diagnostics > 0 then
+      -- Forzamos a que se muestre el virtual_text solo para estos errores usando nuestro namespace
+      vim.diagnostic.show(cursor_diag_ns, bufnr, diagnostics, {
+        virtual_text = {
+          prefix = '●',
+          source = 'if_many',
+        },
+        signs = false, -- Ya están configurados globalmente, no duplicar
+        underline = false, -- Ya están configurados globalmente, no duplicar
+      })
+    end
+  end
+
+  -- Se ejecuta cada vez que mueves el cursor o un servidor LSP manda un diagnóstico nuevo
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'DiagnosticChanged' }, {
+    group = cursor_diag_group,
+    callback = show_cursor_diagnostics,
+  })
+
+  -- Servers to activate.
   local servers = {
     'lua_ls',
     'eslint',
@@ -85,25 +144,18 @@ M.plugin = function()
     'dockerls',
     'docker_compose_language_service',
     'neocmake',
-    'nil_ls', -- Activa el LSP para Nix
+    'nil_ls',
   }
 
-  -- Broadcast completion capabilities (blink.cmp) + ufo folding to every
-  -- server via the wildcard config, so individual `lsp/*.lua` files don't
-  -- have to repeat it.
   local ok_blink, blink = pcall(require, 'blink.cmp')
   local capabilities = ok_blink and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities()
 
   capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
 
   vim.lsp.config('*', { capabilities = capabilities })
-
   vim.lsp.enable(servers)
 
-  -- Buffer-local keymaps + behavior when a server attaches. Neovim 0.11
-  -- already provides defaults (K hover, grn rename, gra code action,
-  -- grr refs, gri impl, gO symbols, C-s signature, [d/]d diagnostics);
-  -- we only add definition/type navigation via fzf-lua and a few extras.
+  -- Buffer-local keymaps + behavior when a server attaches.
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
     callback = function(event)
@@ -131,8 +183,6 @@ M.plugin = function()
 
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-      -- Highlight references of the word under the cursor. Gated on
-      -- CursorHold (debounced by `updatetime`), so it is cheap.
       if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
         local hl = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
 
@@ -160,7 +210,6 @@ M.plugin = function()
         })
       end
 
-      -- Inlay hints are off by default; this toggles them per-buffer.
       if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
         map('<leader>th', function()
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
