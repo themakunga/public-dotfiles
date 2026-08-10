@@ -1,3 +1,4 @@
+--- Archivo: ./lua/plugins/ui/lualine.lua
 local M = {}
 
 M.plugin = function()
@@ -105,13 +106,18 @@ M.plugin = function()
   end
 
   ins_left({
-    -- mode component
-    function()
-      return ''
+    -- NUEVO: Usamos el componente 'mode' por defecto de lualine
+    'mode',
+    fmt = function(str)
+      -- str será "NORMAL", "INSERT", "TERMINAL", etc. Lo unimos con tu icono.
+      return ' ' .. str
     end,
     color = function()
-      -- Cheap per-redraw: a table lookup against the precomputed map.
-      return { bg = colors.bg, fg = mode_color[vim.fn.mode()] }
+      -- Extraemos el modo actual, y usamos un fallback a color azul
+      -- por si hay algún submodo raro que no esté en tu tabla
+      local current_mode = vim.fn.mode()
+      local m_color = mode_color[current_mode] or mode_color[current_mode:sub(1, 1)] or colors.blue
+      return { bg = colors.bg, fg = m_color, gui = 'bold' }
     end,
     padding = { right = 1 },
   })
