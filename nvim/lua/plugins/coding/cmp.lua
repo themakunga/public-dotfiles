@@ -15,15 +15,17 @@ M.plugin = function()
     return
   end
 
-  -- Comando para compilar/descargar el motor de Rust manualmente
-  vim.api.nvim_create_user_command('BlinkBuild', function()
-    vim.notify('Descargando/Construyendo binario de Blink.cmp...', vim.log.levels.INFO)
-    require('blink.cmp').build():pwait()
-    vim.notify('¡Blink.cmp compilado con éxito! Reinicia Neovim.', vim.log.levels.INFO)
-  end, { desc = 'Build blink.cmp native Rust fuzzy matcher' })
-
   local opts = {
-    keymap = { preset = 'default' },
+    -- ==========================================
+    -- NAVEGACIÓN Y SELECCIÓN (SIN ESPACIO)
+    -- ==========================================
+    keymap = {
+      preset = 'default',
+      ['<Tab>'] = { 'select_next', 'fallback' }, -- Bajar en la lista
+      ['<S-Tab>'] = { 'select_prev', 'fallback' }, -- Subir en la lista
+      ['<CR>'] = { 'accept', 'fallback' }, -- Enter para aceptar
+    },
+
     appearance = { nerd_font_variant = 'mono' },
     completion = {
       documentation = { auto_show = true, auto_show_delay_ms = 200 },
@@ -43,6 +45,24 @@ M.plugin = function()
   }
 
   blink.setup(opts)
+
+  -- ==========================================
+  -- AUTOMATIZACIÓN DE COMPILACIÓN (BUILD)
+  -- ==========================================
+  local lib_path = vim.fn.stdpath('data') .. '/site/pack/core/opt/blink.cmp/target/release/libblink_cmp_fuzzy.dylib'
+
+  if vim.fn.filereadable(lib_path) == 0 then
+    vim.schedule(function()
+      vim.notify(
+        '⚙️ Compilando el motor Rust de Blink.cmp por primera vez (esto tomará unos segundos)...',
+        vim.log.levels.INFO
+      )
+
+      require('blink.cmp').build():pwait()
+
+      vim.notify('✅ Blink.cmp compilado. ¡Autocompletado a máxima velocidad activado!', vim.log.levels.INFO)
+    end)
+  end
 end
 
 return M
