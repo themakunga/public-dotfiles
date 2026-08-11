@@ -88,6 +88,37 @@ M.init = function()
   -- control add
   map('n', '<leader>n+', '<C-a>', { desc = 'Increase Number under cursor' })
   map('n', '<leader>n-', '<C-x>', { desc = 'Decreadse numer under cursor' })
+  map('n', '<leader>tb', function()
+    local word = vim.fn.expand('<cword>')
+
+    -- Diccionario de conversiones (respeta mayúsculas y minúsculas)
+    local toggle_map = {
+      ['true'] = 'false',
+      ['false'] = 'true',
+      ['True'] = 'False',
+      ['False'] = 'True',
+      ['TRUE'] = 'FALSE',
+      ['FALSE'] = 'TRUE',
+      ['yes'] = 'no',
+      ['Yes'] = 'No',
+      ['YES'] = 'NO',
+      ['no'] = 'yes',
+      ['No'] = 'Yes',
+      ['NO'] = 'YES',
+      ['0'] = '1',
+      ['1'] = '0',
+    }
+
+    local new_word = toggle_map[word]
+
+    if new_word then
+      -- ciw borra la palabra bajo el cursor e inserta la nueva.
+      -- \27 simula presionar la tecla ESC para volver al modo normal automáticamente.
+      vim.cmd('normal! ciw' .. new_word .. '\27')
+    else
+      vim.notify('No hay un true/false bajo el cursor', vim.log.levels.WARN)
+    end
+  end, { desc = 'Toggle True/False' })
 end
 
 return M
