@@ -14,7 +14,6 @@ M.plugin = function()
   if not ok_lazydev then
     vim.notify('[CHECK REQUIRE FAILED] lazydev ' .. debug.getinfo(2).source, vim.log.levels.WARN)
   else
-    -- Lua LSP for editing this config: completion, annotations, signatures.
     lazydev.setup({
       library = {
         { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
@@ -35,7 +34,6 @@ M.plugin = function()
   if not ok_mti then
     vim.notify('[CHECK REQUIRE FAILED] mason-tool-installer ' .. debug.getinfo(2).source, vim.log.levels.WARN)
   else
-    -- Install the binaries the servers + formatters need.
     mti.setup({
       ensure_installed = {
         'lua-language-server',
@@ -70,7 +68,7 @@ M.plugin = function()
   -- CONFIGURACIÓN GLOBAL DE DIAGNÓSTICOS
   -- ==========================================
   vim.diagnostic.config({
-    virtual_text = false, -- LO APAGAMOS GLOBALMENTE AQUÍ
+    virtual_text = false, -- Apagado globalmente
     update_in_insert = false,
     underline = true,
     severity_sort = true,
@@ -97,7 +95,6 @@ M.plugin = function()
   local function show_cursor_diagnostics()
     local bufnr = vim.api.nvim_get_current_buf()
 
-    -- Ignorar si no es un buffer válido
     if not vim.api.nvim_buf_is_valid(bufnr) then
       return
     end
@@ -105,21 +102,20 @@ M.plugin = function()
     local cursor = vim.api.nvim_win_get_cursor(0)
     local line = cursor[1] - 1
 
-    -- Limpiamos el texto virtual que hayamos puesto antes en este buffer
-    vim.api.nvim_buf_clear_namespace(bufnr, cursor_diag_ns, 0, -1)
+    -- SOLUCIÓN: Usar la API oficial de diagnósticos para ocultarlos
+    vim.diagnostic.hide(cursor_diag_ns, bufnr)
 
-    -- Obtenemos los diagnósticos de la línea actual
     local diagnostics = vim.diagnostic.get(bufnr, { lnum = line })
 
     if #diagnostics > 0 then
-      -- Forzamos a que se muestre el virtual_text solo para estos errores usando nuestro namespace
+      -- Dibuja el virtual text solo si hay errores en esta línea exacta
       vim.diagnostic.show(cursor_diag_ns, bufnr, diagnostics, {
         virtual_text = {
           prefix = '●',
           source = 'if_many',
         },
-        signs = false, -- Ya están configurados globalmente, no duplicar
-        underline = false, -- Ya están configurados globalmente, no duplicar
+        signs = false,
+        underline = false,
       })
     end
   end
