@@ -86,8 +86,10 @@ M.init = function()
   map('n', '<leader>so', ':source<cr>', { desc = 'Source current file' })
 
   -- control add
-  map('n', '<leader>n+', '<C-a>', { desc = 'Increase Number under cursor' })
-  map('n', '<leader>n-', '<C-x>', { desc = 'Decreadse numer under cursor' })
+  map('n', '<leader>s', '<C-a>', { desc = 'Increase Number under cursor' })
+  map('n', '<leader>+', '<C-a>', { desc = 'Increase Number under cursor' })
+  map('n', '<leader>m', '<C-x>', { desc = 'Decreadse numer under cursor' })
+  map('n', '<leader>-', '<C-x>', { desc = 'Decreadse numer under cursor' })
   map('n', '<leader>tb', function()
     local word = vim.fn.expand('<cword>')
 
