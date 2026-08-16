@@ -133,6 +133,22 @@ M.plugin = function()
 
       offsets = { { filetype = 'NvimTree', text = '', padding = 1 } },
       highlights = highlights,
+
+      custom_areas = {
+        right = function()
+          local result = {}
+          local has_libre, libre = pcall(require, 'libreview')
+          if has_libre and libre.widget then
+            table.insert(result, {
+              text = libre.widget(),
+              fg = '#7dcfff', -- Color Cian (ajustable a tu paleta)
+              bg = 'NONE', -- Fondo transparente o alineado con tu TabLine
+              bold = true,
+            })
+          end
+          return result
+        end,
+      },
     },
   }
 
