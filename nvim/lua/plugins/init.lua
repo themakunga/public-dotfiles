@@ -28,6 +28,7 @@ M.lazy_groups = {
     'ui.bafa',
     'ui.colorizer',
     'ui.which-key',
+    'coding.codecompanion',
   },
 
   -- Antes de leer un archivo (LSP, Git, Herramientas pesadas)
