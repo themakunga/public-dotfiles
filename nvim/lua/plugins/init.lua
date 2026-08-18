@@ -67,6 +67,10 @@ M.lazy_groups = {
     'markdown.markdown-toc',
     'markdown.mardownpdf',
   },
+
+  swift = {
+    'coding.ios-dev',
+  },
 }
 
 local function load_plugin(module_name)

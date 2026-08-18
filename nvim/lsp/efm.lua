@@ -12,6 +12,17 @@ return {
           formatStdin = false,
         },
       },
+      swift = {
+        {
+          lintCommand = 'swiftlint lint --quiet --use-script-input-files',
+          lintStdin = true,
+          lintFormats = { 
+            '%f:%l:%c: %trror: %m', 
+            '%f:%l:%c: %tarning: %m',
+            '%f:%l: %trror: %m',
+            '%f:%l: %tarning: %m'
+          },
+        }
     },
   },
 }
