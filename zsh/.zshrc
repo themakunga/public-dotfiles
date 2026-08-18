@@ -105,3 +105,6 @@ clear
 if command -v fastfetch &> /dev/null; then
   fastfetch
 fi
+
+# Added by codeen install
+export PATH="/Users/nicolas/.local/bin/codeen:$PATH"
