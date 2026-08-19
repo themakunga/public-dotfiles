@@ -1,23 +1,25 @@
 local M = {}
 
-M.init = function()
-  local opt = vim.opt
 
-  vim.g.loaded_netrw = 1
-  vim.g.loaded_netrwPlugin = 1
-  vim.g.have_nerd_font = true
-  vim.g.loaded_node_provider = 0
-  vim.g.loaded_perl_provider = 0
-  vim.g.loaded_python3_provider = 0
-  vim.g.loaded_ruby_provider = 0
+M.globals = {
+  loaded_netrw = 1,
+  loaded_netrwPlugin = 1,
+  have_nerd_font = true,
+  loaded_node_provider = 0,
+  loaded_perl_provider = 0,
+  loaded_python3_provider = 0,
+  loaded_ruby_provider = 0,
+}
 
-  vim.opt.shortmess:append('c')
-  vim.opt.iskeyword:append('-')
-  vim.opt.formatoptions:remove({ 'c', 'r', 'o' })
-  vim.opt.runtimepath:remove('/usr/share/vim/vimfiles')
+M.opt_actions = {
+  shortmess = { append = 'c' },
+  iskeyword = { append = '-' },
+  formatoptions = { remove = { 'c', 'r', 'o' } },
+  runtimepath = { remove = '/usr/share/vim/vimfiles' },
+}
 
-  local options = {
-    backup = false,
+M.options = {
+  backup = false,
     clipboard = 'unnamedplus',
     completeopt = { 'menuone', 'noselect', 'popup', 'fuzzy' },
     conceallevel = 0,
@@ -55,9 +57,31 @@ M.init = function()
     writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
   }
 
-  for key, value in pairs(options) do
+M.load_globals = function()
+  for key, value in pairs(M.globals) do
+    vim.g[key] = value
+  end
+end
+
+M.load_opt_actons = function()
+  for opt, actions in pairs(M.opt_actions) do
+    for action, value in pairs(actions) do
+      vim.opt[opt][action](vim.opt[opt], value)
+    end
+  end
+end
+
+M.load_options = function()
+  for key, value in pairs(M.options) do
     opt[key] = value
   end
+end
+
+
+M.load = function()
+  M.load_globals()
+  M.load_opt_actions()
+  M.load_options()
 end
 
 return M
