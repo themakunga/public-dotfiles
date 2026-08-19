@@ -86,6 +86,10 @@
       "rev": "a04ad0dbc725134edbee3a5eea29290976695357",
       "src": "https://github.com/kdheepak/lazygit.nvim"
     },
+    "libreview": {
+      "rev": "41e7c29daf4c89b9282b907d33e85858bd45e72a",
+      "src": "https://github.com/themakunga/libre-view.nvim"
+    },
     "log-highlight.nvim": {
       "rev": "b2e00cfd41ca94338265a595f3f3f423d9f9322e",
       "src": "https://github.com/fei6409/log-highlight.nvim"
