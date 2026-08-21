@@ -99,6 +99,11 @@ M.plugin = function()
         icon = { icon = '󰙨', color = 'purple' },
       },
       {
+        '<leader>i',
+        group = 'iOS / Swift',
+        icon = { icon = '', color = 'cyan' },
+      },
+      {
         'gz',
         group = 'Surround',
         mode = { 'n', 'v' },
