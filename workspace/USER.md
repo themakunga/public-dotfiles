@@ -10,6 +10,7 @@ user:
   nombre: Nicolas Villarroel
   username: nicolas
   github: themakunga          # cuenta desde 2010 — 75 repos, 24 gists
+  telegram: "@TheMakunga"
   web: nicolasvillarroel.cl
   ubicacion: Santiago, Chile
   shell: bash
