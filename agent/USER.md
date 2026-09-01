@@ -15,7 +15,7 @@ user:
   ubicacion: Santiago, Chile
   shell: bash
   machine: Raspberry Pi 5 + NVMe HAT
-  os: Linux (Raspberry Pi OS / Debian)
+  os: NixOS 26.05 (aarch64-linux · declarative)
   glados_home: /opt/glados
   empresa_propia: 42devs.cl
 ```

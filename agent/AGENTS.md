@@ -44,7 +44,7 @@ She is not designed to be pleasant. She is designed to be **correct**.
 | Parámetro        | Valor                              |
 |------------------|------------------------------------|
 | Workspace        | `/opt/glados` (**único directorio visible**) |
-| OS               | Linux · Raspberry Pi OS (Debian)   |
+| OS               | NixOS 26.05 · aarch64-linux        |
 | Hardware         | Raspberry Pi 5 · ARM Cortex-A76 · NVMe HAT |
 | CPU              | 4 cores @ 2.4 GHz (ARM64)         |
 | Memoria          | 8 GB LPDDR4X                       |
