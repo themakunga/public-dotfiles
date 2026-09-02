@@ -13,7 +13,7 @@
       "src": "https://github.com/m4xshen/autoclose.nvim"
     },
     "avante.nvim": {
-      "rev": "8a5a5c16a3c693bf7d9a8da1ee78269e8728879b",
+      "rev": "49017adb6f17346cc58f9c62f783ee693fe9d488",
       "src": "https://github.com/yetone/avante.nvim"
     },
     "bafa": {
@@ -32,6 +32,10 @@
     "bufferline.nvim": {
       "rev": "655133c",
       "src": "https://github.com/akinsho/bufferline.nvim"
+    },
+    "codecompanion.nvim": {
+      "rev": "9a8e8602a7c72d10a827880fbb6fcd8bfa3830c7",
+      "src": "https://github.com/olimorris/codecompanion.nvim"
     },
     "conform.nvim": {
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
@@ -86,6 +90,10 @@
       "rev": "a04ad0dbc725134edbee3a5eea29290976695357",
       "src": "https://github.com/kdheepak/lazygit.nvim"
     },
+    "libreview": {
+      "rev": "8260d10d2f3030fa5900dc8580982612c192e0a0",
+      "src": "https://github.com/themakunga/libre-view.nvim"
+    },
     "log-highlight.nvim": {
       "rev": "b2e00cfd41ca94338265a595f3f3f423d9f9322e",
       "src": "https://github.com/fei6409/log-highlight.nvim"
@@ -99,7 +107,7 @@
       "src": "https://github.com/hedyhli/markdown-toc.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "67029ccdac1ef8941e13b826417bc0ffac24cc86",
+      "rev": "9d28935aa95fa6c1dc7c4d6747f101a72a8a4bec",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-nvim-dap.nvim": {
@@ -127,7 +135,7 @@
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "neotest": {
-      "rev": "1c529a1ef9c82e8131e872368415cecc2bb86ea2",
+      "rev": "27bf921498043f7ecd821d6db68d05de244bbd02",
       "src": "https://github.com/nvim-neotest/neotest"
     },
     "neotest-golang": {

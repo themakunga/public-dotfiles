@@ -1,19 +1,6 @@
 local M = {}
 
-M.plugin = function()
-  vim.pack.add({
-    { src = 'https://github.com/akinsho/bufferline.nvim' },
-  })
-
-  ---@module 'bufferline'
-  local ok, bufferline = pcall(require, 'bufferline')
-
-  if not ok then
-    vim.notify('[CHECK REQUIRE FAILED] bufferline ' .. debug.getinfo(2).source, vim.log.levels.WARN)
-    return
-  end
-
-  local highlights = {
+local highlights = {
     fill = {
       guifg = { attribute = 'fg', highlight = '#ff0000' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
@@ -22,17 +9,10 @@ M.plugin = function()
       guifg = { attribute = 'fg', highlight = 'TabLine' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
     },
-
-    -- buffer_selected = {
-    --   guifg = {attribute='fg',highlight='#ff0000'},
-    --   guibg = {attribute='bg',highlight='#0000ff'},
-    --   gui = 'none'
-    --   },
     buffer_visible = {
       guifg = { attribute = 'fg', highlight = 'TabLine' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
     },
-
     close_button = {
       guifg = { attribute = 'fg', highlight = 'TabLine' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
@@ -41,11 +21,6 @@ M.plugin = function()
       guifg = { attribute = 'fg', highlight = 'TabLine' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
     },
-    -- close_button_selected = {
-    --   guifg = {attribute='fg',highlight='TabLineSel'},
-    --   guibg ={attribute='bg',highlight='TabLineSel'}
-    --   },
-
     tab_selected = {
       guifg = { attribute = 'fg', highlight = 'Normal' },
       guibg = { attribute = 'bg', highlight = 'Normal' },
@@ -55,11 +30,9 @@ M.plugin = function()
       guibg = { attribute = 'bg', highlight = 'TabLine' },
     },
     tab_close = {
-      -- guifg = {attribute='fg',highlight='LspDiagnosticsDefaultError'},
       guifg = { attribute = 'fg', highlight = 'TabLineSel' },
       guibg = { attribute = 'bg', highlight = 'Normal' },
     },
-
     duplicate_selected = {
       guifg = { attribute = 'fg', highlight = 'TabLineSel' },
       guibg = { attribute = 'bg', highlight = 'TabLineSel' },
@@ -75,7 +48,6 @@ M.plugin = function()
       guibg = { attribute = 'bg', highlight = 'TabLine' },
       gui = 'italic',
     },
-
     modified = {
       guifg = { attribute = 'fg', highlight = 'TabLine' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
@@ -88,7 +60,6 @@ M.plugin = function()
       guifg = { attribute = 'fg', highlight = 'TabLine' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
     },
-
     separator = {
       guifg = { attribute = 'bg', highlight = 'TabLine' },
       guibg = { attribute = 'bg', highlight = 'TabLine' },
@@ -97,18 +68,22 @@ M.plugin = function()
       guifg = { attribute = 'bg', highlight = 'Normal' },
       guibg = { attribute = 'bg', highlight = 'Normal' },
     },
-    -- separator_visible = {
-    --   guifg = {attribute='bg',highlight='TabLine'},
-    --   guibg = {attribute='bg',highlight='TabLine'}
-    --   },
     indicator_selected = {
       guifg = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultHint' },
       guibg = { attribute = 'bg', highlight = 'Normal' },
     },
   }
 
-  --@type bufferline.SetupOps
-  local opts = {
+M.plugin = function()
+    vim.pack.add({
+    { src = 'https://github.com/akinsho/bufferline.nvim' },
+  })
+
+  if not Checker.check("bufferline") then
+    return
+  end
+
+    local opts = {
     options = {
       close_command = function(n)
         require('snacks').bufdelete(n)
@@ -133,47 +108,36 @@ M.plugin = function()
 
       offsets = { { filetype = 'NvimTree', text = '', padding = 1 } },
       highlights = highlights,
-
-      custom_areas = {
-        right = function()
-          local result = {}
-          local has_libre, libre = pcall(require, 'libreview')
-          if has_libre and libre.widget then
-            table.insert(result, {
-              text = libre.widget(),
-              fg = '#7dcfff', -- Color Cian (ajustable a tu paleta)
-              bg = 'NONE', -- Fondo transparente o alineado con tu TabLine
-              bold = true,
-            })
-          end
-          return result
-        end,
-      },
     },
   }
 
-  bufferline.setup(opts)
+  require("bufferline").setup(opts)
 
-  vim.api.nvim_create_autocmd({ 'BufAdd', 'BufDelete' }, {
+  CMD.aucmd("bufferline-conf", {
+    event = {'BufAdd', 'BufDelete' },
     callback = function()
-      vim.schedule(function()
+            vim.schedule(function()
         pcall(bufferline)
       end)
-    end,
+    end
   })
 
-  vim.keymap.set('n', '<leader>bp', '<Cmd>BufferLineTogglePin<CR>', { desc = 'Toggle Pin' })
-  vim.keymap.set('n', '<leader>bP', '<Cmd>BufferLineGroupClose ungrouped<CR>', { desc = 'Delete Non-Pinned Buffers' })
-  vim.keymap.set('n', '<leader>br', '<Cmd>BufferLineCloseRight<CR>', { desc = 'Delete Buffers to the Right' })
-  vim.keymap.set('n', '<leader>bl', '<Cmd>BufferLineCloseLeft<CR>', { desc = 'Delete Buffers to the Left' })
-  vim.keymap.set('n', '<S-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev Buffer' })
-  vim.keymap.set('n', '<S-l>', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next Buffer' })
-  vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev Buffer' })
-  vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next Buffer' })
-  vim.keymap.set('n', '[B', '<cmd>BufferLineMovePrev<cr>', { desc = 'Move buffer prev' })
-  vim.keymap.set('n', ']B', '<cmd>BufferLineMoveNext<cr>', { desc = 'Move buffer next' })
+  KM.bulk_map({
+    {motion = "<leader>dp", cmd = ":BufferLineTogglePin<CR>", opts = { desc = 'Toggle Pin' }},
+    {motion = "<leader>bP", cmd = ":BufferLineGroupClose ungrouped<CR>", opts = {desc = 'Delete Non-Pinned Buffers'}},
+    {motion = "<leader>br", cmd = "<Cmd>BufferLineCloseRight<CR>", opts = {desc = 'Delete Buffers to the Right'}},
+    {motion = "<leader>bl", cmd = "<Cmd>BufferLineCloseLeft<CR>", opts = { desc = "Delete Buffers to the Left"}},
+    {motion = "<S-h>", cmd = "<cmd>BufferLineCyclePrev<cr>", opts = { desc = "Prev Buffer" }},
+    {motion = "<S-l>", cmd = "<cmd>BufferLineCycleNext<cr>", opts = { desc = "Next Buffer"}},
+    {motion = "[b", cmd = "<cmd>BufferLineCyclePrev<cr>", opts = { desc = "Prev Buffer"}},
+    {motion = "]b", cmd = "<cmd>BufferLineCycleNext<cr>", opts = {desc = "Next Buffer"}},
+    {motion = "[B", cmd = "<cmd>BufferLineMovePrev<cr>", opts = {desc = "Move buffer prev"}},
+    {motion = "]B", cmd = "<cmd>BufferLineMoveNext<cr>", opts = {desc = "Move buffer next"}},
+  })
 
-  -- vim.keymap.set('n', '<leader>ee', '<cmd>bufferline<cr>', {desc = "Open parent directory"})
 end
 
+
+
 return M
+

@@ -21,7 +21,7 @@ Caution levels:
 🟡 **CAUTION**  
 Ejecuta scripts bash y comandos del sistema.
 
-- **Runtime:** Linux · Raspberry Pi OS (Debian) · `bash` por defecto
+- **Runtime:** NixOS 26.05 · aarch64-linux · `bash` por defecto
 - **CPU:** 4 cores ARM Cortex-A76 @ 2.4 GHz (ARM64)
 - **Sin aceleración GPU** — no hay Metal ni CUDA en RPi 5
 - **Timeout:** 300s máximo por invocación
