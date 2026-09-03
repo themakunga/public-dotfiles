@@ -11,6 +11,7 @@ Loader('commands.init')
 local plugins = {
   'snacks_notifier',
   'colorscheme',
+  'lualine',
   'bufferline',
   'alpha',
   'fzf',
@@ -30,6 +31,8 @@ local plugins = {
   'toggle-term',
   'nvim-treesitter',
   'gitblame',
+  'lazygit',
+  'octo',
   'codecompanion',
   'claude-code',
 }

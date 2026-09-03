@@ -19,7 +19,12 @@ M.plugin = function()
   }
 
   require('tokyonight').setup(opts)
-  vim.cmd('colorscheme tokyonight')
+  vim.schedule(function()
+    local status_ok, _ = pcall(vim.cmd, 'colorscheme tokyonight')
+    if not status_ok then
+      vim.notify('Fallo al aplicar el colorscheme tokyonight', vim.log.levels.ERROR)
+    end
+  end)
 end
 
 return M

@@ -117,7 +117,7 @@ M.plugin = function()
     event = {'BufAdd', 'BufDelete' },
     callback = function()
             vim.schedule(function()
-        pcall(bufferline)
+        pcall(require("bufferline").setup, opts)
       end)
     end
   })

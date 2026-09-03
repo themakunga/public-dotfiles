@@ -42,6 +42,23 @@ M.plugin = function()
         })
       end,
     },
+    {
+      event = 'TermOpen',
+      pattern = 'term://*claude*',
+      callback = function(event)
+        KM.bulk_map({
+          -- Salir del modo terminal → normal mode
+          { mode = 't', motion = '<Esc>', cmd = '<C-\\><C-n>', opts = { desc = 'Salir modo terminal', buffer = event.buf, silent = true } },
+          -- Navegar ventanas sin cerrar Claude (desde terminal mode)
+          { mode = 't', motion = '<C-w>h', cmd = '<C-\\><C-n><C-w>h', opts = { desc = 'Ventana izquierda', buffer = event.buf, silent = true } },
+          { mode = 't', motion = '<C-w>j', cmd = '<C-\\><C-n><C-w>j', opts = { desc = 'Ventana abajo', buffer = event.buf, silent = true } },
+          { mode = 't', motion = '<C-w>k', cmd = '<C-\\><C-n><C-w>k', opts = { desc = 'Ventana arriba', buffer = event.buf, silent = true } },
+          { mode = 't', motion = '<C-w>l', cmd = '<C-\\><C-n><C-w>l', opts = { desc = 'Ventana derecha', buffer = event.buf, silent = true } },
+          -- Cerrar el panel desde normal mode
+          { mode = 'n', motion = 'q', cmd = '<cmd>close<cr>', opts = { desc = 'Cerrar Claude', buffer = event.buf, silent = true } },
+        })
+      end,
+    },
   })
 end
 
