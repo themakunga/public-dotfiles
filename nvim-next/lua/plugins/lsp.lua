@@ -74,7 +74,7 @@ local diagnostic_config = {
   },
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = '!!!',
+      [vim.diagnostic.severity.ERROR] = '!!',
       [vim.diagnostic.severity.WARN] = '!!',
       [vim.diagnostic.severity.INFO] = '?',
       [vim.diagnostic.severity.HINT] = '!',
@@ -118,7 +118,7 @@ local lsp_autocompletion_fn = function(args)
 end
 
 local lsp_highlight_fn = function(event)
-  vim.lsp.buf.clear.references()
+  vim.lsp.buf.clear_references()
   CMD.aucmd('lsp-highlight', {
     {
       buffer = event.buf,
