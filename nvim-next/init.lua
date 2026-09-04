@@ -30,6 +30,8 @@ local plugins = {
   'toggle-term',
   'nvim-treesitter',
   'gitblame',
+  'lazygit',
+  'gitsigns',
   'codecompanion',
   'claude-code',
 }
