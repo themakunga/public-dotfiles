@@ -30,6 +30,10 @@ local plugins = {
   'toggle-term',
   'nvim-treesitter',
   'gitblame',
+  'lazygit',
+  'gitsigns',
+  'octo',
+  'gitlab',
   'codecompanion',
   'claude-code',
 }
@@ -41,6 +45,10 @@ vim.pack.add({
   { src = 'https://github.com/echasnovski/mini.icons' },
   { src = 'https://github.com/MunifTanjim/nui.nvim' },
   { src = 'https://github.com/folke/snacks.nvim' },
+  { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
+  { src = 'https://github.com/stevearc/dressing.nvim' },
+  { src = 'https://github.com/dlyongemallo/diffview-plus.nvim' },
+  { src = 'https://github.com/MunifTanjim/nui.nvim' },
 })
 
 for _, plugin in ipairs(plugins) do
