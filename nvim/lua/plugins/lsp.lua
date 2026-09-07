@@ -1,5 +1,17 @@
 local M = {}
 
+local kind_icons = {
+  Text          = '󰉿', Method      = '󰆧', Function    = '󰊕',
+  Constructor   = '',  Field       = '󰜢', Variable    = '󰀫',
+  Class         = '󰠱', Interface   = '',  Module      = '',
+  Property      = '󰜢', Unit        = '󰑭', Value       = '󰎠',
+  Enum          = '',  Keyword     = '󰌋', Snippet     = '',
+  Color         = '󰏘', File        = '󰈙', Reference   = '󰈇',
+  Folder        = '󰉋', EnumMember  = '',  Constant    = '󰏿',
+  Struct        = '󰙅', Event       = '',  Operator    = '󰆕',
+  TypeParameter = '',
+}
+
 local ensure_installed = {
   'ansiblels',
   'bash-debug-adapter',
@@ -65,7 +77,7 @@ local opts = {
 local diagnostic_config = {
   virtual_text = false,
   update_in_insert = false,
-  userline = true,
+  underline = true,
   severity_sort = true,
   float = {
     border = 'rounded',
@@ -111,13 +123,48 @@ end
 local lsp_autocompletion_fn = function(args)
   local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-  if client:supports_method('textDocument/completion') then
-    vim.lsp.completion.enable(true, client.id, args.buf)
+  if not client:supports_method('textDocument/completion') then
+    return
   end
+
+  vim.lsp.completion.enable(true, client.id, args.buf, {
+    autotrigger = true,
+    convert = function(item)
+      local kind_num  = item.kind or 1
+      local kind_name = vim.lsp.protocol.CompletionItemKind[kind_num] or 'Text'
+      local icon      = kind_icons[kind_name] or '?'
+      return {
+        abbr = item.label,
+        kind = icon .. ' ' .. kind_name,
+        menu = item.detail and ('[' .. item.detail .. ']') or '',
+      }
+    end,
+  })
+
+  -- Keymaps buffer-locales para la completion
+  local buf = args.buf
+
+  vim.keymap.set('i', '<CR>', function()
+    return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>'
+  end, { buffer = buf, expr = true, desc = 'Completion: confirmar' })
+
+  vim.keymap.set('i', '<Tab>', function()
+    return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
+  end, { buffer = buf, expr = true, desc = 'Completion: siguiente' })
+
+  vim.keymap.set('i', '<S-Tab>', function()
+    return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
+  end, { buffer = buf, expr = true, desc = 'Completion: anterior' })
+
+  vim.keymap.set('i', '<C-Space>', function()
+    vim.lsp.completion.trigger()
+  end, { buffer = buf, desc = 'Completion: trigger manual' })
+
+  vim.keymap.set('i', '<C-e>', '<C-e>', { buffer = buf, desc = 'Completion: cerrar popup' })
 end
 
 local lsp_highlight_fn = function(event)
-  vim.lsp.buf.clear.references()
+  vim.lsp.buf.clear_references()
   CMD.aucmd('lsp-highlight', {
     {
       buffer = event.buf,
