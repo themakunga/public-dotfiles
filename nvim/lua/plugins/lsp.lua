@@ -35,7 +35,6 @@ local ensure_installed = {
   'puppet-editor-services',
   'pylsp',
   'rust_analyzer',
-  'snyk_ls',
   'somesass_ls',
   'sqlls',
   'stylua',
@@ -220,6 +219,7 @@ M.plugin = function()
   require('mason').setup(mason_opts)
   require('mason-lspconfig').setup()
   require('mason-tool-installer').setup(opts)
+  require('plugins.mason.updates').setup()
 
   vim.diagnostic.config(diagnostic_config)
 

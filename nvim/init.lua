@@ -34,6 +34,7 @@ local plugins = {
   'gitsigns',
   'octo',
   'gitlab',
+  'which-key',
   'codecompanion',
   'claude-code',
   'codex',
