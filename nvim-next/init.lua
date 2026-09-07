@@ -11,6 +11,7 @@ Loader('commands.init')
 local plugins = {
   'snacks_notifier',
   'colorscheme',
+  'lualine',
   'bufferline',
   'alpha',
   'fzf',
