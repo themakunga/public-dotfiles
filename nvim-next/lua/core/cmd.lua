@@ -1,15 +1,37 @@
 local M = {}
 
 local function create_augroup(name, autocmds)
-  local grp = vim.api.nvim_create_augroup(name, { clear = true })
+  if not name or name == '' then
+    Log.error('Autocmd group name cannot be empty')
+    return
+  end
 
-  for _, cmd in ipairs(autocmds) do
+  local group = vim.api.nvim_create_augroup(name, {
+    clear = true,
+  })
+
+  for _, autocmd in ipairs(autocmds) do
+    local cmd = vim.deepcopy(autocmd)
+
     local event = cmd.event or cmd[1]
+
     cmd.event = nil
     cmd[1] = nil
 
-    cmd.group = grp
-    if not cmd.buffer and not cmd.buf then
+    if not event then
+      Log.error('Autocmd event cannot be empty: ' .. name)
+      return
+    end
+
+    cmd.group = group
+
+    -- Allow `buf` as an alias if you want to use it in your config.
+    if cmd.buf then
+      cmd.buffer = cmd.buf
+      cmd.buf = nil
+    end
+
+    if not cmd.buffer then
       cmd.pattern = cmd.pattern or '*'
     end
 
@@ -18,7 +40,7 @@ local function create_augroup(name, autocmds)
 end
 
 local function create_user_command(name, fn, opts)
-  if name == '' then
+  if not name or name == '' then
     Log.error('The user command must be named')
     return
   end
@@ -28,25 +50,20 @@ local function create_user_command(name, fn, opts)
     return
   end
 
-  opts = opts or {}
-
-  vim.api.nvim_create_user_command(name, fn, opts)
+  vim.api.nvim_create_user_command(name, fn, opts or {})
 end
-
 
 local function create_auto_namespace(name)
-  if name == "" then
-    Log.error("namespace coult not be empty")
+  if not name or name == '' then
+    Log.error('Namespace cannot be empty')
+    return
   end
 
-  vim.api.nvim_create_namespace(name)
+  return vim.api.nvim_create_namespace(name)
 end
 
-
 M.aucmd = create_augroup
-
 M.usrcmd = create_user_command
-
 M.auns = create_auto_namespace
 
 return M
