@@ -8,31 +8,45 @@ local function get_outdated(callback)
     return
   end
 
-  local packages = registry.get_all_installed_packages()
-  local outdated = {}
-  local pending = #packages
+  local function query()
+    if type(registry.get_all_installed_packages) ~= 'function' then
+      callback({})
+      return
+    end
 
-  if pending == 0 then
-    callback(outdated)
-    return
+    local packages = registry.get_all_installed_packages()
+    local outdated = {}
+    local pending = #packages
+
+    if pending == 0 then
+      callback(outdated)
+      return
+    end
+
+    for _, pkg in ipairs(packages) do
+      pkg:check_new_version(function(success)
+        if success then
+          table.insert(outdated, pkg)
+        end
+
+        pending = pending - 1
+
+        if pending == 0 then
+          table.sort(outdated, function(a, b)
+            return a.name < b.name
+          end)
+
+          callback(outdated)
+        end
+      end)
+    end
   end
 
-  for _, pkg in ipairs(packages) do
-    pkg:check_new_version(function(success)
-      if success then
-        table.insert(outdated, pkg)
-      end
-
-      pending = pending - 1
-
-      if pending == 0 then
-        table.sort(outdated, function(a, b)
-          return a.name < b.name
-        end)
-
-        callback(outdated)
-      end
-    end)
+  -- Mason v2: el registry es lazy, hay que hacer refresh antes de consultarlo
+  if type(registry.refresh) == 'function' then
+    registry.refresh(query)
+  else
+    query()
   end
 end
 
