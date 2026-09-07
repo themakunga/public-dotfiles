@@ -33,6 +33,10 @@
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "diffview-plus.nvim": {
+      "rev": "43e60bca414e4991ed10118e59f809fb03bbeddd",
+      "src": "https://github.com/dlyongemallo/diffview-plus.nvim"
+    },
     "dressing.nvim": {
       "rev": "2d7c2db2507fa3c4956142ee607431ddb2828639",
       "src": "https://github.com/stevearc/dressing.nvim"
@@ -49,6 +53,10 @@
       "rev": "5c536e2d4134d064aa3f41575280bc8a2a0e03d7",
       "src": "https://github.com/f-person/git-blame.nvim"
     },
+    "gitlab.nvim": {
+      "rev": "f05aee37c6700f6b0e7ffc406f29576421b1ce10",
+      "src": "https://github.com/harrisoncramer/gitlab.nvim"
+    },
     "gitsigns.nvim": {
       "rev": "5be654f2232c10ddcad19c1607a67b6b4b78fc29",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
@@ -60,6 +68,10 @@
     "lazygit.nvim": {
       "rev": "a04ad0dbc725134edbee3a5eea29290976695357",
       "src": "https://github.com/kdheepak/lazygit.nvim"
+    },
+    "markview.nvim": {
+      "rev": "5d9fc2aa6dd1c2fbdc7a68bc79b300e9967b21ff",
+      "src": "https://github.com/OXY2DEV/markview.nvim"
     },
     "mason-lspconfig.nvim": {
       "rev": "9d28935aa95fa6c1dc7c4d6747f101a72a8a4bec",
@@ -156,6 +168,14 @@
     "tokyonight.nvim": {
       "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
       "src": "https://github.com/folke/tokyonight.nvim"
+    },
+    "treesitter-parser-registry": {
+      "rev": "6eb15358bb9fc88f0d3401d8538d56652e9bdf3c",
+      "src": "https://github.com/neovim-treesitter/treesitter-parser-registry"
+    },
+    "trouble.nvim": {
+      "rev": "bd67efe408d4816e25e8491cc5ad4088e708a69a",
+      "src": "https://github.com/folke/trouble.nvim"
     }
   }
 }
