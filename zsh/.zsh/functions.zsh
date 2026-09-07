@@ -42,6 +42,44 @@ vv() {
   NVIM_APPNAME="$(basename "$config")" nvim "$@"
 }
 
+# ===== AI → MARKDOWN (glow) =====
+
+# claude-md <prompt>  — ejecuta claude -p y renderiza con glow
+claude-md() {
+  if [[ $# -eq 0 ]]; then
+    echo "Uso: claude-md <prompt>"
+    return 1
+  fi
+  claude -p "$*" | glow -
+}
+
+# codex-md <prompt>  — ejecuta codex en modo no interactivo y renderiza con glow
+# (descomenta el flag correcto cuando codex esté instalado)
+codex-md() {
+  if [[ $# -eq 0 ]]; then
+    echo "Uso: codex-md <prompt>"
+    return 1
+  fi
+  # codex exec "$*" | glow -   # ajustá el subcomando si codex lo requiere
+  codex "$*" | glow -
+}
+
+# mdv [archivo|texto]  — renderiza un archivo .md o texto plano con glow
+# (no usar 'md' porque es alias de 'mkdir -p')
+mdv() {
+  if [[ -p /dev/stdin ]]; then
+    # Hay pipe entrante: renderizar stdin
+    glow -
+  elif [[ -f "$1" ]]; then
+    glow "$1"
+  elif [[ $# -gt 0 ]]; then
+    echo "$*" | glow -
+  else
+    echo "Uso: mdv <archivo.md>  |  comando | mdv  |  mdv \"texto markdown\""
+    return 1
+  fi
+}
+
 # ===== INTEGRACIÓN DE TMUX INTELIGENTE (SSH) =====
 if [[ -z "$TMUX" && -n "$SSH_TTY" ]] && command -v tmux &>/dev/null; then
   local session_ids
