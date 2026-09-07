@@ -11,7 +11,7 @@ M.plugin = function()
     return
   end
 
-  require('gitlan').setup(opts)
+  require('gitlab').setup(opts)
 end
 
 return M
