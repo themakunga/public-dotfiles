@@ -34,8 +34,13 @@ local plugins = {
   'gitsigns',
   'octo',
   'gitlab',
+  'github-actions',
   'codecompanion',
   'claude-code',
+  'codex',
+  'markview',
+  'markdown-toc',
+  'trouble',
 }
 
 vim.pack.add({
