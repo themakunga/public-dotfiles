@@ -16,6 +16,17 @@ M.plugin = function()
     },
     styles = {
       notification = {},
+      -- Terminal flotante a la izquierda (usado por claudecode con provider = "snacks")
+      terminal = {
+        position = 'float',
+        relative = 'editor',
+        border = 'rounded',
+        width = 0.38,
+        height = 0.90,
+        row = 0,
+        col = 0,
+        zindex = 50,
+      },
     },
   }
 

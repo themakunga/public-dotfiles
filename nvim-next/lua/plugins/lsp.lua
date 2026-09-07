@@ -196,13 +196,11 @@ local lsp_navigation_fn = function(event)
 
   if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
     KM.map({
-      {
-        motion = '<leader>th',
-        cmd = function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-        end,
-        opts = { desc = 'Toggle inlay hints' },
-      },
+      motion = '<leader>th',
+      cmd = function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+      end,
+      opts = { desc = 'Toggle inlay hints' },
     })
   end
 end
