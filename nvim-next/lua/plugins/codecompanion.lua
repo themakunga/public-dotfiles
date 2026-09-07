@@ -119,9 +119,13 @@ M.plugin = function()
     display = {
       chat = {
         window = {
-          layout = 'vertical',
-          width = 0.35,
+          layout = 'float',
+          relative = 'editor',
           border = 'rounded',
+          width = 0.35,
+          height = 0.90,
+          row = 0,
+          col = 0,
         },
         show_token_count = true,
         render_headers = true,

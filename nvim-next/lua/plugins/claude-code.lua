@@ -9,10 +9,27 @@ M.plugin = function()
     return
   end
 
-  require('claudecode').setup({})
+  require('claudecode').setup({
+    terminal = {
+      provider = 'snacks',
+      snacks_win_opts = {
+        position = 'float',
+        relative = 'editor',
+        border = 'rounded',
+        width = 0.38,
+        height = 0.90,
+        row = 0,
+        col = 0,
+        zindex = 50,
+      },
+    },
+  })
 
   KM.bulk_map({
     { mode = 'n', motion = '<leader>Ac', cmd = '<cmd>ClaudeCode<cr>', opts = { desc = 'Toggle Claude' } },
+    { mode = 'n', motion = '<M-c>', cmd = '<cmd>ClaudeCode<cr>', opts = { desc = 'Toggle Claude (global)' } },
+    -- Desde dentro del terminal: <C-\><C-n> sale de insert-mode sin enviar Esc al proceso
+    { mode = 't', motion = '<M-c>', cmd = '<C-\\><C-n><cmd>ClaudeCode<cr>', opts = { desc = 'Ocultar Claude sin cerrar sesión' } },
     { mode = 'n', motion = '<leader>Af', cmd = '<cmd>ClaudeCodeFocus<cr>', opts = { desc = 'Focus Claude' } },
     { mode = 'n', motion = '<leader>Ar', cmd = '<cmd>ClaudeCode --resume<cr>', opts = { desc = 'Resume Claude' } },
     { mode = 'n', motion = '<leader>AC', cmd = '<cmd>ClaudeCode --continue<cr>', opts = { desc = 'Continue Claude' } },
