@@ -144,23 +144,38 @@ local lsp_autocompletion_fn = function(args)
   -- Keymaps buffer-locales para la completion
   local buf = args.buf
 
-  vim.keymap.set('i', '<CR>', function()
-    return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>'
-  end, { buffer = buf, expr = true, desc = 'Completion: confirmar' })
-
-  vim.keymap.set('i', '<Tab>', function()
-    return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
-  end, { buffer = buf, expr = true, desc = 'Completion: siguiente' })
-
-  vim.keymap.set('i', '<S-Tab>', function()
-    return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
-  end, { buffer = buf, expr = true, desc = 'Completion: anterior' })
-
-  vim.keymap.set('i', '<C-Space>', function()
-    vim.lsp.completion.trigger()
-  end, { buffer = buf, desc = 'Completion: trigger manual' })
-
-  vim.keymap.set('i', '<C-e>', '<C-e>', { buffer = buf, desc = 'Completion: cerrar popup' })
+  KM.bulk_map({
+    {
+      mode = 'i',
+      motion = '<CR>',
+      cmd = function() return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>' end,
+      opts = { buffer = buf, expr = true, desc = 'Completion: confirmar' },
+    },
+    {
+      mode = 'i',
+      motion = '<Tab>',
+      cmd = function() return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>' end,
+      opts = { buffer = buf, expr = true, desc = 'Completion: siguiente' },
+    },
+    {
+      mode = 'i',
+      motion = '<S-Tab>',
+      cmd = function() return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>' end,
+      opts = { buffer = buf, expr = true, desc = 'Completion: anterior' },
+    },
+    {
+      mode = 'i',
+      motion = '<C-Space>',
+      cmd = function() vim.lsp.completion.trigger() end,
+      opts = { buffer = buf, desc = 'Completion: trigger manual' },
+    },
+    {
+      mode = 'i',
+      motion = '<C-e>',
+      cmd = '<C-e>',
+      opts = { buffer = buf, desc = 'Completion: cerrar popup' },
+    },
+  })
 end
 
 local lsp_highlight_fn = function(event)
