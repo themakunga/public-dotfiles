@@ -97,6 +97,10 @@ if [[ "$HOST" == "outer-heaven.local" || "$HOSTNAME" == "outer-heaven.local" ]];
   [[ -d "${HOME}/.rd/bin" ]] && path=("${HOME}/.rd/bin" $path)
 fi
 
+# ===== SOPS / AGE =====
+# SOPS 3.x no detecta ~/.config/sops/age/keys.txt automáticamente — hay que apuntarlo.
+export SOPS_AGE_KEY_FILE="${HOME}/.config/sops/age/keys.txt"
+
 # ===== CARGA DE MÓDULOS MODULARES (.ZSH) =====
 [[ -f "$ZDOTDIR_LOCAL/.zsh/aliases.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/aliases.zsh"
 [[ -f "$ZDOTDIR_LOCAL/.zsh/functions.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/functions.zsh"
