@@ -63,6 +63,12 @@ zinit wait lucid for \
 eval "$(oh-my-posh init zsh --config "${HOME}/.config/ohmyposh/config.yaml")"
 eval "$(fzf --zsh)"
 
+# ===== CLAUDE CODE =====
+# cc: retoma la última sesión del proyecto actual; si no existe, abre una nueva
+function cc() {
+  claude --resume "$@" 2>/dev/null || claude "$@"
+}
+
 # ===== SISTEMA DE COMPLETADO =====
 autoload -U compinit && compinit
 
