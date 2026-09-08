@@ -57,6 +57,9 @@ local ensure_installed = {
   'tombi',
   'ts_ls',
   'yamlls',
+  -- Nix LSPs instalados fuera de Mason:
+  --   brew install nil        (o: nix profile install nixpkgs#nil)
+  --   brew install nixd       (o: nix profile install nixpkgs#nixd)
 }
 
 local mason_opts = {
