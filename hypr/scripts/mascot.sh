@@ -3,7 +3,7 @@
 # mascot.sh — GLaDOS terminal mascot para aperture-science
 #
 # Muestra ASCII art de Aperture Science en una ventana flotante de WezTerm.
-# Reacciona al estado del servicio systemd zeroclaw-glados con colores
+# Reacciona al estado del servicio systemd zeroclaw con colores
 # TokyoNight Storm.
 #
 # Identificación de ventana: título "glados-mascot"
@@ -52,7 +52,7 @@ render() {
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 while true; do
-    status=$(systemctl is-active zeroclaw-glados 2>/dev/null || echo "inactive")
+    status=$(systemctl is-active zeroclaw 2>/dev/null || echo "inactive")
 
     case "$status" in
         active)

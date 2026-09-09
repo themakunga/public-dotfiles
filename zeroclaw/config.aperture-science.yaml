@@ -68,24 +68,19 @@ telegram:
     nicolas:
       username: "@TheMakunga"
       chat_id: "${TELEGRAM_CHAT_NICOLAS}"
-      role: "admin" # acceso completo, todos los comandos
-    meddy:
-      username: "@Mighty_Meddy"
-      chat_id: "${TELEGRAM_CHAT_MEDDY}"
-      role: "restricted" # solo consulta, operaciones no destructivas
+      role: "admin"
+    # meddy: deshabilitado por ahora
 
-  # Comandos disponibles — ver agent/CHANNELS.md para detalle de acceso por rol
+  # Comandos disponibles
   commands:
-    - status # estado del nodo y servicios (todos)
-    - health # reporte de salud (todos)
-    - ollama # estado del servidor LLM (todos)
-    - ask # consulta libre a GLaDOS (todos)
-    - run # ejecutar script predefinido (solo admin)
-    - deploy # trigger deploy con confirmación (solo admin)
-    - approve # aprobar operación pendiente de Meddy (solo admin)
+    - status
+    - health
+    - ollama
+    - ask
+    - run # admin only
+    - deploy # admin only, requiere confirmación
 
   # Comportamiento — alineado con personalidad GLaDOS en agent/SOUL.md
   behavior:
-    language: "es" # español como idioma principal
-    notify_nicolas_on_meddy_restricted: true # nicolas recibe aviso si meddy pide algo que no puede hacer
-    confirmation_required_for_destructive: true # protocolo C-01..C-05 aplica también por Telegram
+    language: "es"
+    confirmation_required_for_destructive: true

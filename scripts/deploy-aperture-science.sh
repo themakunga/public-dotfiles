@@ -2,14 +2,25 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # deploy-aperture-science.sh — Setup de dotfiles en aperture-science (RPi5)
 #
-# Ejecutar como usuario nicolas en aperture-science:
-#   bash ~/public-dotfiles/scripts/deploy-aperture-science.sh
+# Clonar el repo primero (una sola vez, como root):
+#   git clone https://github.com/themakunga/public-dotfiles.git /opt/public-dotfiles
 #
-# Qué hace:
-#   1. Symlinks de dotfiles → ~/.config/
-#   2. Mascota GLaDOS → /opt/glados/mascot.sh
+# Parte desktop (Hyprland, waybar, wofi, wezterm) → ejecutar como wheatley:
+#   sudo -u wheatley bash /opt/public-dotfiles/scripts/deploy-aperture-science.sh
+#
+# Parte glados (mascota, config, .env) → ejecutar como root:
+#   sudo mkdir -p /opt/glados/config
+#   sudo ln -s /opt/public-dotfiles/hypr/scripts/mascot.sh /opt/glados/mascot.sh
+#   sudo ln -s /opt/public-dotfiles/agent /opt/glados/agent
+#   sudo cp /opt/public-dotfiles/zeroclaw/config.aperture-science.yaml /opt/glados/config/config.yaml
+#   sudo nano /opt/glados/config/.env   ← copiar desde zeroclaw/telegram.env.example
+#   sudo chmod 600 /opt/glados/config/.env && sudo chown glados:glados /opt/glados/config/.env
+#
+# Qué hace este script (parte wheatley):
+#   1. Symlinks de dotfiles → ~/.config/ (wheatley home: /opt/wheatley/)
+#   2. Mascota GLaDOS → /opt/glados/mascot.sh (solo si /opt/glados existe)
 #   3. Waybar scripts → permisos de ejecución
-#   4. .env de zeroclaw (si no existe, guía interactiva)
+#   4. .env de zeroclaw (si no existe y /opt/glados accesible, guía interactiva)
 #   5. Recarga servicios: waybar, zeroclaw-glados
 # ─────────────────────────────────────────────────────────────────────────────
 

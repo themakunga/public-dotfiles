@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
-# zeroclaw-status.sh — estado del servicio zeroclaw-glados para Waybar
+# zeroclaw-status.sh — estado del servicio zeroclaw para Waybar
 # Output: JSON con text, class y tooltip (return-type: json)
 # ─────────────────────────────────────────────────────────────────────────────
 
-status=$(systemctl is-active zeroclaw-glados 2>/dev/null || echo "inactive")
+status=$(systemctl is-active zeroclaw 2>/dev/null || echo "inactive")
 
 case "$status" in
     active)
