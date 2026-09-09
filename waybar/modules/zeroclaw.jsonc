@@ -1,0 +1,19 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Waybar — Módulo custom: estado de zeroclaw-glados
+//
+// Integración: agregar "custom/zeroclaw" al array "modules-right" (o center/left)
+// en tu waybar/config principal, y copiar este bloque al objeto de módulos.
+//
+// El script zeroclaw-status.sh debe estar en ~/.config/waybar/scripts/
+// y tener permisos de ejecución (chmod +x).
+// ─────────────────────────────────────────────────────────────────────────────
+{
+    "custom/zeroclaw": {
+        "exec": "~/.config/waybar/scripts/zeroclaw-status.sh",
+        "return-type": "json",
+        "interval": 5,
+        "format": "{text}",
+        "on-click": "wezterm start --always-new-process -- bash /opt/glados/mascot.sh",
+        "tooltip": true
+    }
+}

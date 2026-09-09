@@ -1,0 +1,44 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Waybar — Estilos del módulo zeroclaw-glados (TokyoNight Storm)
+ *
+ * Agregar este fragmento al style.css principal de waybar.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+#custom-zeroclaw {
+    padding: 0 12px;
+    margin: 4px 4px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    background: #1f2335;
+    color: #565f89;          /* inactivo: gris comentario */
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+/* Zeroclaw activo — verde TokyoNight */
+#custom-zeroclaw.active {
+    color: #9ece6a;
+    background: rgba(158, 206, 106, 0.08);
+    border: 1px solid rgba(158, 206, 106, 0.2);
+}
+
+/* Zeroclaw con error — rojo TokyoNight */
+#custom-zeroclaw.failed {
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.08);
+    border: 1px solid rgba(247, 118, 142, 0.2);
+}
+
+/* Zeroclaw inicializando — amarillo TokyoNight */
+#custom-zeroclaw.activating {
+    color: #e0af68;
+    background: rgba(224, 175, 104, 0.08);
+    border: 1px solid rgba(224, 175, 104, 0.2);
+}
+
+/* Zeroclaw offline — gris neutro */
+#custom-zeroclaw.inactive {
+    color: #565f89;
+    background: transparent;
+}

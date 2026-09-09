@@ -1,0 +1,118 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Waybar — aperture-science (RPi5 · Hyprland · TokyoNight Storm)
+// ─────────────────────────────────────────────────────────────────────────────
+{
+    "layer": "top",
+    "position": "top",
+    "height": 32,
+    "spacing": 4,
+    "reload_style_on_change": true,
+
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+
+    "modules-center": [
+        "clock"
+    ],
+
+    "modules-right": [
+        "custom/zeroclaw",
+        "memory",
+        "cpu",
+        "disk",
+        "network",
+        "tray"
+    ],
+
+    // ── Workspaces ────────────────────────────────────────────────────────────
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "1": "󰆍",
+            "2": "󰆍",
+            "3": "󰖟",
+            "active": "",
+            "default": "●"
+        },
+        "persistent-workspaces": {
+            "*": [1, 2, 3, 4, 5]
+        }
+    },
+
+    // ── Título de ventana activa ───────────────────────────────────────────────
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 60,
+        "separate-outputs": true
+    },
+
+    // ── Reloj ─────────────────────────────────────────────────────────────────
+    "clock": {
+        "format": " {:%H:%M}",
+        "format-alt": " {:%Y-%m-%d %H:%M:%S}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "left",
+            "format": {
+                "today": "<span color='#7aa2f7'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    // ── GLaDOS / Zeroclaw status ───────────────────────────────────────────────
+    "custom/zeroclaw": {
+        "exec": "~/.config/waybar/scripts/zeroclaw-status.sh",
+        "return-type": "json",
+        "interval": 5,
+        "format": "{text}",
+        "tooltip": true,
+        "on-click": "wezterm start --always-new-process -- bash /opt/glados/mascot.sh"
+    },
+
+    // ── Memoria ───────────────────────────────────────────────────────────────
+    "memory": {
+        "interval": 10,
+        "format": "󰍛 {percentage}%",
+        "format-critical": "󰍛 {percentage}%",
+        "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB",
+        "critical": 85,
+        "warning": 70
+    },
+
+    // ── CPU ───────────────────────────────────────────────────────────────────
+    "cpu": {
+        "interval": 5,
+        "format": "󰻠 {usage}%",
+        "tooltip-format": "CPU: {usage}% · Load: {load}",
+        "critical": 90
+    },
+
+    // ── Disco ─────────────────────────────────────────────────────────────────
+    "disk": {
+        "interval": 30,
+        "format": "󰋊 {percentage_used}%",
+        "path": "/",
+        "tooltip-format": "{used} / {total} ({percentage_used}%)",
+        "warning": 80,
+        "critical": 90
+    },
+
+    // ── Red ───────────────────────────────────────────────────────────────────
+    "network": {
+        "interval": 10,
+        "format-ethernet": "󰈀 {ipaddr}",
+        "format-wifi": "󰖩 {essid}",
+        "format-disconnected": "󰖪 offline",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr} ↑{bandwidthUpBytes} ↓{bandwidthDownBytes}",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)"
+    },
+
+    // ── Systray ───────────────────────────────────────────────────────────────
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8
+    }
+}

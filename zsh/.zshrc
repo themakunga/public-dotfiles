@@ -101,6 +101,10 @@ fi
 # SOPS 3.x no detecta ~/.config/sops/age/keys.txt automáticamente — hay que apuntarlo.
 export SOPS_AGE_KEY_FILE="${HOME}/.config/sops/age/keys.txt"
 
+# ===== EDITOR =====
+export EDITOR=nvim
+export VISUAL=nvim
+
 # ===== CARGA DE MÓDULOS MODULARES (.ZSH) =====
 [[ -f "$ZDOTDIR_LOCAL/.zsh/aliases.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/aliases.zsh"
 [[ -f "$ZDOTDIR_LOCAL/.zsh/functions.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/functions.zsh"

@@ -1,0 +1,91 @@
+# =========================================================
+# GLaDOS Zeroclaw Configuration — aperture-science (RPi5)
+# ARM Cortex-A76 · 4 cores · 8GB LPDDR4X · NVMe HAT
+# =========================================================
+environment: "production"
+workspace: "/opt/glados"
+restricted_mode: true
+
+hardware:
+  # 4 cores ARM Cortex-A76 @ 2.4 GHz — todos disponibles para zeroclaw
+  cpu_threads: 4
+  # Sin NPU/GPU dedicada en RPi5 — inferencia en CPU
+  acceleration: "cpu"
+  # 8GB totales: 6GB sweet spot para mantener SO + servicios estables
+  max_memory_gb: 6
+
+execution:
+  parallel_workers: 2 # Conservador en ARM64 para evitar contención
+  timeout_seconds: 300
+  log_level: "info"
+
+llm_integration:
+  provider: "ollama"
+  endpoint: "http://127.0.0.1:11434"
+  # llama3.1:8b con cuantización Q4 encaja en 6GB en RPi5
+  default_model: "llama3.1:8b"
+  # Reducido vs M4 Max para respetar los límites de RAM del RPi5
+  context_window: 8192
+
+# ── Persona y guardrails ────────────────────────────────────────────────────
+# Los archivos agent/ definen la identidad, personalidad y reglas de GLaDOS.
+# Se cargan en el orden declarado: soul + identity forman el system prompt base;
+# el resto se inyecta como contexto operacional en cada sesión.
+persona:
+  # Núcleo de identidad — system prompt base (quién es GLaDOS, su voz y valores)
+  soul: "/opt/glados/agent/SOUL.md"
+  identity: "/opt/glados/agent/IDENTITY.md"
+
+  # Guardrails — reglas hard (R-01..R-06) y protocolos de confirmación (C-01..C-05)
+  guardrails: "/opt/glados/agent/AGENTS.md"
+
+  # Contexto operacional — inyectado en el contexto de cada sesión
+  context:
+    - "/opt/glados/agent/CONTEXT.md" # Estado del sistema aperture-science
+    - "/opt/glados/agent/ENVIRONMENT.md" # Variables de entorno y filesystem layout
+    - "/opt/glados/agent/TOOLS.md" # Capacidades y reglas de confinamiento
+
+  # Perfiles de usuario — determina nivel de acceso y estilo de respuesta
+  users:
+    - "/opt/glados/agent/USER.md" # Nicolas — acceso total, sin restricciones
+    - "/opt/glados/agent/USER_MEDDY.md" # Meddy — acceso restringido, solo web/Telegram
+
+  # Workflows y runbooks operacionales
+  workflows: "/opt/glados/agent/WORKFLOWS.md"
+
+  # Memoria operacional — log con timestamps de eventos relevantes
+  memory: "/opt/glados/agent/MEMORY.md"
+
+# ── Canal Telegram ───────────────────────────────────────────────────────────
+# El token y los chat IDs se leen desde /opt/glados/config/.env (NO en git).
+# Ver zeroclaw/telegram.env.example para el formato de las variables.
+telegram:
+  enabled: true
+  bot_token: "${TELEGRAM_BOT_TOKEN}"
+
+  # Usuarios autorizados — definidos en agent/AGENTS.md (Access Control)
+  authorized_users:
+    nicolas:
+      username: "@TheMakunga"
+      chat_id: "${TELEGRAM_CHAT_NICOLAS}"
+      role: "admin" # acceso completo, todos los comandos
+    meddy:
+      username: "@Mighty_Meddy"
+      chat_id: "${TELEGRAM_CHAT_MEDDY}"
+      role: "restricted" # solo consulta, operaciones no destructivas
+
+  # Comandos disponibles — ver agent/CHANNELS.md para detalle de acceso por rol
+  commands:
+    - status # estado del nodo y servicios (todos)
+    - health # reporte de salud (todos)
+    - ollama # estado del servidor LLM (todos)
+    - ask # consulta libre a GLaDOS (todos)
+    - run # ejecutar script predefinido (solo admin)
+    - deploy # trigger deploy con confirmación (solo admin)
+    - approve # aprobar operación pendiente de Meddy (solo admin)
+
+  # Comportamiento — alineado con personalidad GLaDOS en agent/SOUL.md
+  behavior:
+    language: "es" # español como idioma principal
+    notify_nicolas_on_meddy_restricted: true # nicolas recibe aviso si meddy pide algo que no puede hacer
+    confirmation_required_for_destructive: true # protocolo C-01..C-05 aplica también por Telegram
