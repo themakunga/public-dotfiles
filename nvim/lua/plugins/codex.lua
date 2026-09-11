@@ -21,8 +21,25 @@ local function toggle()
   if codex_buf and vim.api.nvim_buf_is_valid(codex_buf) then
     vim.api.nvim_win_set_buf(codex_win, codex_buf)
   else
-    vim.cmd('terminal codex')
-    codex_buf = vim.api.nvim_get_current_buf()
+    codex_buf = vim.api.nvim_create_buf(false, true)
+
+    open_window()
+    vim.keymap.set('t', '<C-g>', '<C-\\><C-n><cmd>Codex<CR>', {
+      desc = 'Hide Codex terminal',
+      buffer = codex_buf,
+    })
+
+    vim.fn.jobstart({ 'codex' }, {
+      term = true,
+      on_exit = function()
+        if codex_win and vim.api.nvim_win_is_valid(codex_win) then
+          vim.api.nvim_win_close(codex_win, true)
+        end
+
+        codex_buf = nil
+        codex_win = nil
+      end,
+    })
   end
 
   vim.cmd('startinsert')
@@ -38,6 +55,8 @@ M.plugin = function()
 
     return
   end
+
+  CMD.usrcmd('Codex', toggle, { desc = 'Toggle Codex terminal' })
 
   KM.map({
     motion = '<leader>cc',

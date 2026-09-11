@@ -12,7 +12,6 @@ local ensure_installed = {
   'dockerls',
   'dotls',
   'editorconfig-checker',
-  'efm',
   'emmet_ls',
   'eslint',
   'firefox-debug-adapter',
@@ -220,7 +219,7 @@ M.plugin = function()
   end
 
   require('mason').setup(mason_opts)
-  require('mason-lspconfig').setup()
+  require('mason-lspconfig').setup({ automatic_enable = { exclude = { 'efm' } } })
   require('mason-tool-installer').setup(opts)
 
   vim.diagnostic.config(diagnostic_config)

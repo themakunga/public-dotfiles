@@ -1,5 +1,24 @@
 local M = {}
 
+local formatters_by_ft = {
+  lua = { 'stylua' },
+  astro = { 'prettier', 'prettierd' },
+  javascript = { 'biome', 'prettier', 'prettierd' },
+  javascriptreact = { 'biome', 'prettier', 'prettierd' },
+  typescript = { 'biome', 'prettier', 'prettierd' },
+  typescriptreact = { 'biome', 'prettier', 'prettierd' },
+  json = { 'biome', 'prettier', 'prettierd' },
+  jsonc = { 'biome', 'prettier', 'prettierd' },
+  css = { 'biome', 'prettier', 'prettierd' },
+  graphql = { 'prettier', 'prettierd' },
+  html = { 'prettier', 'prettierd' },
+  less = { 'prettier', 'prettierd' },
+  scss = { 'prettier', 'prettierd' },
+  vue = { 'prettier', 'prettierd' },
+  yaml = { 'prettier', 'prettierd' },
+  -- Agregado para soporte de Nix / Nix Flakes
+  nix = { 'alejandra' },
+}
 
 local
     formatters_by_ft = {
