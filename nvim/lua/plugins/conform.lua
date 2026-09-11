@@ -17,7 +17,7 @@ local formatters_by_ft = {
   vue = { 'prettier', 'prettierd' },
   yaml = { 'prettier', 'prettierd' },
   -- Agregado para soporte de Nix / Nix Flakes
-  nix = { 'nixfmt', 'nixpkgs-fmt', 'alejandra' },
+  nix = { 'alejandra' },
 }
 
 local biome_supported = {

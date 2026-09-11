@@ -46,8 +46,13 @@ local function toggle()
     codex_buf = vim.api.nvim_create_buf(false, true)
 
     open_window()
+    vim.keymap.set('t', '<C-g>', '<C-\\><C-n><cmd>Codex<CR>', {
+      desc = 'Hide Codex terminal',
+      buffer = codex_buf,
+    })
 
-    vim.fn.termopen('codex', {
+    vim.fn.jobstart({ 'codex' }, {
+      term = true,
       on_exit = function()
         if codex_win and vim.api.nvim_win_is_valid(codex_win) then
           vim.api.nvim_win_close(codex_win, true)
@@ -67,6 +72,8 @@ M.plugin = function()
     Log.error('Codex not installed')
     return
   end
+
+  CMD.usrcmd('Codex', toggle, { desc = 'Toggle Codex terminal' })
 
   KM.map({
     motion = '<leader>cc',
