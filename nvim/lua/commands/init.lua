@@ -6,6 +6,7 @@ M.load = function()
   Loader('commands.ios-development')
   Loader('commands.pack_functions')
   Loader('commands.refresh_buffer')
+  Loader('commands.ai-capture')
 end
 
 return M

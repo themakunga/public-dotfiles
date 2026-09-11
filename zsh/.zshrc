@@ -63,6 +63,12 @@ zinit wait lucid for \
 eval "$(oh-my-posh init zsh --config "${HOME}/.config/ohmyposh/config.yaml")"
 eval "$(fzf --zsh)"
 
+# ===== CLAUDE CODE =====
+# cc: retoma la última sesión del proyecto actual; si no existe, abre una nueva
+function cc() {
+  claude --resume "$@" 2>/dev/null || claude "$@"
+}
+
 # ===== SISTEMA DE COMPLETADO =====
 autoload -U compinit && compinit
 
@@ -90,6 +96,14 @@ export PNPM_HOME="${HOME}/.local/share/pnpm"
 if [[ "$HOST" == "outer-heaven.local" || "$HOSTNAME" == "outer-heaven.local" ]]; then
   [[ -d "${HOME}/.rd/bin" ]] && path=("${HOME}/.rd/bin" $path)
 fi
+
+# ===== SOPS / AGE =====
+# SOPS 3.x no detecta ~/.config/sops/age/keys.txt automáticamente — hay que apuntarlo.
+export SOPS_AGE_KEY_FILE="${HOME}/.config/sops/age/keys.txt"
+
+# ===== EDITOR =====
+export EDITOR=nvim
+export VISUAL=nvim
 
 # ===== CARGA DE MÓDULOS MODULARES (.ZSH) =====
 [[ -f "$ZDOTDIR_LOCAL/.zsh/aliases.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/aliases.zsh"

@@ -1,0 +1,126 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Wofi — Tema TokyoNight Storm
+ * Paleta: https://github.com/folke/tokyonight.nvim (variant: storm)
+ *
+ * bg:           #24283b   bg_dark:      #1f2335
+ * bg_highlight: #292e42   selection:    #364a82
+ * fg:           #c0caf5   comment:      #565f89
+ * blue:         #7aa2f7   green:        #9ece6a
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ── Ventana principal ───────────────────────────────────────────────────── */
+window {
+    margin: 0;
+    padding: 0;
+    border: 2px solid #7aa2f7;
+    border-radius: 12px;
+    background-color: #24283b;
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", "Noto Sans", monospace;
+    font-size: 14px;
+    color: #c0caf5;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Input / barra de búsqueda ───────────────────────────────────────────── */
+#input {
+    margin: 10px 10px 6px 10px;
+    padding: 8px 14px;
+    border: 1px solid #292e42;
+    border-radius: 8px;
+    background-color: #1f2335;
+    color: #c0caf5;
+    font-size: 14px;
+    caret-color: #7aa2f7;
+    outline: none;
+}
+
+#input:focus {
+    border-color: #7aa2f7;
+    background-color: #1f2335;
+    box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.15);
+}
+
+/* Placeholder text */
+#input placeholder {
+    color: #565f89;
+}
+
+/* ── Contenedores ─────────────────────────────────────────────────────────── */
+#outer-box {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+#inner-box {
+    margin: 0 8px 8px 8px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: 0;
+    border: none;
+    background-color: transparent;
+}
+
+/* ── Entradas de la lista ─────────────────────────────────────────────────── */
+#entry {
+    padding: 7px 10px;
+    margin: 1px 0;
+    border-radius: 8px;
+    background-color: transparent;
+    transition: background-color 0.1s ease;
+}
+
+#entry:selected {
+    background-color: #364a82;
+    outline: none;
+}
+
+/* ── Texto ───────────────────────────────────────────────────────────────── */
+#text {
+    color: #c0caf5;
+    font-size: 14px;
+}
+
+#text:selected {
+    color: #7aa2f7;
+    font-weight: 500;
+}
+
+/* Nombre de la aplicación */
+.entry-text {
+    color: #c0caf5;
+}
+
+/* Descripción / subtítulo */
+.entry-desc {
+    color: #565f89;
+    font-size: 12px;
+}
+
+/* ── Imagen / icono de aplicación ────────────────────────────────────────── */
+#img {
+    margin-right: 8px;
+    border-radius: 4px;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+scrollbar {
+    background-color: transparent;
+    width: 4px;
+}
+
+scrollbar slider {
+    background-color: #364a82;
+    border-radius: 2px;
+    min-height: 20px;
+}
+
+scrollbar slider:hover {
+    background-color: #7aa2f7;
+}

@@ -230,10 +230,10 @@ M.plugin = function()
   dashboard.section.header.opts.hl = 'String'
 
   dashboard.section.buttons.val = {
-    dashboard.button('f', '  Find file', ':Telescope find_files <CR>'),
+    dashboard.button('f', '  Find file', ':FzfLua files <CR>'),
     dashboard.button('n', '  New file', ':ene <BAR> startinsert <CR>'),
-    dashboard.button('r', '  Recent files', ':Telescope oldfiles <CR>'),
-    dashboard.button('g', '  Find text', ':Telescope live_grep <CR>'),
+    dashboard.button('r', '  Recent files', ':FzfLua oldfiles <CR>'),
+    dashboard.button('g', '  Find text', ':FzfLua live_grep_native <CR>'),
     dashboard.button('c', '⚙  Config', ':e ~/.config/nvim-next/init.lua <CR>'),
     dashboard.button('q', '󰩈  Quit', ':qa<CR>'),
   }

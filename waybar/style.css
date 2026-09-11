@@ -1,0 +1,168 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Waybar — aperture-science · TokyoNight Storm
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ── Variables ───────────────────────────────────────────────────────────── */
+* {
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
+    font-size: 13px;
+    min-height: 0;
+}
+
+/* ── Barra principal ─────────────────────────────────────────────────────── */
+window#waybar {
+    background-color: #1f2335;
+    border-bottom: 2px solid #292e42;
+    color: #c0caf5;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+}
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+tooltip {
+    background: #24283b;
+    border: 1px solid #292e42;
+    border-radius: 8px;
+}
+tooltip label {
+    color: #c0caf5;
+    padding: 4px 8px;
+}
+
+/* ── Módulos base ────────────────────────────────────────────────────────── */
+.modules-left,
+.modules-center,
+.modules-right {
+    margin: 0 6px;
+}
+
+#workspaces,
+#clock,
+#memory,
+#cpu,
+#disk,
+#network,
+#tray,
+#custom-zeroclaw {
+    padding: 2px 10px;
+    margin: 4px 2px;
+    border-radius: 6px;
+    background: #24283b;
+    color: #c0caf5;
+}
+
+/* ── Workspaces ──────────────────────────────────────────────────────────── */
+#workspaces button {
+    padding: 2px 6px;
+    color: #565f89;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+#workspaces button:hover {
+    background: #292e42;
+    color: #7aa2f7;
+}
+#workspaces button.active {
+    color: #7aa2f7;
+    background: #292e42;
+    font-weight: bold;
+}
+#workspaces button.urgent {
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.1);
+}
+
+/* ── Título de ventana ───────────────────────────────────────────────────── */
+#window {
+    color: #a9b1d6;
+    background: transparent;
+    font-size: 12px;
+}
+
+/* ── Reloj ───────────────────────────────────────────────────────────────── */
+#clock {
+    color: #bb9af7;
+    font-weight: bold;
+}
+
+/* ── Zeroclaw ────────────────────────────────────────────────────────────── */
+#custom-zeroclaw {
+    color: #565f89;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+#custom-zeroclaw.active {
+    color: #9ece6a;
+    background: rgba(158, 206, 106, 0.08);
+    border: 1px solid rgba(158, 206, 106, 0.2);
+}
+#custom-zeroclaw.failed {
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.08);
+    border: 1px solid rgba(247, 118, 142, 0.2);
+}
+#custom-zeroclaw.activating {
+    color: #e0af68;
+    background: rgba(224, 175, 104, 0.08);
+    border: 1px solid rgba(224, 175, 104, 0.2);
+}
+#custom-zeroclaw.inactive {
+    color: #565f89;
+    background: transparent;
+}
+
+/* ── Memoria ─────────────────────────────────────────────────────────────── */
+#memory {
+    color: #7dcfff;
+}
+#memory.critical {
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.1);
+}
+#memory.warning {
+    color: #e0af68;
+}
+
+/* ── CPU ─────────────────────────────────────────────────────────────────── */
+#cpu {
+    color: #7aa2f7;
+}
+#cpu.critical {
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.1);
+}
+
+/* ── Disco ───────────────────────────────────────────────────────────────── */
+#disk {
+    color: #9ece6a;
+}
+#disk.critical {
+    color: #f7768e;
+}
+#disk.warning {
+    color: #e0af68;
+}
+
+/* ── Red ─────────────────────────────────────────────────────────────────── */
+#network {
+    color: #2ac3de;
+}
+#network.disconnected {
+    color: #565f89;
+}
+
+/* ── Tray ────────────────────────────────────────────────────────────────── */
+#tray {
+    background: transparent;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: rgba(247, 118, 142, 0.1);
+}
