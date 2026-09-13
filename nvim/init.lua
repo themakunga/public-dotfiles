@@ -15,7 +15,6 @@ local plugins = {
   'alpha',
   'fzf',
   'oil',
-  'notify',
   'lsp',
   'nvim-autopairs',
   'conform',
@@ -42,7 +41,6 @@ local plugins = {
 
 vim.pack.add({
   { src = 'https://github.com/nvim-lua/plenary.nvim' },
-  { src = 'https://github.com/rcarriga/nvim-notify' },
   { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
   { src = 'https://github.com/echasnovski/mini.icons' },
   { src = 'https://github.com/MunifTanjim/nui.nvim' },

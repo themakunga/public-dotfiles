@@ -15,7 +15,7 @@ local function setup_buffer(event)
 
   -- highlight
 
-  local started = pcall(vim.treesittere.start, bufnr, language)
+  local started = pcall(vim.treesitter.start, bufnr, language)
 
   if not started then
     return
