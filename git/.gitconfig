@@ -1,2 +1,9 @@
+[user]
+    name = Nicolas Villarroel
+    email = nmartinezv@icloud.com
+
+[pull]
+    rebase = false
+
 [include]
     path = ~/.gitconfig.nix-managed
