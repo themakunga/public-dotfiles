@@ -3,3 +3,5 @@
 
 [include]
   path = /Users/nicolas/.gitconfig.nix-managed
+[pull]
+	rebase = false
