@@ -1,4 +1,5 @@
 # ENVIRONMENT.md — GLaDOS Environment Variables & Runtime Config
+
 # "I don't guess at configuration. I require it to be explicit."
 
 ---
@@ -15,29 +16,28 @@ solo los **nombres** de las variables y sus fuentes.
 
 ### Core — Siempre necesarias
 
-| Variable           | Descripción                                  | Fuente              | Ejemplo                        |
-|--------------------|----------------------------------------------|---------------------|--------------------------------|
-| `GLADOS_HOME`      | Workspace raíz de GLaDOS                     | NixOS config        | `/opt/glados`                  |
-| `GLADOS_LOG_DIR`   | Directorio de logs operacionales             | Derivado de HOME    | `/opt/glados/logs`             |
-| `OLLAMA_HOST`      | Endpoint del servidor Ollama local           | NixOS config        | `http://127.0.0.1:11434`       |
-| `OLLAMA_MODEL`     | Modelo LLM por defecto                       | GLaDOS config       | `llama3.1:latest`              |
-| `ZEROCLAW_PORT`    | Puerto del gateway de zeroclaw               | NixOS firewall      | `42617`                        |
+| Variable         | Descripción                        | Fuente           | Ejemplo                  |
+| ---------------- | ---------------------------------- | ---------------- | ------------------------ |
+| `GLADOS_HOME`    | Workspace raíz de GLaDOS           | NixOS config     | `/opt/glados`            |
+| `GLADOS_LOG_DIR` | Directorio de logs operacionales   | Derivado de HOME | `/opt/glados/logs`       |
+| `OLLAMA_HOST`    | Endpoint del servidor Ollama local | NixOS config     | `http://127.0.0.1:11434` |
+| `OLLAMA_MODEL`   | Modelo LLM por defecto             | GLaDOS config    | `llama3.1:latest`        |
+| `ZEROCLAW_PORT`  | Puerto del gateway de zeroclaw     | NixOS firewall   | `42617`                  |
 
 ### Comunicación — Para canales externos
 
-| Variable              | Descripción                               | Fuente         | Requerido para         |
-|-----------------------|-------------------------------------------|----------------|------------------------|
-| `TELEGRAM_BOT_TOKEN`  | Token del bot de Telegram (GLaDOS)        | SOPS secret    | Canal Telegram         |
-| `TELEGRAM_CHAT_NICOLAS` | Chat ID de Nicolas (@TheMakunga)        | SOPS secret    | Notificaciones         |
-| `TELEGRAM_CHAT_MEDDY` | Chat ID de Meddy (@Mighty_Meddy)          | SOPS secret    | Acceso secundario      |
+| Variable                | Descripción                        | Fuente      | Requerido para |
+| ----------------------- | ---------------------------------- | ----------- | -------------- |
+| `TELEGRAM_BOT_TOKEN`    | Token del bot de Telegram (GLaDOS) | SOPS secret | Canal Telegram |
+| `TELEGRAM_CHAT_NICOLAS` | Chat ID de Nicolas (@TheMakunga)   | SOPS secret | Notificaciones |
 
 ### Integraciones opcionales
 
-| Variable           | Descripción                                  | Fuente         | Requerido para         |
-|--------------------|----------------------------------------------|----------------|------------------------|
-| `GITLAB_TOKEN`     | Personal access token GitLab                 | SOPS secret    | CI/CD, repo ops        |
-| `GITHUB_TOKEN`     | Personal access token GitHub                 | SOPS secret    | Repos públicos         |
-| `TAILSCALE_KEY`    | Auth key para re-autenticación               | SOPS secret    | Tailscale automation   |
+| Variable        | Descripción                    | Fuente      | Requerido para       |
+| --------------- | ------------------------------ | ----------- | -------------------- |
+| `GITLAB_TOKEN`  | Personal access token GitLab   | SOPS secret | CI/CD, repo ops      |
+| `GITHUB_TOKEN`  | Personal access token GitHub   | SOPS secret | Repos públicos       |
+| `TAILSCALE_KEY` | Auth key para re-autenticación | SOPS secret | Tailscale automation |
 
 ---
 
@@ -108,5 +108,5 @@ ls -la /opt/glados/
 
 ---
 
-> "Una variable no documentada es un secreto sin intención de serlo.  
->  Eventualmente sale a la superficie. GLaDOS prefiere que sea en sus términos."
+> "Una variable no documentada es un secreto sin intención de serlo.
+> Eventualmente sale a la superficie. GLaDOS prefiere que sea en sus términos."

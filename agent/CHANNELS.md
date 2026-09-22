@@ -30,7 +30,6 @@ ssh nicolas@aperture-science   # via Tailscale
 **Restricciones:**
 
 - Solo Nicolas tiene acceso SSH al host
-- Meddy no tiene acceso CLI — debe usar web o Telegram
 
 ---
 
@@ -39,7 +38,7 @@ ssh nicolas@aperture-science   # via Tailscale
 **Tipo:** HTTP/HTTPS · Interfaz web del agente
 **Puerto:** `42617`
 **Endpoint base:** `http://aperture-science.local:42617`
-**Usuarios autorizados:** Nicolas y Meddy
+**Usuarios autorizados:** Nicolas únicamente
 **Disponibilidad:** Cuando zeroclaw está activo
 
 ```yaml
@@ -54,8 +53,6 @@ endpoints:
 
 - Accesible desde la red local y via Tailscale
 - No expuesto a internet directamente
-- Meddy puede usar todos los endpoints de consulta
-- Endpoints de ejecución (`/run`, `/deploy`) requieren autenticación adicional para Meddy
 
 ---
 
@@ -63,7 +60,7 @@ endpoints:
 
 **Tipo:** Bot asíncrono
 **Bot:** Pendiente de configurar
-**Usuarios autorizados:** @TheMakunga (Nicolas) y @Mighty_Meddy (Meddy)
+**Usuarios autorizados:** @TheMakunga (Nicolas)
 **Disponibilidad:** Cuando zeroclaw está activo y tiene token de bot configurado
 
 ### Comandos disponibles
@@ -76,7 +73,6 @@ endpoints:
 | `/ask <pregunta>` | Consulta libre a GLaDOS                | Todos        |
 | `/run <script>`   | Ejecutar script predefinido            | Solo Nicolas |
 | `/deploy`         | Trigger deploy (requiere confirmación) | Solo Nicolas |
-| `/approve`        | Aprobar operación pendiente de Meddy   | Solo Nicolas |
 
 ### Comportamiento por usuario
 
@@ -86,12 +82,6 @@ endpoints:
 - Sin confirmación adicional en operaciones de solo lectura
 - Operaciones destructivas requieren protocolo C-01 a C-05
 
-**Meddy (@Mighty_Meddy):**
-
-- Solo comandos de consulta y tareas seguras
-- Respuestas en lenguaje no técnico (sin logs crudos, sin comandos)
-- Operaciones que requieren autorización → GLaDOS notifica a Nicolas y espera
-
 ### Configuración requerida
 
 ```bash
@@ -99,7 +89,6 @@ endpoints:
 # Ver zeroclaw/telegram.env.example para el formato completo
 TELEGRAM_BOT_TOKEN=<token-from-botfather>
 TELEGRAM_CHAT_NICOLAS=<nicolas-chat-id>
-TELEGRAM_CHAT_MEDDY=<meddy-chat-id>
 ```
 
 **Deploy:**
@@ -148,11 +137,5 @@ resp = client.post("/api/run", json={
 
 ## Prioridad de canales en conflicto
 
-Si Nicolas y Meddy envían instrucciones simultáneas conflictivas:
-
-1. Nicolas tiene prioridad absoluta
-2. GLaDOS completa la tarea de Nicolas
-3. Notifica a Meddy sobre el conflicto y el resultado
-
-> "La ambigüedad en los canales de comunicación es el origen del 73% de los errores operacionales.
-> El 27% restante son errores humanos que la ambigüedad hizo posibles."
+Si Nicolas envía instrucciones incompatibles por distintos canales, aclarar cuál
+prevalece antes de ejecutar una operación que dependa de esa decisión.
