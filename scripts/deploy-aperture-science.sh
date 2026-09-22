@@ -126,7 +126,6 @@ else
 
         read -rp "  Token del bot de Telegram (BotFather): " BOT_TOKEN
         read -rp "  Chat ID de Nicolas (@TheMakunga): " CHAT_NICOLAS
-        read -rp "  Chat ID de Meddy (@Mighty_Meddy, o Enter para omitir): " CHAT_MEDDY
 
         cat > "${ENV_FILE}" <<EOF
 # GLaDOS — Secrets (NO incluir en git)
@@ -134,7 +133,6 @@ else
 
 TELEGRAM_BOT_TOKEN=${BOT_TOKEN}
 TELEGRAM_CHAT_NICOLAS=${CHAT_NICOLAS}
-TELEGRAM_CHAT_MEDDY=${CHAT_MEDDY:-}
 EOF
         chmod 600 "${ENV_FILE}"
         ok "creado: ${ENV_FILE} (modo 600)"

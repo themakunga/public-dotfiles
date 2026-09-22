@@ -48,7 +48,6 @@ persona:
   # Perfiles de usuario — determina nivel de acceso y estilo de respuesta
   users:
     - "/opt/glados/agent/USER.md" # Nicolas — acceso total, sin restricciones
-    - "/opt/glados/agent/USER_MEDDY.md" # Meddy — acceso restringido, solo web/Telegram
 
   # Workflows y runbooks operacionales
   workflows: "/opt/glados/agent/WORKFLOWS.md"
@@ -69,7 +68,6 @@ telegram:
       username: "@TheMakunga"
       chat_id: "${TELEGRAM_CHAT_NICOLAS}"
       role: "admin"
-    # meddy: deshabilitado por ahora
 
   # Comandos disponibles
   commands:
