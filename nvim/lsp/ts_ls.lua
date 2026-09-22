@@ -1,8 +1,7 @@
 ---@type vim.lsp.Config
 return {
   cmd = {
-    'tsc',
-    '--lsp',
+    'typescript-language-server',
     '--stdio',
   },
 
