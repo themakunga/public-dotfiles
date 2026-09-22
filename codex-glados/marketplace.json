@@ -1,0 +1,20 @@
+{
+  "name": "glados",
+  "interface": {
+    "displayName": "GLaDOS"
+  },
+  "plugins": [
+    {
+      "name": "glados-tts",
+      "source": {
+        "source": "local",
+        "path": "./plugins/glados-tts"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
