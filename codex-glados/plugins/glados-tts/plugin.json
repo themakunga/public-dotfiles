@@ -1,0 +1,9 @@
+{
+  "name": "glados-tts",
+  "version": "1.0.0",
+  "description": "GLaDOS Portal-style TTS commentary for task start and stop events.",
+  "author": {
+    "name": "Nicolas Villarroel"
+  },
+  "license": "MIT"
+}

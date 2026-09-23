@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# GLaDOS TTS — one-time setup.
+# Clones nimaid/GlaDOS-TTS to /opt/glados/tts, creates conda env, downloads models.
+# Re-running is safe (skips steps already done).
+set -euo pipefail
+
+TTS_DIR="/opt/glados/tts"
+CONDA_ENV="glados"
+
+echo "==> GLaDOS TTS setup"
+
+# 1. Clone repo
+if [ ! -d "$TTS_DIR/.git" ]; then
+  echo "  Cloning GlaDOS-TTS..."
+  sudo mkdir -p /opt/glados
+  sudo chown "$(whoami)" /opt/glados
+  git clone https://github.com/nimaid/GlaDOS-TTS.git "$TTS_DIR"
+else
+  echo "  Repo already present, pulling latest..."
+  git -C "$TTS_DIR" pull --ff-only || true
+fi
+
+# 2. Find conda
+CONDA_CMD=""
+for candidate in \
+  "$HOME/miniconda3/bin/conda" \
+  "$HOME/miniconda/bin/conda" \
+  "/opt/homebrew/Caskroom/miniconda/base/bin/conda" \
+  "/opt/miniconda3/bin/conda" \
+  "$(command -v conda 2>/dev/null || true)"; do
+  if [ -x "$candidate" ]; then
+    CONDA_CMD="$candidate"
+    break
+  fi
+done
+
+if [ -z "$CONDA_CMD" ]; then
+  echo "ERROR: conda not found. Install miniconda first." >&2
+  exit 1
+fi
+echo "  Using conda: $CONDA_CMD"
+
+# 3. Create conda env (CPU — works on Apple Silicon and Linux)
+if ! "$CONDA_CMD" env list | grep -q "^$CONDA_ENV "; then
+  echo "  Creating conda env '$CONDA_ENV' (CPU)..."
+  "$CONDA_CMD" env create -n "$CONDA_ENV" -f "$TTS_DIR/environment.yml"
+else
+  echo "  Conda env '$CONDA_ENV' already exists."
+fi
+
+# 4. Download ONNX models
+MODEL_DIR="$TTS_DIR/glados/models"
+mkdir -p "$MODEL_DIR"
+BASE_URL="https://github.com/dnhkng/GlaDOS/releases/download/0.1"
+for model in glados.onnx phomenizer_en.onnx; do
+  if [ ! -f "$MODEL_DIR/$model" ]; then
+    echo "  Downloading $model..."
+    curl -L --progress-bar "$BASE_URL/$model" -o "$MODEL_DIR/$model"
+  else
+    echo "  Model $model already present."
+  fi
+done
+
+echo "==> Done. Test with: glados-say start"
