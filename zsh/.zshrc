@@ -106,7 +106,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 # ===== CARGA DE MÓDULOS MODULARES (.ZSH) =====
-[[ -f "$ZDOTDIR_LOCAL/.zsh/aliases.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/aliases.zsh"
+[[ -f "$ZDOTDIR_LOCAL/.zsh/alias.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/alias.zsh"
 [[ -f "$ZDOTDIR_LOCAL/.zsh/functions.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh/functions.zsh"
 [[ -f "$ZDOTDIR_LOCAL/.zsh_scripts/profile-env.zsh" ]] && source "$ZDOTDIR_LOCAL/.zsh_scripts/profile-env.zsh"
 

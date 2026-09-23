@@ -32,3 +32,7 @@ alias glados-status='ps aux | grep -E "ollama|zeroclaw" | grep -v grep'
 alias glados-logs='tail -f /opt/glados/zeroclaw.out.log /opt/glados/zeroclaw.err.log'
 alias ai-logs='tail -f /opt/glados/ollama.out.log /opt/glados/ollama.err.log'
 alias ai-logs-all='tail -f /opt/glados/*.log'
+
+
+# --- Markdown ---
+alias md='glow --pager'
