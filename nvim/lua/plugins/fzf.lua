@@ -68,10 +68,10 @@ M.plugin = function()
 
   local opts = {
     files = {
-      fd_opts = '--color=never --type f --hidden --follow --exclude .git --exclude .git/**',
+      fd_opts = '--color=never --type f --hidden --follow --exclude .git',
     },
     grep = {
-      rg_opts = '--column --line-number --hidden --glob=!.git --glob=!.git/**',
+      rg_opts = '--column --line-number --hidden --glob=!.git',
     },
   }
 

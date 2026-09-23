@@ -1,0 +1,115 @@
+{
+  "document": {
+    "block_prefix": "\n",
+    "block_suffix": "\n",
+    "color": "#c0caf5",
+    "background_color": "#24283b",
+    "margin": 2
+  },
+  "block_quote": {
+    "indent": 1,
+    "indent_token": "┃ ",
+    "color": "#565f89"
+  },
+  "paragraph": {},
+  "list": {
+    "level_indent": 2
+  },
+  "heading": {
+    "block_suffix": "\n",
+    "bold": true,
+    "color": "#7aa2f7"
+  },
+  "h1": {
+    "prefix": "# ",
+    "color": "#bb9af7",
+    "bold": true,
+    "upper_case": false
+  },
+  "h2": {
+    "prefix": "## ",
+    "color": "#7aa2f7",
+    "bold": true
+  },
+  "h3": {
+    "prefix": "### ",
+    "color": "#7dcfff"
+  },
+  "h4": {
+    "prefix": "#### ",
+    "color": "#9ece6a"
+  },
+  "h5": {
+    "prefix": "##### ",
+    "color": "#e0af68"
+  },
+  "h6": {
+    "prefix": "###### ",
+    "color": "#ff9e64"
+  },
+  "text": {
+    "color": "#c0caf5"
+  },
+  "strikethrough": {
+    "crossed_out": true
+  },
+  "emph": {
+    "italic": true,
+    "color": "#9d7cd8"
+  },
+  "strong": {
+    "bold": true,
+    "color": "#e0af68"
+  },
+  "hr": {
+    "color": "#364a82",
+    "format": "\n─────────────────────────────────────────\n"
+  },
+  "item": {
+    "block_prefix": "• "
+  },
+  "enumeration": {
+    "block_prefix": ". "
+  },
+  "task": {
+    "ticked": "✓",
+    "unticked": "○"
+  },
+  "link": {
+    "color": "#7aa2f7",
+    "underline": true
+  },
+  "link_text": {
+    "color": "#7dcfff",
+    "bold": true
+  },
+  "image_text": {
+    "color": "#565f89",
+    "format": "Image: {{.text}} "
+  },
+  "code": {
+    "color": "#9ece6a",
+    "background_color": "#1f2335"
+  },
+  "code_block": {
+    "color": "#c0caf5",
+    "background_color": "#1f2335",
+    "margin": 1,
+    "chroma_style": "tokyonight-storm"
+  },
+  "table": {
+    "center_separator": "┼",
+    "column_separator": "│",
+    "row_separator": "─"
+  },
+  "definition_list": {},
+  "definition_term": {
+    "bold": true,
+    "color": "#bb9af7"
+  },
+  "definition_description": {
+    "block_prefix": "\n🠶 "
+  },
+  "html_block": {},
+  "html_span": {}
+}

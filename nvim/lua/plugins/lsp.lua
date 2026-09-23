@@ -27,7 +27,6 @@ local ensure_installed = {
   'emmet_ls',
   'eslint',
   'firefox-debug-adapter',
-  'glint',
   'go-debug-adapter',
   'gopls',
   'graphql',
@@ -84,10 +83,10 @@ local diagnostic_config = {
   },
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = '!!!',
-      [vim.diagnostic.severity.WARN] = '!!',
-      [vim.diagnostic.severity.INFO] = '?',
-      [vim.diagnostic.severity.HINT] = '!',
+      [vim.diagnostic.severity.ERROR] = '!!',
+      [vim.diagnostic.severity.WARN] = '! ',
+      [vim.diagnostic.severity.INFO] = '? ',
+      [vim.diagnostic.severity.HINT] = '~ ',
     },
   },
 }
@@ -278,7 +277,7 @@ M.plugin = function()
   end
 
   require('mason').setup(mason_opts)
-  require('mason-lspconfig').setup({ automatic_enable = { exclude = { 'efm' } } })
+  require('mason-lspconfig').setup({ automatic_enable = { exclude = { 'efm', 'glint', 'snyk_ls' } } })
   require('mason-tool-installer').setup(opts)
   require('plugins.mason.updates').setup()
 
