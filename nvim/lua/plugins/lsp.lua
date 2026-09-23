@@ -53,7 +53,7 @@ local ensure_installed = {
   'tflint',
   'tofu_ls',
   'tombi',
-  'ts_ls',
+  'tsc',
   'yamlls',
 }
 
@@ -176,13 +176,9 @@ local lsp_autocompletion_fn = function(args)
   })
 end
 
-local lsp_highlight_fn = function(event)
+local lsp_highlight_fn = function()
   vim.lsp.buf.clear_references()
-  CMD.aucmd('lsp-highlight', {
-    {
-      buffer = event.buf,
-    },
-  })
+  pcall(vim.api.nvim_del_augroup_by_name, 'lsp-highlight')
 end
 
 local lsp_navigation_fn = function(event)
@@ -232,14 +228,14 @@ local lsp_navigation_fn = function(event)
   local client = vim.lsp.get_client_by_id(event.data.client_id)
 
   if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-    CMD.aucmd('lsp-hightlight', {
+    CMD.aucmd('lsp-highlight', {
       {
         event = { 'CursorHold', 'CursorHoldI' },
         buffer = event.buf,
-        callback = vim.lsp.buf.document_highlight,
+        callback = function() pcall(vim.lsp.buf.document_highlight) end,
       },
       {
-        event = { 'CursorHold', 'CursorHoldI' },
+        event = 'CursorMoved',
         buffer = event.buf,
         callback = vim.lsp.buf.clear_references,
       },
