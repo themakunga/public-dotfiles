@@ -1,0 +1,4 @@
+# Glow configuration — Tokyo Night Storm
+style: "~/.config/glow/tokyo-night-storm.json"
+pager: true
+width: 120
