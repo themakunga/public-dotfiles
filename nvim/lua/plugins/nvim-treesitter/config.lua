@@ -24,7 +24,6 @@ M.parsers = {
   -- Config
   'ini',
   'json',
-  'jsonc',
   'nginx',
   'toml',
   'yaml',
