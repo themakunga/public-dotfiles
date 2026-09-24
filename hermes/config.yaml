@@ -1,0 +1,17 @@
+# Hermes Agent — plantilla de configuración pública
+# Copiar con: install -m 600 config.yaml ~/.config/hermes/config.yaml
+#
+# IMPORTANTE: completar proveedor y modelo con 'hbox setup'.
+# No añadir credenciales, tokens ni contraseñas en este archivo.
+# Los secretos van en dashboard.env (0600) y en la autenticación interna de Hermes.
+
+provider: "" # chatgpt | anthropic | openai | azure | ...
+model: "" # Completar tras seleccionar proveedor con hbox setup
+
+# Personalidad del agente (GLaDOS)
+soul_path: /opt/data/SOUL.md
+
+# Directorio de datos: autenticación, memoria, historial (privado, fuera del repo)
+hermes_home: /opt/data
+
+log_level: info

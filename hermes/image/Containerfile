@@ -1,0 +1,57 @@
+# Hermes AI Agent + Obsidian oficial ARM64
+# Imagen: localhost/hermes-obsidian:<fecha>
+#
+# PREREQUISITO: autenticarse antes de construir:
+#   podman login ghcr.io -u <github_user> -p <github_pat>
+#
+# Build:
+#   podman build --arch arm64 \
+#     -t localhost/hermes-obsidian:$(date +%Y-%m-%d) \
+#     ~/.public-dotfiles/hermes/image
+#
+# La imagen base incluye Hermes, s6-overlay y sus dependencias.
+# Esta capa añade Obsidian, la sesión gráfica virtual y VNC.
+
+# ── Base: Hermes Agent ────────────────────────────────────────────────
+# Fijar por digest después del primer pull exitoso:
+#   podman image inspect ghcr.io/nousresearch/hermes-agent:latest \
+#     --format '{{.Digest}}'
+# Luego sustituir :latest por @sha256:<digest>
+FROM ghcr.io/nousresearch/hermes-agent:latest
+
+# ── Sesión gráfica + VNC ──────────────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      xvfb \
+      x11vnc \
+      openbox \
+      libgbm1 \
+      libasound2 \
+      libx11-xcb1 \
+      libxcb1 \
+      libxss1 \
+      libxtst6 \
+      wget \
+      ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# ── Obsidian 1.13.7 ARM64 ─────────────────────────────────────────────
+# Distribución oficial: tarball (no existe .deb arm64 en v1.13.7).
+# SHA256: verificar contra https://github.com/obsidianmd/obsidian-releases/releases/tag/v1.13.7
+# antes de construir la imagen en producción.
+ARG OBSIDIAN_VERSION=1.13.7
+ARG OBSIDIAN_SHA256=PENDIENTE_OBTENER_DE_RELEASE_PAGE
+RUN wget -q -O /tmp/obsidian.tar.gz \
+      "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/obsidian-${OBSIDIAN_VERSION}-arm64.tar.gz" \
+    && echo "${OBSIDIAN_SHA256}  /tmp/obsidian.tar.gz" | sha256sum -c - \
+    && mkdir -p /opt/obsidian \
+    && tar xzf /tmp/obsidian.tar.gz -C /opt/obsidian --strip-components=1 \
+    && rm /tmp/obsidian.tar.gz \
+    && ln -sf /opt/obsidian/obsidian /usr/local/bin/obsidian
+
+# ── s6: servicios gráficos adicionales ───────────────────────────────
+# Requiere s6-overlay v3 en la imagen base (directorio /etc/s6-overlay/).
+# Si la base usa v2 (services.d/), mover estos archivos a /etc/services.d/.
+COPY s6-services/ /etc/s6-overlay/s6-rc.d/
+
+# Puertos: dashboard Hermes (9119), VNC (5901)
+EXPOSE 9119 5901

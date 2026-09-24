@@ -1,0 +1,5 @@
+#!/command/execlineb -P
+# Gestor de ventanas mínimo para Obsidian
+importas -D "" DISPLAY DISPLAY
+export DISPLAY :1
+exec openbox --config-file /etc/openbox/rc.xml

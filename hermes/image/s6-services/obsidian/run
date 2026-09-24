@@ -1,0 +1,7 @@
+#!/command/execlineb -P
+# Obsidian: mantener abierto para que el CLI oficial funcione.
+# El vault se registra manualmente por VNC la primera vez.
+# NOTA: si Electron falla por sandbox/namespaces, revisar los logs
+# con 'podman logs hermes' y NO agregar --no-sandbox automáticamente.
+export DISPLAY :1
+exec /usr/local/bin/obsidian --disable-gpu

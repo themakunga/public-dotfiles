@@ -1,0 +1,11 @@
+#!/command/execlineb -P
+# VNC sobre Xvfb en loopback (5901).
+# Contraseña almacenada en /opt/config/obsidian/vnc.pass (generada con hbox).
+# Expuesto solo a 127.0.0.1 via el Quadlet — acceso por túnel SSH.
+exec x11vnc \
+  -display :1 \
+  -rfbport 5901 \
+  -rfbauth /opt/config/obsidian/vnc.pass \
+  -forever \
+  -loop \
+  -noxdamage
