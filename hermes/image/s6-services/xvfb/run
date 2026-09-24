@@ -1,0 +1,4 @@
+#!/command/execlineb -P
+# Pantalla virtual para Obsidian y Openbox
+# :1 = DISPLAY, 1280x800x24 cubre la UI de Obsidian
+exec Xvfb :1 -screen 0 1280x800x24 -ac

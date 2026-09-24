@@ -1,0 +1,53 @@
+# Hermes AI Agent — Quadlet de usuario
+# Instalar en: ~/.config/containers/systemd/hermes.container (como usuario hermes)
+# Recargar: systemctl --user daemon-reload && systemctl --user start hermes.service
+#
+# NO usar systemctl enable: Quadlet procesa [Install] y linger arranca el gestor
+# del usuario al boot sin necesidad de enable manual.
+
+[Unit]
+Description=Hermes AI Agent con Obsidian
+After=local-fs.target network-online.target
+Wants=network-online.target
+
+[Container]
+# Actualizar Image= con el tag o digest de la imagen construida localmente.
+# Fijar por digest para reproducibilidad:
+#   podman image inspect localhost/hermes-obsidian:2026-09-23 --format '{{.Digest}}'
+Image=localhost/hermes-obsidian:2026-09-23
+ContainerName=hermes
+AutoUpdate=disabled
+
+# ── Volúmenes ──────────────────────────────────────────────────────────
+# Z = relabel SELinux; eliminar :Z si el host no usa SELinux (NixOS sin SELinux: OK)
+Volume=%h/.config/hermes:/opt/data:Z
+Volume=%h/.config/obsidian:/opt/config/obsidian:Z
+Volume=%h/vault:/workspace:Z
+
+# ── Namespace de usuario ───────────────────────────────────────────────
+# s6 arranca como uid 0 dentro del user namespace de Podman rootless.
+# keep-id mapea uid 10000 del contenedor al uid del usuario hermes en el host.
+UserNS=keep-id:uid=10000,gid=10000
+
+# ── Puertos (solo loopback) ────────────────────────────────────────────
+# Acceso desde la LAN mediante túnel SSH:
+#   ssh -N -L 9119:127.0.0.1:9119 -L 5901:127.0.0.1:5901 nicolas@aperture-science.local
+PublishPort=127.0.0.1:9119:9119
+PublishPort=127.0.0.1:5901:5901
+
+# ── Variables de entorno ───────────────────────────────────────────────
+# dashboard.env contiene HERMES_DASHBOARD_BASIC_AUTH_* (privado, 0600)
+EnvironmentFile=%h/.config/hermes/dashboard.env
+Environment=XDG_CONFIG_HOME=/opt/config
+
+# ── Seguridad ──────────────────────────────────────────────────────────
+# Sin --privileged, sin red del host, sin socket Docker/Podman.
+# El sandbox de Electron se conserva; no añadir --no-sandbox.
+
+[Service]
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=120
+
+[Install]
+WantedBy=default.target
