@@ -92,6 +92,9 @@ export PNPM_HOME="${HOME}/.local/share/pnpm"
 # pipx / local bin
 [[ -d "${HOME}/.local/bin" ]] && path=($path "${HOME}/.local/bin")
 
+# scripts personales (jira-start, etc.)
+[[ -d "${HOME}/scripts" ]] && path=($path "${HOME}/scripts")
+
 # Condicional por Hostname (Rancher Desktop)
 if [[ "$HOST" == "outer-heaven.local" || "$HOSTNAME" == "outer-heaven.local" ]]; then
   [[ -d "${HOME}/.rd/bin" ]] && path=("${HOME}/.rd/bin" $path)
