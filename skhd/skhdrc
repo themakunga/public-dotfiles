@@ -1,0 +1,15 @@
+# Focus with Option + hjkl; move with Shift + Option + hjkl.
+alt - h : yabai -m window --focus west
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - l : yabai -m window --focus east
+
+shift + alt - h : yabai -m window --warp west
+shift + alt - j : yabai -m window --warp south
+shift + alt - k : yabai -m window --warp north
+shift + alt - l : yabai -m window --warp east
+
+shift + alt - 1 : yabai -m window --display 1; yabai -m display --focus 1
+shift + alt - 2 : yabai -m window --display 2; yabai -m display --focus 2
+shift + alt - 0 : yabai -m space --balance
+shift + alt - space : yabai -m window --toggle float
