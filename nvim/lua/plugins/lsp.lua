@@ -1,14 +1,30 @@
 local M = {}
 
 local kind_icons = {
-  Text          = '󰉿', Method      = '󰆧', Function    = '󰊕',
-  Constructor   = '',  Field       = '󰜢', Variable    = '󰀫',
-  Class         = '󰠱', Interface   = '',  Module      = '',
-  Property      = '󰜢', Unit        = '󰑭', Value       = '󰎠',
-  Enum          = '',  Keyword     = '󰌋', Snippet     = '',
-  Color         = '󰏘', File        = '󰈙', Reference   = '󰈇',
-  Folder        = '󰉋', EnumMember  = '',  Constant    = '󰏿',
-  Struct        = '󰙅', Event       = '',  Operator    = '󰆕',
+  Text = '󰉿',
+  Method = '󰆧',
+  Function = '󰊕',
+  Constructor = '',
+  Field = '󰜢',
+  Variable = '󰀫',
+  Class = '󰠱',
+  Interface = '',
+  Module = '',
+  Property = '󰜢',
+  Unit = '󰑭',
+  Value = '󰎠',
+  Enum = '',
+  Keyword = '󰌋',
+  Snippet = '',
+  Color = '󰏘',
+  File = '󰈙',
+  Reference = '󰈇',
+  Folder = '󰉋',
+  EnumMember = '',
+  Constant = '󰏿',
+  Struct = '󰙅',
+  Event = '',
+  Operator = '󰆕',
   TypeParameter = '',
 }
 
@@ -128,9 +144,9 @@ local lsp_autocompletion_fn = function(args)
   vim.lsp.completion.enable(true, client.id, args.buf, {
     autotrigger = true,
     convert = function(item)
-      local kind_num  = item.kind or 1
+      local kind_num = item.kind or 1
       local kind_name = vim.lsp.protocol.CompletionItemKind[kind_num] or 'Text'
-      local icon      = kind_icons[kind_name] or '?'
+      local icon = kind_icons[kind_name] or '?'
       return {
         abbr = item.label,
         kind = icon .. ' ' .. kind_name,
@@ -146,25 +162,33 @@ local lsp_autocompletion_fn = function(args)
     {
       mode = 'i',
       motion = '<CR>',
-      cmd = function() return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>' end,
+      cmd = function()
+        return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>'
+      end,
       opts = { buffer = buf, expr = true, desc = 'Completion: confirmar' },
     },
     {
       mode = 'i',
       motion = '<Tab>',
-      cmd = function() return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>' end,
+      cmd = function()
+        return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
+      end,
       opts = { buffer = buf, expr = true, desc = 'Completion: siguiente' },
     },
     {
       mode = 'i',
       motion = '<S-Tab>',
-      cmd = function() return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>' end,
+      cmd = function()
+        return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
+      end,
       opts = { buffer = buf, expr = true, desc = 'Completion: anterior' },
     },
     {
       mode = 'i',
       motion = '<C-Space>',
-      cmd = function() vim.lsp.completion.trigger() end,
+      cmd = function()
+        vim.lsp.completion.trigger()
+      end,
       opts = { buffer = buf, desc = 'Completion: trigger manual' },
     },
     {
@@ -232,7 +256,9 @@ local lsp_navigation_fn = function(event)
       {
         event = { 'CursorHold', 'CursorHoldI' },
         buffer = event.buf,
-        callback = function() pcall(vim.lsp.buf.document_highlight) end,
+        callback = function()
+          pcall(vim.lsp.buf.document_highlight)
+        end,
       },
       {
         event = 'CursorMoved',
