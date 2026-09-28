@@ -10,7 +10,6 @@ M.plugin = function()
   end
 
   require('trouble').setup()
-
   KM.bulk_map({
     {
       motion = '<leader>xx',

@@ -27,6 +27,7 @@ local plugins = {
   'sort',
   'tmux_nvim',
   'toggle-term',
+  'trouble',
   'nvim-treesitter',
   'gitblame',
   'lazygit',
