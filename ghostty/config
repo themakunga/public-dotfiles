@@ -7,17 +7,8 @@ palette = 8=#414868
 cursor-text = #24283b
 selection-background = #2e3c64
 
-# Nix mantiene esta ruta apuntando al wallpaper del host.
-background-image = ~/.config/wallpapers/current
-background-image-opacity = 0.25
-background-image-fit = cover
-
 macos-titlebar-style = native
 macos-non-native-fullscreen = true
 window-decoration = true
-
-# Transparencia leve y márgenes compartidos con WezTerm.
-background-opacity = 0.9
-background-blur = 10
 window-padding-x = 10
 window-padding-y = 10
