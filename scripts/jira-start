@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+# jira-start — Iniciar desarrollo desde ticket Jira
+#
+# Uso: jira-start PROJ-123
+#
+# Qué hace:
+#   1. Detecta si el repo es GitHub o GitLab (cloud o self-hosted)
+#   2. Obtiene datos del ticket (título, prioridad, fecha límite, descripción)
+#   3. Crea la branch: feature/PROJ-123-titulo-slugificado
+#   4. Asigna el ticket al usuario actual en Jira
+#   5. Detecta tecnologías del repo (go, node, docker, etc.)
+#   6. Crea o actualiza todo.txt con las tareas del ticket (formato todotxt.org)
+#
+# Prereqs: jira (ankitpokhrel/jira-cli), git
+# Opcional: jq (mejor parsing — fallback a grep si no está)
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+TICKET="${1:-}"
+TODAY=$(date +%Y-%m-%d)
+
+# ── Colores ───────────────────────────────────────────────────────────────────
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
+BLUE='\033[0;34m'; BOLD='\033[1m'; NC='\033[0m'
+info()    { printf "${BLUE}→${NC} %s\n" "$*"; }
+ok()      { printf "${GREEN}✓${NC} %s\n" "$*"; }
+warn()    { printf "${YELLOW}⚠${NC}  %s\n" "$*"; }
+die()     { printf "${RED}✗${NC} %s\n" "$*" >&2; exit 1; }
+
+# ── 0. Prereqs ────────────────────────────────────────────────────────────────
+command -v jira &>/dev/null || die "jira-cli no encontrado. Ver README para instalar."
+command -v git  &>/dev/null || die "git no encontrado."
+git rev-parse --git-dir &>/dev/null || die "No estás dentro de un repositorio git."
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+# ── 1. Ticket ─────────────────────────────────────────────────────────────────
+[[ -z "$TICKET" ]] && die "Uso: jira-start PROJ-123"
+[[ "$TICKET" =~ ^[A-Z]+-[0-9]+$ ]] || die "Formato inválido: '$TICKET'. Esperado: PROJ-123"
+
+# ── 2. Plataforma ─────────────────────────────────────────────────────────────
+REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
+PLATFORM="unknown"
+if   [[ "$REMOTE_URL" == *"github.com"* ]];  then PLATFORM="github"
+elif [[ "$REMOTE_URL" == *"gitlab.com"* ]];  then PLATFORM="gitlab-cloud"
+elif [[ -f "$HOME/.config/claude-skills/gitlab-hosts" ]]; then
+  while IFS= read -r host; do
+    [[ -z "$host" || "$host" == \#* ]] && continue
+    if [[ "$REMOTE_URL" == *"$host"* ]]; then PLATFORM="gitlab-selfhosted"; break; fi
+  done < "$HOME/.config/claude-skills/gitlab-hosts"
+fi
+info "Plataforma: $PLATFORM | Repo: $(basename "$REPO_ROOT")"
+
+# ── 3. Datos del ticket ────────────────────────────────────────────────────────
+info "Obteniendo $TICKET..."
+
+ISSUE_RAW=$(jira issue view "$TICKET" --plain 2>/dev/null) \
+  || die "No se pudo obtener el ticket $TICKET. ¿Está configurado? Ejecuta: jira init"
+
+# Extraer campos — jira-cli --plain usa alineación de tabla; grep el label al inicio de línea
+_field() { echo "$ISSUE_RAW" | grep -i "^\s*${1}" | sed "s/^\s*${1}[[:space:]]*//" | head -1 | xargs; }
+
+TITLE=$(_field "SUMMARY")
+PRIORITY=$(_field "PRIORITY")
+DUE=$(_field "DUE")
+
+# Si jq está disponible, intentar JSON para mejor extracción de descripción
+TASKS=()
+if command -v jq &>/dev/null; then
+  ISSUE_JSON=$(jira issue view "$TICKET" 2>/dev/null || echo "")
+  # Extraer bullet points del campo de descripción si viene como JSON en algún formato
+  # Fall back: parsear --plain igualmente
+fi
+
+# Extraer tareas: líneas con bullet o numeración en la sección DESCRIPTION de --plain
+DESC_BLOCK=$(echo "$ISSUE_RAW" | awk '/^DESCRIPTION/,0' | tail -n +2)
+while IFS= read -r line; do
+  clean=$(echo "$line" | sed 's/^\s*[-*•]\s*//' | sed 's/^\s*[0-9]\+\.\s*//' | xargs)
+  [[ -n "$clean" ]] && TASKS+=("$clean")
+done < <(echo "$DESC_BLOCK" | grep -E '^\s*[-*•]|^\s*[0-9]+\.' | head -15)
+
+# Fallback: usar el título como única tarea
+[[ ${#TASKS[@]} -eq 0 ]] && TASKS=("$TITLE")
+
+# ── 4. Mapear prioridad → todo.txt ────────────────────────────────────────────
+case "${PRIORITY:-Medium}" in
+  Highest|Critical) PRIO_CHAR="A" ;;
+  High)             PRIO_CHAR="B" ;;
+  Medium)           PRIO_CHAR="C" ;;
+  Low)              PRIO_CHAR="D" ;;
+  Lowest)           PRIO_CHAR="E" ;;
+  *)                PRIO_CHAR="C" ;;
+esac
+
+DUE_TAG=""
+[[ -n "${DUE:-}" && "$DUE" != "n/a" ]] && DUE_TAG=" due:$DUE"
+
+# ── 5. Crear branch ────────────────────────────────────────────────────────────
+SLUG=$(printf '%s' "$TITLE" \
+  | tr '[:upper:]' '[:lower:]' \
+  | sed 's/[^a-z0-9 -]//g; s/ \+/-/g; s/-\+/-/g' \
+  | cut -c1-45 \
+  | sed 's/-$//')
+BRANCH="feature/${TICKET}-${SLUG}"
+
+if git show-ref --verify --quiet "refs/heads/$BRANCH" 2>/dev/null; then
+  warn "Branch '$BRANCH' ya existe — cambiando"
+  git switch "$BRANCH"
+else
+  info "Creando branch: $BRANCH"
+  git switch -c "$BRANCH"
+  ok "Branch creada: $BRANCH"
+fi
+
+# ── 6. Asignar ticket ─────────────────────────────────────────────────────────
+ME=$(jira me 2>/dev/null | xargs || echo "")
+if [[ -n "$ME" ]]; then
+  jira issue assign "$TICKET" "$ME" &>/dev/null \
+    && ok "Ticket asignado a: $ME" \
+    || warn "No se pudo asignar el ticket (continúa de todas formas)"
+else
+  warn "No se pudo obtener usuario jira — asignar manualmente"
+fi
+
+# ── 7. Detectar tech tags ─────────────────────────────────────────────────────
+TECH_TAGS=()
+[[ -f "$REPO_ROOT/go.mod" ]]               && TECH_TAGS+=("+go")
+[[ -f "$REPO_ROOT/package.json" ]]         && TECH_TAGS+=("+nodejs")
+[[ -f "$REPO_ROOT/Cargo.toml" ]]           && TECH_TAGS+=("+rust")
+[[ -f "$REPO_ROOT/requirements.txt" || -f "$REPO_ROOT/pyproject.toml" ]] && TECH_TAGS+=("+python")
+[[ -f "$REPO_ROOT/pom.xml" || -f "$REPO_ROOT/build.gradle" ]]            && TECH_TAGS+=("+java")
+[[ -f "$REPO_ROOT/Dockerfile" || -f "$REPO_ROOT/docker-compose.yml" ]]   && TECH_TAGS+=("+docker")
+[[ -f "$REPO_ROOT/flake.nix" ]] || ls "$REPO_ROOT"/*.nix &>/dev/null     && TECH_TAGS+=("+nix")
+[[ -d "$REPO_ROOT/terraform" ]] || ls "$REPO_ROOT"/*.tf &>/dev/null       && TECH_TAGS+=("+terraform")
+[[ -f "$REPO_ROOT/Makefile" ]]             && TECH_TAGS+=("+make")
+
+TECH_STR=""
+[[ ${#TECH_TAGS[@]} -gt 0 ]] && TECH_STR=" ${TECH_TAGS[*]}"
+
+# ── 8. Actualizar todo.txt ────────────────────────────────────────────────────
+TODO_FILE="$REPO_ROOT/todo.txt"
+ADDED=0
+
+if [[ -f "$TODO_FILE" ]] && grep -q "$TICKET" "$TODO_FILE" 2>/dev/null; then
+  warn "Ticket $TICKET ya está en todo.txt — omitiendo"
+else
+  for task in "${TASKS[@]}"; do
+    [[ -z "$task" ]] && continue
+    printf '(%s) %s %s %s%s%s\n' \
+      "$PRIO_CHAR" "$TODAY" "$task" "$TICKET" "$DUE_TAG" "$TECH_STR" \
+      >> "$TODO_FILE"
+    ADDED=$((ADDED + 1))
+  done
+  [[ $ADDED -gt 0 ]] && ok "todo.txt: $ADDED tarea(s) agregadas"
+fi
+
+# ── 9. Reporte ────────────────────────────────────────────────────────────────
+echo ""
+printf "${BOLD}━━━ jira-start ━━━${NC}\n"
+printf "  Ticket  : %s — %s\n" "$TICKET" "$TITLE"
+printf "  Branch  : %s\n"      "$BRANCH"
+printf "  Prio    : (%s) %s%s\n" "$PRIO_CHAR" "${PRIORITY:-?}" "$DUE_TAG"
+printf "  Tech    : %s\n"      "${TECH_STR:-ninguno detectado}"
+printf "  Tareas  : %d en todo.txt\n" "$ADDED"
+echo ""
+printf "  ${BOLD}Próximos pasos:${NC}\n"
+printf "  nvim .                        # abrir editor\n"
+printf "  git push -u origin %s\n" "$BRANCH"
