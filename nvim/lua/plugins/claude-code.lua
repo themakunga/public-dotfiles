@@ -29,7 +29,12 @@ M.plugin = function()
     { mode = 'n', motion = '<leader>Ac', cmd = '<cmd>ClaudeCode<cr>', opts = { desc = 'Toggle Claude' } },
     { mode = 'n', motion = '<M-c>', cmd = '<cmd>ClaudeCode<cr>', opts = { desc = 'Toggle Claude (global)' } },
     -- Desde dentro del terminal: <C-\><C-n> sale de insert-mode sin enviar Esc al proceso
-    { mode = 't', motion = '<M-c>', cmd = '<C-\\><C-n><cmd>ClaudeCode<cr>', opts = { desc = 'Ocultar Claude sin cerrar sesión' } },
+    {
+      mode = 't',
+      motion = '<M-c>',
+      cmd = '<C-\\><C-n><cmd>ClaudeCode<cr>',
+      opts = { desc = 'Ocultar Claude sin cerrar sesión' },
+    },
     { mode = 'n', motion = '<leader>Af', cmd = '<cmd>ClaudeCodeFocus<cr>', opts = { desc = 'Focus Claude' } },
     { mode = 'n', motion = '<leader>Ar', cmd = '<cmd>ClaudeCode --resume<cr>', opts = { desc = 'Resume Claude' } },
     { mode = 'n', motion = '<leader>AC', cmd = '<cmd>ClaudeCode --continue<cr>', opts = { desc = 'Continue Claude' } },
@@ -56,6 +61,53 @@ M.plugin = function()
           buffer = event.buf,
           desc = 'Add file to Claude',
           silent = true,
+        })
+      end,
+    },
+    {
+      event = 'TermOpen',
+      pattern = 'term://*claude*',
+      callback = function(event)
+        KM.bulk_map({
+          -- Salir del modo terminal → normal mode
+          {
+            mode = 't',
+            motion = '<Esc>',
+            cmd = '<C-\\><C-n>',
+            opts = { desc = 'Salir modo terminal', buffer = event.buf, silent = true },
+          },
+          -- Navegar ventanas sin cerrar Claude (desde terminal mode)
+          {
+            mode = 't',
+            motion = '<C-w>h',
+            cmd = '<C-\\><C-n><C-w>h',
+            opts = { desc = 'Ventana izquierda', buffer = event.buf, silent = true },
+          },
+          {
+            mode = 't',
+            motion = '<C-w>j',
+            cmd = '<C-\\><C-n><C-w>j',
+            opts = { desc = 'Ventana abajo', buffer = event.buf, silent = true },
+          },
+          {
+            mode = 't',
+            motion = '<C-w>k',
+            cmd = '<C-\\><C-n><C-w>k',
+            opts = { desc = 'Ventana arriba', buffer = event.buf, silent = true },
+          },
+          {
+            mode = 't',
+            motion = '<C-w>l',
+            cmd = '<C-\\><C-n><C-w>l',
+            opts = { desc = 'Ventana derecha', buffer = event.buf, silent = true },
+          },
+          -- Cerrar el panel desde normal mode
+          {
+            mode = 'n',
+            motion = 'q',
+            cmd = '<cmd>close<cr>',
+            opts = { desc = 'Cerrar Claude', buffer = event.buf, silent = true },
+          },
         })
       end,
     },

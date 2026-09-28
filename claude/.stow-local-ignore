@@ -1,0 +1,5 @@
+# Archivos excluidos del stow — no llegan al home del usuario
+# Solo excluir archivos en el root del package (README suelto, etc.)
+# Los archivos dentro de .claude/ se stowan normalmente
+^README\.md$
+^\.stow-local-ignore$

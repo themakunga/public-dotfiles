@@ -37,6 +37,7 @@ local plugins = {
   'codecompanion',
   'claude-code',
   'codex',
+  'tennant',
 }
 
 vim.pack.add({
