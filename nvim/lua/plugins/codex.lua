@@ -8,15 +8,16 @@ local function is_codex_installed()
 end
 
 local function get_window_config()
-  local width = vim.o.columns
-  local height = math.floor(vim.o.lines * 0.38)
-  local row = vim.o.lines - height - 2
+  local width = math.floor(vim.o.columns * 0.85)
+  local height = math.floor(vim.o.lines * 0.80)
+  local row = math.floor((vim.o.lines - height) / 2)
+  local col = math.floor((vim.o.columns - width) / 2)
   return {
     relative = 'editor',
     width = width,
     height = height,
     row = row,
-    col = 0,
+    col = col,
     style = 'minimal',
     border = 'rounded',
     title = ' Codex ',

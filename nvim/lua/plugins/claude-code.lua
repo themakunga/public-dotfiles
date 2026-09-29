@@ -13,9 +13,13 @@ M.plugin = function()
     terminal = {
       provider = 'snacks',
       snacks_win_opts = {
-        position = 'bottom',
-        height = 0.38,
+        position = 'float',
+        width = 0.85,
+        height = 0.80,
         zindex = 50,
+        border = 'rounded',
+        title = ' Claude Code ',
+        title_pos = 'center',
       },
     },
   })

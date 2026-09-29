@@ -77,7 +77,9 @@ M.plugin = function()
       { '<leader>a', group = 'AI', icon = { icon = '󱚦', color = 'cyan' } },
 
       -- Claude Code
-      { '<leader>A', group = 'Claude', icon = { icon = '', color = 'purple' } },
+      { '<leader>A',  group = 'Claude',      icon = { icon = '', color = 'purple' } },
+      { '<leader>AC', group = 'Claude Code', icon = { icon = '', color = 'purple' } },
+      { '<leader>AX', group = 'Codex',       icon = { icon = '󱚦', color = 'cyan' } },
 
       -- Octo (GitHub)
       { '<leader>o', group = 'GitHub', icon = { icon = '', color = 'blue' } },
