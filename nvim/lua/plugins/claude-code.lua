@@ -14,10 +14,12 @@ M.plugin = function()
       provider = 'snacks',
       snacks_win_opts = {
         position = 'float',
-        width = 0.85,
-        height = 0.80,
+        width = 0.95,
+        height = 0.3,
+        row = 1, -- snacks: row=1 → top of window en el borde inferior (como toggleterm)
+        col = 0.5,
         zindex = 50,
-        border = 'rounded',
+        border = 'curved',
         title = ' Claude Code ',
         title_pos = 'center',
       },
