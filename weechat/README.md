@@ -18,12 +18,14 @@ additional authentication methods need explicit mapping before use.
 
 | Key | Action |
 | --- | --- |
-| Shift+Up / Down | Previous / next buffer |
-| Shift+Left / Right | Previous / next unread buffer |
+| Ctrl+P / N (also Shift+Up / Down) | Previous / next buffer |
+| Alt+P / N | Previous / next unread buffer |
 | Shift+Enter | Scroll to bottom |
 | Alt+End | Scroll to bottom if the terminal cannot distinguish Shift+Enter |
 | Alt+Shift+N | Toggle user list |
 | Alt+Shift+B | Toggle channel list |
+
+Shift+Left / Right stay available for tmux window navigation.
 
 The channel list is on the left, the user list on the right. Mouse clicks and
 scrolling are enabled. Exact RGB rendering depends on terminal support.
