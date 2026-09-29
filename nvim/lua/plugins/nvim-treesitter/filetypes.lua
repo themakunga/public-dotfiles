@@ -33,6 +33,20 @@ local function setup()
       ['.*/nginx/conf%.d/.*%.conf'] = 'nginx',
       ['.*/nginx/sites%-available/.*'] = 'nginx,',
       ['.*/nginx/sites%-enabled/.*'] = 'nginx,',
+
+      -- tmux
+      ['.*/tmux/.*%.conf'] = 'tmux',
+
+      -- hyprland
+      ['.*/hypr/.*%.conf'] = 'hyprlang',
+
+      -- ini-like configs
+      ['.*/btop/.*%.conf'] = 'dosini',
+      ['.*/weechat/.*%.conf'] = 'dosini',
+      ['.*/nchat/.*%.conf'] = 'dosini',
+
+      -- neofetch is bash
+      ['.*/neofetch/.*%.conf'] = 'bash',
     },
   })
 

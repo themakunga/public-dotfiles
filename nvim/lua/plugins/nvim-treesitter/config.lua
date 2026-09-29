@@ -22,9 +22,11 @@ M.parsers = {
   'nix',
 
   -- Config
+  'hyprlang',
   'ini',
   'json',
   'nginx',
+  'tmux',
   'toml',
   'yaml',
 
@@ -89,11 +91,13 @@ M.filetypes = {
   'nix',
 
   -- Configuration
+  'hyprlang',
   'json',
   'jsonc',
   'toml',
   'dosini',
   'nginx',
+  'tmux',
 
   -- YAML
   'yaml',
