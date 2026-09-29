@@ -17,11 +17,11 @@
       "src": "https://github.com/m4xshen/autoclose.nvim"
     },
     "avante.nvim": {
-      "rev": "34fefab79ac2bcf8430f40eca278f6ce55eea62a",
+      "rev": "421209b946d208b2ab27ca95378c2b0073188ae6",
       "src": "https://github.com/yetone/avante.nvim"
     },
     "bafa": {
-      "rev": "87968d01e72660826bce00f9956515bd1d0d5b74",
+      "rev": "9de396c78f56392b0d033ebd93c492d2fc8353eb",
       "src": "https://github.com/mistweaverco/bafa.nvim"
     },
     "blink.cmp": {
@@ -42,7 +42,7 @@
       "src": "https://github.com/coder/claudecode.nvim"
     },
     "codecompanion.nvim": {
-      "rev": "ff4a913c3bb6ace172edd2e4cf6cd1d43200aea0",
+      "rev": "77e14ffff1bea6cec6ad01397ffd5148a5c785ca",
       "src": "https://github.com/olimorris/codecompanion.nvim"
     },
     "conform.nvim": {
@@ -74,7 +74,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
-      "rev": "13bb178a299f7493dd64427a58e61904c4b58ecb",
+      "rev": "ec1b98d3f5f44a1cff1f2c3832af2f09c3d806ca",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "git-blame.nvim": {
@@ -126,7 +126,7 @@
       "src": "https://github.com/hedyhli/markdown-toc.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "137bd0feba2c1885545b6934d36f5e5aa6adb486",
+      "rev": "b3298993d55fa194279b5eb9dbfb3a43da65cadf",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-nvim-dap.nvim": {
@@ -218,11 +218,11 @@
       "src": "https://codeberg.org/mfussenegger/nvim-jdtls"
     },
     "nvim-lsp-file-operations": {
-      "rev": "0b939aff068c859b6f8cdbc3b3e676d038e6e15d",
+      "rev": "567b4c1ca93c1095f62774853c0906b234af8e99",
       "src": "https://github.com/antosha417/nvim-lsp-file-operations"
     },
     "nvim-lspconfig": {
-      "rev": "046b1a797af1effe8e0474b9af9657a3761ec58a",
+      "rev": "a9bb4d5f4276aa5cddc015faa3ecc5a7b5a26b14",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-nio": {
@@ -238,7 +238,7 @@
       "src": "https://github.com/nvim-tree/nvim-tree.lua"
     },
     "nvim-treesitter": {
-      "rev": "f603a2f4da48728f80257fb5fbb90145fd1dc173",
+      "rev": "728e031f6b11d03d1f0708b7dc4fb0f1d9c8a137",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -315,7 +315,7 @@
       "src": "https://github.com/nvim-telescope/telescope.nvim"
     },
     "tennant.nvim": {
-      "rev": "59cfa01f10730eaf7aa189c9e5544d8353a0ee41",
+      "rev": "f31b6ae01a439121b51f3d55c1bff76e25c62bec",
       "src": "https://github.com/themakunga/tennant.nvim"
     },
     "tmux.nvim": {
