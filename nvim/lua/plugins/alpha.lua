@@ -231,7 +231,7 @@ M.plugin = function()
 
   dashboard.section.buttons.val = {
     dashboard.button('f', '  Find file', ':FzfLua files <CR>'),
-    dashboard.button('g', '  Open LazyGit', ':Lazygit<CR>'),
+    dashboard.button('g', '  Open LazyGit', ':LazyGit <CR>'),
     dashboard.button('n', '  New file', ':ene <BAR> startinsert <CR>'),
     dashboard.button('r', '  Recent files', ':FzfLua oldfiles <CR>'),
     dashboard.button('g', '  Find text', ':FzfLua live_grep_native <CR>'),
