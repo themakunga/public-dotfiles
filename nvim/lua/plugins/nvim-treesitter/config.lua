@@ -49,6 +49,7 @@ M.parsers = {
   'python',
   'query',
   'sql',
+  'todotxt',
   'typst',
   'vim',
   'vimdoc',
@@ -121,6 +122,7 @@ M.filetypes = {
   'lua',
   'python',
   'sql',
+  'todotxt',
   'vim',
 }
 

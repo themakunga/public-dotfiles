@@ -326,6 +326,10 @@
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
       "src": "https://github.com/folke/todo-comments.nvim"
     },
+    "todotxt.nvim": {
+      "rev": "1344867f9c03bb8eb36f0316d03a9ac3951dec78",
+      "src": "https://github.com/phrmendes/todotxt.nvim"
+    },
     "toggleterm.nvim": {
       "rev": "9a88eae817ef395952e08650b3283726786fb5fb",
       "src": "https://github.com/akinsho/toggleterm.nvim"
@@ -344,7 +348,8 @@
     },
     "tuxedo.nvim": {
       "rev": "65650b0ae3b1c3755a43306b07ada13bd78d47ac",
-      "src": "https://github.com/IogaMaster/tuxedo.nvim"
+      "src": "https://github.com/IogaMaster/tuxedo.nvim",
+      "version": "1.0.0 - 2.0.0"
     },
     "vim-tmux-navigator": {
       "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",

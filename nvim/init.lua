@@ -39,6 +39,8 @@ local plugins = {
   'claude-code',
   'codex',
   'tennant',
+  'tuxedo',
+  'todotxt',
 }
 
 vim.pack.add({

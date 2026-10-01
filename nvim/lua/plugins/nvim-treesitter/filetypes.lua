@@ -9,6 +9,9 @@ local function setup()
     },
 
     filename = {
+      ['todo.txt'] = 'todotxt',
+      ['done.txt'] = 'todotxt',
+
       -- Ollama
       ['Modelfile'] = 'modelfile',
       ['modelfile'] = 'modelfile',
