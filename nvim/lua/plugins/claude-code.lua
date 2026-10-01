@@ -19,7 +19,7 @@ M.plugin = function()
         row = 1, -- snacks: row=1 → top of window en el borde inferior (como toggleterm)
         col = 0.5,
         zindex = 50,
-        border = 'curved',
+        border = 'rounded',
         title = ' Claude Code ',
         title_pos = 'center',
       },

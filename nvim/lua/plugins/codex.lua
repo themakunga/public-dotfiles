@@ -19,7 +19,7 @@ local function get_window_config()
     row = row,
     col = col,
     style = 'minimal',
-    border = 'curved',
+    border = 'rounded',
     title = ' Codex ',
     title_pos = 'center',
   }
