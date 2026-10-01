@@ -40,6 +40,7 @@ M.parsers = {
   'zsh',
 
   -- Others
+  'java',
   'latex',
   'lua',
   'luadoc',
@@ -113,6 +114,7 @@ M.filetypes = {
   'typst',
 
   -- Misc
+  'java',
   'diff',
   'editorconfig',
   'gitignore',

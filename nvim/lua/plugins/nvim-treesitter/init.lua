@@ -11,6 +11,7 @@ local function setup_treesitter()
   end
 
   treesitter.setup({})
+  require('plugins.nvim-treesitter.argo').setup()
 
   treesitter.install(config.parsers)
 
