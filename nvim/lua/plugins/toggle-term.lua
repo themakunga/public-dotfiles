@@ -16,7 +16,7 @@ M.plugin = function()
     persist_mode = false,
 
     float_opts = {
-      border = 'curved', -- Bordes redondeados ('curved' es el equivalente en toggleterm)
+      border = 'rounded',
 
       width = math.floor(vim.o.columns * 0.95), -- 95% del ancho de la pantalla
       height = math.floor(vim.o.lines * 0.3), -- 30% del alto de la pantalla
