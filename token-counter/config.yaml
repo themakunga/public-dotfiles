@@ -1,0 +1,34 @@
+refresh_interval: 30s
+
+agents:
+  - id: claude
+    name: "Claude Code"
+    enabled: true
+    monthly_budget: 0
+    limits:
+      hourly: 100000
+      daily: 1000000
+      weekly: 5000000
+      monthly: 20000000
+
+  # vertex: alternative to "claude" for users routing through a Vertex/Cosmos gateway.
+  # Enable this and set enabled: false on "claude" to avoid double-counting.
+  - id: vertex
+    name: "Claude / Vertex"
+    enabled: false
+    monthly_budget: 0
+    limits:
+      hourly: 100000
+      daily: 1000000
+      weekly: 5000000
+      monthly: 20000000
+
+  - id: openai
+    name: "OpenAI / Codex"
+    enabled: true
+    monthly_budget: 0
+    limits:
+      hourly: 50000
+      daily: 500000
+      weekly: 2000000
+      monthly: 8000000
