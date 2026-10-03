@@ -41,6 +41,12 @@ local plugins = {
   'tennant',
   'tuxedo',
   'todotxt',
+  'tiny-cmdline',
+  'treesj',
+  'modificator-nvim',
+  'nvim-hlslens',
+  'nvim-chainsaw',
+  'tabout-nvim',
 }
 
 vim.pack.add({
