@@ -7,11 +7,11 @@ M.plugin = function()
     { src = 'https://github.com/kevinhwang91/nvim-hlslens' },
   })
 
-  if not Checker.check('nvim-hlslens') then
+  if not Checker.check('hlslens') then
     return
   end
 
-  require('nvim-hlslens').setup(opts)
+  require('hlslens').setup(opts)
 end
 
 return M

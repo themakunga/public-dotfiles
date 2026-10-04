@@ -4,10 +4,10 @@ local opts = {}
 
 M.plugin = function()
   vim.pack.add({
-    { src = 'https://github.com/mawkler/modificator.nvim' },
+    { src = 'https://github.com/mawkler/modicator.nvim' },
   })
 
-  if not Checker.check('modificator') then
+  if not Checker.check('modicator') then
     return
   end
 
@@ -17,7 +17,7 @@ M.plugin = function()
   o.number = true
   o.termguicolors = true
 
-  require('modificator').setup(opts)
+  require('modicator').setup(opts)
 end
 
 return M

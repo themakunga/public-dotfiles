@@ -13,7 +13,7 @@ M.plugin = function()
 
   require('chainsaw').setup(opts)
 
-  KM.bulk({
+  KM.map({
     mode = 'n',
     motion = '<leader>lg',
     cmd = require('chainsaw').variableLog,
