@@ -24,6 +24,10 @@ ehthumbs_vista.db
 .Trash-*
 .nfs*
 
+# --- Agentes IA ---
+# SOUL.md es privado (apunta al vault). Generado por Nix en activación.
+agent/SOUL.md
+
 # --- Información Sensible y Local ---
 *.env
 *.env.local
