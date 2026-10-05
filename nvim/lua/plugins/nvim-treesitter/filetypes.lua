@@ -50,6 +50,10 @@ local function setup()
 
       -- neofetch is bash
       ['.*/neofetch/.*%.conf'] = 'bash',
+
+      -- todo.txt format: any file with 'todo' or 'done' in the name
+      ['.*todo.*%.txt'] = 'todotxt',
+      ['.*done.*%.txt'] = 'todotxt',
     },
   })
 

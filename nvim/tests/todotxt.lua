@@ -15,6 +15,8 @@ require('todotxt').setup({})
 vim.cmd('filetype on')
 
 assert(vim.filetype.match({ filename = '/tmp/done.txt' }) == 'todotxt')
+assert(vim.filetype.match({ filename = '/tmp/work-todo.txt' }) == 'todotxt')
+assert(vim.filetype.match({ filename = '/tmp/done-work.txt' }) == 'todotxt')
 assert(vim.filetype.match({ filename = '/tmp/notes.txt' }) == 'text')
 vim.cmd.edit(home .. '/Documents/todo.txt')
 vim.api.nvim_buf_set_lines(0, 0, -1, false, { '(A) Test +project @home', 'x 2026-10-01 Done' })
