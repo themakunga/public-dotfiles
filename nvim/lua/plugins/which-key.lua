@@ -12,8 +12,11 @@ M.plugin = function()
   ---@module 'which-key'
   local wk = require('which-key')
 
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-s>', function() wk.show() end, { desc = 'Which-key' })
+
   local opts = {
     preset = 'helix',
+    win = { position = 'bottom' },
     delay = 300,
     icons = {
       mappings = vim.g.have_nerd_font,
