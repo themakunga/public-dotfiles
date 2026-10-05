@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# aws-sync — Regenera ~/.aws/{credentials,config} desde SOPS.
+# Lee todos los perfiles de aws.credentials y aws.config dinámicamente.
+# Uso: aws-sync [secrets_path]
+set -euo pipefail
+
+SECRETS="${1:-$HOME/Projects/personal/secrets/common.yaml}"
+[[ -f "$SECRETS" ]] || { echo "Error: $SECRETS no encontrado" >&2; exit 1; }
+
+# sops --output-format json convierte el YAML a JSON sin dependencias extra
+# Python stdlib json parsea el resultado directamente
+python3 - "$SECRETS" <<'PYEOF'
+import json, sys, os, subprocess
+
+secrets_path = sys.argv[1]
+raw = subprocess.check_output(['sops', '-d', '--output-type', 'json', secrets_path], text=True)
+aws   = json.loads(raw).get("aws", {})
+creds = aws.get("credentials", {})
+cfg   = aws.get("config", {})
+aws_dir = os.path.expanduser("~/.aws")
+os.makedirs(aws_dir, mode=0o700, exist_ok=True)
+
+# ~/.aws/credentials
+cred_path = os.path.join(aws_dir, "credentials")
+with open(cred_path, "w") as f:
+    for name, vals in creds.items():
+        f.write(f"[{name}]\n")
+        f.write(f"aws_access_key_id = {vals['access_key_id']}\n")
+        f.write(f"aws_secret_access_key = {vals['secret_access_key']}\n\n")
+os.chmod(cred_path, 0o600)
+
+# ~/.aws/config
+conf_path = os.path.join(aws_dir, "config")
+with open(conf_path, "w") as f:
+    for name, vals in cfg.items():
+        header = "[default]" if name == "default" else f"[profile {name}]"
+        f.write(f"{header}\n")
+        f.write(f"region = {vals.get('region', 'us-east-1')}\n")
+        f.write(f"output = {vals.get('output', 'json')}\n\n")
+os.chmod(conf_path, 0o600)
+
+profiles = list(creds.keys())
+print(f"Perfiles escritos: {', '.join(profiles)}")
+PYEOF
+
+aws sts get-caller-identity
