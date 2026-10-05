@@ -17,6 +17,7 @@ local plugins = {
   'oil',
   'lsp',
   'nvim-autopairs',
+  'nvim-lualine',
   'conform',
   'nvim-tree',
   'dressing',
