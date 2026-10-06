@@ -12,8 +12,7 @@ vim.filetype.add({
 ---@type vim.lsp.Config
 return {
   cmd = {
-    'docker-language-server',
-    'start',
+    'docker-langserver',
     '--stdio',
   },
 
