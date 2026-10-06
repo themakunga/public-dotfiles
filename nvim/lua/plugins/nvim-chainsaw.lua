@@ -15,7 +15,7 @@ M.plugin = function()
 
   KM.map({
     mode = 'n',
-    motion = '<leader>lg',
+    motion = '<leader>cL',
     cmd = require('chainsaw').variableLog,
     opts = { desc = 'Log variable' },
   })

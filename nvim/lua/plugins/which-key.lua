@@ -59,6 +59,7 @@ M.plugin = function()
       { '<leader>c', group = 'Code', mode = { 'n', 'x' }, icon = { icon = '', color = 'green' } },
       { '<leader>cs', group = 'Symbols' },
       { '<leader>cl', group = 'LSP' },
+      { '<leader>cL', desc = 'Log variable', icon = { icon = '', color = 'yellow' } },
 
       -- Debug / Bufferline extras
       { '<leader>d', group = 'Debug / Pin', icon = { icon = '', color = 'red' } },

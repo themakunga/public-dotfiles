@@ -33,20 +33,8 @@ M.init = function()
   CMD.usrcmd('PackagesUpdate', update_packages)
   CMD.usrcmd('PackagesDelete', delete_package)
 
-  KM.bulk_map({
-    {
-      mode = 'n',
-      motion = '<leader>Pd',
-      cmd = ':PackDeletePackage<CR>',
-      opts = { desc = 'Delete instaled package' },
-    },
-    {
-      mode = 'n',
-      motion = '<leader>Pu',
-      cmd = ':PackUpdatePackage<CR>',
-      opts = { desc = 'Update a single or multiple packages' },
-    },
-  })
+  -- keybindings removidos: <leader>Pd/<leader>Pu conflictaban con <leader>P (paste)
+  -- usar :PackagesDelete y :PackagesUpdate directamente
 end
 
 return M

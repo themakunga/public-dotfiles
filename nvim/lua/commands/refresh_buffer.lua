@@ -36,7 +36,7 @@ M.load = function()
   KM.bulk_map({
     {
       mode = 'n',
-      motion = '<leader>brr',
+      motion = '<leader>bR',
       cmd = function()
         vim.cmd('edit!')
         Log.info('Current buffer reloaded')
@@ -45,7 +45,7 @@ M.load = function()
     },
     {
       mode = 'n',
-      motion = '<leader>brc',
+      motion = '<leader>bC',
       cmd = function()
         vim.cmd('checktime')
       end,
