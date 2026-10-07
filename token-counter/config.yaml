@@ -1,14 +1,14 @@
 refresh_interval: 30s
 agents:
-    - id: claude
-      name: Claude Code
+    - id: vertex
+      name: Claude / Codeen
       enabled: true
       limits:
         hourly: 100000
         daily: 1000000
         weekly: 5000000
         monthly: 20000000
-      monthly_budget: 0
+      monthly_budget: 300
     - id: openai
       name: OpenAI / Codex
       enabled: true
