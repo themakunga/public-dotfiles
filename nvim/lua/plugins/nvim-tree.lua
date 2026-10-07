@@ -33,6 +33,19 @@ local function on_attach(bufnr)
       end,
       opts = opts('Open in File Explorer'),
     },
+    {
+      mode = 'n',
+      motion = 'gO',
+      cmd = function()
+        local node = api.tree.get_node_under_cursor()
+        if node then
+          local dir = node.type == 'directory' and node.absolute_path
+            or vim.fn.fnamemodify(node.absolute_path, ':h')
+          vim.ui.open(dir)
+        end
+      end,
+      opts = opts('Open containing folder in File Explorer'),
+    },
   })
 end
 
@@ -58,7 +71,23 @@ M.plugin = function()
 
     filters = {
       dotfiles = false,
-      custom = { '^\\.git$' },
+      custom = {
+        '^\\.git$',
+        -- macOS
+        '^\\.DS_Store$',
+        '^__MACOSX$',
+        '^\\.Spotlight-V100$',
+        '^\\.Trashes$',
+        '^\\.fseventsd$',
+        '^\\.VolumeIcon\\.icns$',
+        -- Windows
+        '^Thumbs\\.db$',
+        '^ehthumbs\\.db$',
+        '^Desktop\\.ini$',
+        -- Linux
+        '^\\.Trash-\\d+$',
+        '^\\.directory$',
+      },
     },
   }
 
