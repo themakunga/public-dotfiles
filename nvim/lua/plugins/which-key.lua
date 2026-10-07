@@ -16,7 +16,6 @@ M.plugin = function()
 
   local opts = {
     preset = 'helix',
-    win = { position = 'bottom' },
     delay = 300,
     icons = {
       mappings = vim.g.have_nerd_font,
