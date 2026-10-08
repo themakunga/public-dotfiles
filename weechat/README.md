@@ -22,6 +22,7 @@ additional authentication methods need explicit mapping before use.
 | Alt+P / N | Previous / next unread buffer |
 | Shift+Enter | Scroll to bottom |
 | Alt+End | Scroll to bottom if the terminal cannot distinguish Shift+Enter |
+| Alt+Shift+K | Open nick navigator |
 | Alt+Shift+N | Toggle user list |
 | Alt+Shift+B | Toggle channel list |
 

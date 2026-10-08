@@ -77,7 +77,8 @@ def main():
     write_private(destination / 'weechat.conf', ui)
     scripts = destination / 'python'
     scripts.mkdir(parents=True, exist_ok=True)
-    write_private(scripts / 'unread.py', Path(__file__).with_name('python').joinpath('unread.py').read_text())
+    for script in Path(__file__).with_name('python').glob('*.py'):
+        write_private(scripts / script.name, script.read_text())
 
 
 if __name__ == '__main__':

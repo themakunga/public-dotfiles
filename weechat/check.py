@@ -3,6 +3,8 @@
 import importlib.util
 from pathlib import Path
 import sys
+import subprocess
+import tempfile
 import types
 
 root = Path(__file__).parent
@@ -35,4 +37,14 @@ assert unread.target([2, 5, 8], 5, True) == 2
 assert unread.target([2, 5, 8], 8, False) == 2
 assert unread.target([2, 5, 8], 2, True) == 8
 assert unread.target([], 1, False) is None
-print('IRC translation and unread navigation: OK')
+with tempfile.TemporaryDirectory() as directory:
+    directory = Path(directory)
+    source = directory / 'halloy.toml'
+    source.write_text('[servers.example]\nserver = "localhost"\nnickname = "me"\n')
+    destination = directory / 'weechat'
+    subprocess.run([sys.executable, str(root / 'sync-halloy.py'),
+                    str(source), str(destination)], check=True)
+    for script in (root / 'python').glob('*.py'):
+        assert (destination / 'python' / script.name).read_bytes() == script.read_bytes()
+    assert (destination / 'python/nick_query.py').is_file()
+print('IRC translation, unread navigation and Python script deployment: OK')

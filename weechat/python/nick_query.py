@@ -1,7 +1,7 @@
 """
 nick_query.py — WeeChat nick navigator
 =======================================
-Alt+U  → abrir navegador de nicks del buffer actual
+Alt+Shift+K  → abrir navegador de nicks del buffer actual
 ↑ / ↓  → moverse entre nicks (cicla)
 Enter  → abrir /query con el nick seleccionado
 q      → cerrar sin abrir nada
@@ -10,7 +10,7 @@ q      → cerrar sin abrir nada
 import weechat
 
 SCRIPT_NAME = "nick_query"
-SCRIPT_DESC = "Keyboard nick navigator — Alt+U to open, arrows to pick, Enter to query"
+SCRIPT_DESC = "Keyboard nick navigator — Alt+Shift+K to open, arrows to pick, Enter to query"
 SCRIPT_VERSION = "1.0"
 SCRIPT_AUTHOR = "GLaDOS"
 SCRIPT_LICENSE = "MIT"
@@ -118,5 +118,5 @@ if __name__ == "__main__":
         f"{SCRIPT_NAME}_nav", "control interno del navegador",
         "up|down|pick|quit", "", "", "_nav_cb", ""
     )
-    # keybind configurado en weechat.conf: meta-k → /nick_query
-    weechat.prnt("", f"[{SCRIPT_NAME}] cargado — Alt+K para navegar nicks")
+    # keybind configurado en weechat.conf: meta-K → /nick_query
+    weechat.prnt("", f"[{SCRIPT_NAME}] cargado — Alt+Shift+K para navegar nicks")
