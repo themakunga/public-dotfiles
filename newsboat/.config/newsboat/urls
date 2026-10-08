@@ -1,0 +1,3 @@
+# newsboat urls — one feed per line
+# format: <url> [tags...]
+# example: https://example.com/feed.xml "~Display Name" tag1 tag2
