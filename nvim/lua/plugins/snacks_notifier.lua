@@ -10,6 +10,9 @@ M.plugin = function()
   end
 
   local opts = {
+    image = {
+      enabled = true,
+    },
     notifier = {
       enabled = true,
       timeout = 3000,

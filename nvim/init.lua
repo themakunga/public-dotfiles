@@ -30,6 +30,7 @@ local plugins = {
   'toggle-term',
   'trouble',
   'nvim-treesitter',
+  'render-markdown',
   'gitblame',
   'lazygit',
   'gitsigns',
