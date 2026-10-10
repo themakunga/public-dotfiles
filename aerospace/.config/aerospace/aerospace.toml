@@ -65,6 +65,8 @@ alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 
 # Cycle workspaces
+alt-left      = 'workspace prev --wrap-around'
+alt-right     = 'workspace next --wrap-around'
 alt-tab       = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
