@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${HOME}/.claude/scripts/save-codex-session.py",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
