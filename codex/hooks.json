@@ -1,12 +1,12 @@
 {
   "hooks": {
-    "SessionEnd": [
+    "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${HOME}/.claude/scripts/save-codex-session.py",
-            "timeout": 15
+            "command": "\"$HOME/.local/bin/glados-hook\"",
+            "async": true
           }
         ]
       }
