@@ -270,6 +270,11 @@
       "rev": "ec309a0eaff6ea967e58c275996155ab5c16938d",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
+    "obsidian.nvim": {
+      "rev": "a562bedd7b418a289b005cb4c62b1fe79066253b",
+      "src": "https://github.com/obsidian-nvim/obsidian.nvim",
+      "version": ">=0.0.0"
+    },
     "octo.nvim": {
       "rev": "8461d99d13cca243f89848bf4d9fadee096f0a48",
       "src": "https://github.com/pwntester/octo.nvim"

@@ -31,6 +31,7 @@ local plugins = {
   'trouble',
   'nvim-treesitter',
   'render-markdown',
+  'obsidian-nvim',
   'gitblame',
   'lazygit',
   'gitsigns',
