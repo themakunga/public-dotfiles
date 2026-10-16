@@ -3,15 +3,24 @@
 Claude Code Stop hook — guarda un resumen de sesión en agent-wiki/journal/.
 Escribe en ~/.vaults/agent-wiki/journal/YYYY-MM-DD.md y hace git commit.
 """
-import json, sys, os, subprocess
+import json, sys, os, re, subprocess
 from datetime import datetime
 from pathlib import Path
 
 VAULT = Path.home() / '.vaults' / 'agent-wiki'
 JOURNAL = VAULT / 'journal'
+RE_UPDATED = re.compile(r"^(updated_at:\s*).*$", re.MULTILINE)
+
+
+def run_rollup():
+    """Ensure today's file exists and stale daily files are moved to week dirs."""
+    subprocess.run(
+        [sys.executable, str(VAULT / 'scripts' / 'journal_rollup.py'), '--run'],
+        cwd=str(VAULT), capture_output=True, timeout=30,
+    )
+
 
 def main():
-    # Leer contexto del hook (stdin)
     try:
         ctx = json.loads(sys.stdin.read())
     except Exception:
@@ -21,7 +30,6 @@ def main():
     cwd             = ctx.get('cwd', os.getcwd())
     session_id      = ctx.get('session_id', 'unknown')
 
-    # Parsear transcript
     files_modified = []
     user_messages  = []
 
@@ -36,7 +44,6 @@ def main():
 
                 kind = entry.get('type')
 
-                # Mensajes del usuario (primeros 5, máx 120 chars)
                 if kind == 'user' and len(user_messages) < 5:
                     msg = entry.get('message', {})
                     content = msg.get('content', '')
@@ -49,7 +56,6 @@ def main():
                         ).strip()
                     else:
                         text = ''
-                    # Ignorar mensajes de sistema, XML interno, continuaciones
                     skip = (
                         not text
                         or len(text) <= 3
@@ -62,7 +68,6 @@ def main():
                     if not skip:
                         user_messages.append(text[:120].replace('\n', ' '))
 
-                # Archivos modificados (Edit / Write)
                 elif kind == 'assistant':
                     for c in entry.get('message', {}).get('content', []):
                         if not isinstance(c, dict) or c.get('type') != 'tool_use':
@@ -73,51 +78,62 @@ def main():
                                 seen_files.add(fp)
                                 files_modified.append(fp)
 
-    # No guardar sesiones vacías
     if not files_modified and not user_messages:
         return
 
-    # Construir entrada
+    # Rollup: crea el archivo de hoy si no existe, mueve viejos a su semana
+    run_rollup()
+
     now      = datetime.now()
     today    = now.strftime('%Y-%m-%d')
     time_str = now.strftime('%H:%M')
+    ts       = now.strftime('%Y-%m-%dT%H:%M:%S')
     sid      = session_id[:8] if session_id != 'unknown' else 'unknown'
 
-    lines = [f'\n## {time_str} — `{sid}`']
-    lines.append(f'\n**cwd**: `{cwd}`')
+    # Entrada en formato de plantilla: ### HH:MM - hash - Claude Code
+    lines = [f'\n### {time_str} - {sid} - Claude Code\n']
+    lines.append(f'\n**cwd:** `{cwd}`\n')
 
     if user_messages:
-        lines.append('\n**Solicitudes:**')
+        lines.append('\n**Solicitudes:**\n')
         for msg in user_messages:
-            lines.append(f'- {msg}')
+            lines.append(f'- {msg}\n')
 
     if files_modified:
-        lines.append('\n**Archivos:**')
+        lines.append('\n**Archivos:**\n')
         for fp in files_modified[:30]:
-            lines.append(f'- `{fp}`')
+            lines.append(f'- `{fp}`\n')
 
-    lines.append('')
-    entry = '\n'.join(lines)
+    entry = ''.join(lines)
 
-    # Escribir al journal del día
-    JOURNAL.mkdir(parents=True, exist_ok=True)
     journal_file = JOURNAL / f'{today}.md'
 
     if journal_file.exists():
-        with open(journal_file, 'a') as f:
-            f.write(entry)
+        text = journal_file.read_text()
+        # Actualizar updated_at en frontmatter
+        text = RE_UPDATED.sub(rf'\g<1>{ts}', text, count=1)
+        journal_file.write_text(text + entry)
     else:
-        with open(journal_file, 'w') as f:
-            f.write(f'# {today}\n')
-            f.write(entry)
+        # Rollup debería haberlo creado; fallback mínimo
+        journal_file.write_text(
+            f'# {today}\n\n## Details\n<!-- one for each entry -->\n{entry}'
+        )
 
-    # Git commit en el vault
-    subprocess.run(['git', 'add', str(journal_file)], cwd=str(VAULT),
-                   capture_output=True, timeout=10)
+    # Git commit — solo journal/, identidad GLaDOS
+    hostname = subprocess.run(
+        ['hostname', '-s'], capture_output=True, text=True, timeout=5,
+    ).stdout.strip() or 'local'
+
+    subprocess.run(['git', 'add', 'journal/'], cwd=str(VAULT), capture_output=True, timeout=10)
     subprocess.run(
-        ['git', 'commit', '-m', f'journal: auto-save {today} {time_str}'],
-        cwd=str(VAULT), capture_output=True, timeout=10
+        [
+            'git', '-c', 'user.name=GLaDOS',
+            '-c', f'user.email=GLaDOS@{hostname}',
+            'commit', '-m', f'journal: auto-save {today} {time_str}',
+        ],
+        cwd=str(VAULT), capture_output=True, timeout=10,
     )
+
 
 if __name__ == '__main__':
     try:
