@@ -71,6 +71,7 @@ M.plugin = function()
 
     filters = {
       dotfiles = false,
+      exclude = { '.env' },  -- mostrar aunque esté en .gitignore
       custom = {
         '^\\.git$',
         -- macOS
