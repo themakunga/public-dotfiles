@@ -9,7 +9,9 @@ M.plugin = function()
     return
   end
 
-  require('nvim-autopairs').setup({})
+  require('nvim-autopairs').setup({
+    check_ts = true, -- no insertar pares dentro de strings ni comentarios
+  })
 end
 
 return M

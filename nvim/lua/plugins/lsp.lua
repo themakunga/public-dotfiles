@@ -181,9 +181,13 @@ local lsp_autocompletion_fn = function(args)
       mode = 'i',
       motion = '<CR>',
       cmd = function()
-        return vim.fn.pumvisible() == 1 and '<C-y>' or '<CR>'
+        if vim.fn.pumvisible() == 1 then
+          return '<C-y>'
+        end
+        -- Delegar a nvim-autopairs para la expansión de pares ({}, [], ())
+        return require('nvim-autopairs').autopairs_cr()
       end,
-      opts = { buffer = buf, expr = true, desc = 'Completion: confirmar' },
+      opts = { buffer = buf, expr = true, desc = 'Completion: confirmar / expandir par' },
     },
     {
       mode = 'i',
