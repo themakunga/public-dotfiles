@@ -138,13 +138,18 @@ local diagnostic_vitutaltext_fn = function()
 end
 
 local lsp_autocompletion_fn = function(args)
-  local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+  local client = vim.lsp.get_client_by_id(args.data.client_id)
+  if not client then return end
 
   if not client:supports_method('textDocument/completion') then
     return
   end
 
-  vim.lsp.completion.enable(true, client.id, args.buf, {
+  local buf = args.buf
+
+  vim.lsp.completion.enable(true, client.id, buf, {
+    -- autotrigger dispara en trigger chars del LSP (., (, :) e InsertLeave cleanup.
+    -- Para chars alfanuméricos usamos el InsertCharPre de abajo.
     autotrigger = true,
     convert = function(item)
       local kind_num = item.kind or 1
@@ -158,8 +163,18 @@ local lsp_autocompletion_fn = function(args)
     end,
   })
 
-  -- Keymaps buffer-locales para la completion
-  local buf = args.buf
+  -- autotrigger SOLO dispara en trigger characters del servidor LSP, no en letras.
+  -- Este autocmd cubre la escritura normal (a-z, 0-9, _).
+  vim.api.nvim_create_autocmd('InsertCharPre', {
+    group = vim.api.nvim_create_augroup('lsp_word_trigger_' .. buf, { clear = true }),
+    buffer = buf,
+    desc = 'LSP completion: trigger on word characters',
+    callback = function()
+      if vim.v.char:match('[%w_]') then
+        vim.schedule(vim.lsp.completion.get)
+      end
+    end,
+  })
 
   KM.bulk_map({
     {
@@ -189,9 +204,7 @@ local lsp_autocompletion_fn = function(args)
     {
       mode = 'i',
       motion = '<C-Space>',
-      cmd = function()
-        vim.lsp.completion.trigger()
-      end,
+      cmd = vim.lsp.completion.get,
       opts = { buffer = buf, desc = 'Completion: trigger manual' },
     },
     {

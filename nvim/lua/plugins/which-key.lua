@@ -109,6 +109,11 @@ M.plugin = function()
 
       -- Surround
       { 'gz', group = 'Surround', mode = { 'n', 'v' }, icon = { icon = '', color = 'red' } },
+
+      -- LSP completion (insert mode, buffer-local — visible cuando LSP está adjunto)
+      { '<C-Space>', desc = 'Completion: trigger manual', mode = 'i', icon = { icon = '', color = 'green' } },
+      { '<Tab>',     desc = 'Completion: siguiente / tabout', mode = 'i' },
+      { '<S-Tab>',   desc = 'Completion: anterior',           mode = 'i' },
     },
   }
 
