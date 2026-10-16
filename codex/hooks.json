@@ -6,7 +6,8 @@
           {
             "type": "command",
             "command": "\"$HOME/.local/bin/glados-hook\"",
-            "async": true
+            "async": true,
+            "timeout": 300
           }
         ]
       }
@@ -36,18 +37,6 @@
       }
     ],
     "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$HOME/.local/bin/glados-hook\"",
-            "async": true,
-            "timeout": 300
-          }
-        ]
-      }
-    ],
-    "Stop": [
       {
         "hooks": [
           {
