@@ -182,12 +182,14 @@ local lsp_autocompletion_fn = function(args)
       motion = '<CR>',
       cmd = function()
         if vim.fn.pumvisible() == 1 then
-          return '<C-y>'
+          -- autopairs_cr() ya retorna bytes crudos; <C-y> también debe estarlo
+          return vim.api.nvim_replace_termcodes('<C-y>', true, false, true)
         end
-        -- Delegar a nvim-autopairs para la expansión de pares ({}, [], ())
+        -- autopairs_cr() retorna bytes pre-procesados con nvim_replace_termcodes.
+        -- replace_keycodes=false evita el doble-procesado que produce ýal! ====
         return require('nvim-autopairs').autopairs_cr()
       end,
-      opts = { buffer = buf, expr = true, desc = 'Completion: confirmar / expandir par' },
+      opts = { buffer = buf, expr = true, replace_keycodes = false, desc = 'Completion: confirmar / expandir par' },
     },
     {
       mode = 'i',
