@@ -12,12 +12,29 @@ JOURNAL = VAULT / 'journal'
 RE_UPDATED = re.compile(r"^(updated_at:\s*).*$", re.MULTILINE)
 
 
-def run_rollup():
-    """Ensure today's file exists and stale daily files are moved to week dirs."""
-    subprocess.run(
+def run_rollup() -> list:
+    """Run rollup and return list of actions taken."""
+    r = subprocess.run(
         [sys.executable, str(VAULT / 'scripts' / 'journal_rollup.py'), '--run'],
-        cwd=str(VAULT), capture_output=True, timeout=30,
+        cwd=str(VAULT), capture_output=True, text=True, timeout=30,
     )
+    return [l.strip() for l in r.stdout.splitlines() if l.strip()]
+
+
+def pending_summary() -> str:
+    """Check if any rollup work is still pending after run."""
+    r = subprocess.run(
+        [sys.executable, str(VAULT / 'scripts' / 'journal_rollup.py')],
+        cwd=str(VAULT), capture_output=True, text=True, timeout=10,
+    )
+    try:
+        data = json.loads(r.stdout)
+        missing = [k for k, v in data.get('missing', {}).items() if v]
+        old = data.get('old_daily_files', [])
+        items = missing + [f'stale: {f}' for f in old]
+        return ', '.join(items) if items else 'none'
+    except Exception:
+        return 'unavailable'
 
 
 def main():
@@ -82,7 +99,7 @@ def main():
         return
 
     # Rollup: crea el archivo de hoy si no existe, mueve viejos a su semana
-    run_rollup()
+    rollup_actions = run_rollup()
 
     now      = datetime.now()
     today    = now.strftime('%Y-%m-%d')
@@ -92,17 +109,32 @@ def main():
 
     # Entrada en formato de plantilla: ### HH:MM - hash - Claude Code
     lines = [f'\n### {time_str} - {sid} - Claude Code\n']
-    lines.append(f'\n**cwd:** `{cwd}`\n')
 
+    # Work: resumen de solicitudes como contexto de lo trabajado
     if user_messages:
-        lines.append('\n**Solicitudes:**\n')
+        lines.append('\n**Work:** Session driven by the following requests:\n')
         for msg in user_messages:
             lines.append(f'- {msg}\n')
+    else:
+        lines.append(f'\n**Work:** Automated session — no user prompts captured.\n')
+
+    lines.append(f'\n**cwd:** `{cwd}`\n')
 
     if files_modified:
-        lines.append('\n**Archivos:**\n')
+        lines.append('\n**Files:**\n')
         for fp in files_modified[:30]:
             lines.append(f'- `{fp}`\n')
+
+    lines.append('\n**Verification:** Auto-captured by Stop hook; content not independently verified.\n')
+    lines.append('\n**Tokens:** unavailable (runtime does not expose usage to hooks)\n')
+
+    pending = pending_summary()
+    lines.append(f'\n**Pending:** {pending}\n')
+
+    if rollup_actions:
+        lines.append('\n**Rollup:**\n')
+        for action in rollup_actions:
+            lines.append(f'- {action}\n')
 
     entry = ''.join(lines)
 
