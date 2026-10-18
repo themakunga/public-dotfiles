@@ -32,6 +32,7 @@ local ensure_installed = {
   'ansiblels',
   'bash-debug-adapter',
   'bashls',
+  'cspell-lsp',
   'cssls',
   'debugpy',
   'delve',

@@ -18,6 +18,10 @@ local opts = {
       name = 'outcast',
       path = '~/.vaults/outcast',
     },
+    {
+      name = 'site-content',
+      path = '~/Projects/Personal/personal-content',
+    },
   },
 }
 
