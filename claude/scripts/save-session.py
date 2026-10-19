@@ -107,8 +107,11 @@ def main():
     ts       = now.strftime('%Y-%m-%dT%H:%M:%S')
     sid      = session_id[:8] if session_id != 'unknown' else 'unknown'
 
-    # Entrada en formato de plantilla: ### HH:MM - hash - Claude Code
-    lines = [f'\n### {time_str} - {sid} - Claude Code\n']
+    hostname = subprocess.run(
+        ['hostname', '-s'], capture_output=True, text=True, timeout=5,
+    ).stdout.strip() or 'local'
+
+    lines = [f'\n### {time_str} - {sid} - Claude Code - {hostname}\n']
 
     # Work: resumen de solicitudes como contexto de lo trabajado
     if user_messages:
@@ -152,10 +155,6 @@ def main():
         )
 
     # Git commit — solo journal/, identidad GLaDOS
-    hostname = subprocess.run(
-        ['hostname', '-s'], capture_output=True, text=True, timeout=5,
-    ).stdout.strip() or 'local'
-
     subprocess.run(['git', 'add', 'journal/'], cwd=str(VAULT), capture_output=True, timeout=10)
     subprocess.run(
         [
