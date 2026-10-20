@@ -16,6 +16,7 @@ local plugins = {
   'fzf',
   'oil',
   'lsp',
+  'completion',
   'nvim-autopairs',
   'nvim-lualine',
   'conform',
