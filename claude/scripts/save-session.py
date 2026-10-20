@@ -3,13 +3,12 @@
 Claude Code Stop hook — guarda un resumen de sesión en agent-wiki/journal/.
 Escribe en ~/.vaults/agent-wiki/journal/YYYY-MM-DD.md y hace git commit.
 """
-import json, sys, os, re, subprocess
+import json, sys, os, subprocess
 from datetime import datetime
 from pathlib import Path
 
 VAULT = Path.home() / '.vaults' / 'agent-wiki'
 JOURNAL = VAULT / 'journal'
-RE_UPDATED = re.compile(r"^(updated_at:\s*).*$", re.MULTILINE)
 
 
 def run_rollup() -> list:
@@ -104,7 +103,6 @@ def main():
     now      = datetime.now()
     today    = now.strftime('%Y-%m-%d')
     time_str = now.strftime('%H:%M')
-    ts       = now.strftime('%Y-%m-%dT%H:%M:%S')
     sid      = session_id[:8] if session_id != 'unknown' else 'unknown'
 
     hostname = subprocess.run(
@@ -123,10 +121,12 @@ def main():
 
     lines.append(f'\n**cwd:** `{cwd}`\n')
 
+    lines.append('\n**Files:**\n')
     if files_modified:
-        lines.append('\n**Files:**\n')
         for fp in files_modified[:30]:
             lines.append(f'- `{fp}`\n')
+    else:
+        lines.append('- none\n')
 
     lines.append('\n**Verification:** Auto-captured by Stop hook; content not independently verified.\n')
     lines.append('\n**Tokens:** unavailable (runtime does not expose usage to hooks)\n')
@@ -142,25 +142,21 @@ def main():
     entry = ''.join(lines)
 
     journal_file = JOURNAL / f'{today}.md'
+    subprocess.run(
+        [sys.executable, str(VAULT / 'scripts' / 'journal_append.py')],
+        input=entry, text=True, check=True, timeout=10,
+    )
 
-    if journal_file.exists():
-        text = journal_file.read_text()
-        # Actualizar updated_at en frontmatter
-        text = RE_UPDATED.sub(rf'\g<1>{ts}', text, count=1)
-        journal_file.write_text(text + entry)
-    else:
-        # Rollup debería haberlo creado; fallback mínimo
-        journal_file.write_text(
-            f'# {today}\n\n## Details\n<!-- one for each entry -->\n{entry}'
-        )
+    if (VAULT / '.git/rebase-merge').exists() or (VAULT / '.git/rebase-apply').exists():
+        return
 
     # Git commit — solo journal/, identidad GLaDOS
-    subprocess.run(['git', 'add', 'journal/'], cwd=str(VAULT), capture_output=True, timeout=10)
+    subprocess.run(['git', 'add', str(journal_file)], cwd=str(VAULT), capture_output=True, timeout=10)
     subprocess.run(
         [
             'git', '-c', 'user.name=GLaDOS',
             '-c', f'user.email=GLaDOS@{hostname}',
-            'commit', '-m', f'journal: auto-save {today} {time_str}',
+            'commit', '--only', '-m', f'journal: auto-save {today} {time_str}', '--', str(journal_file),
         ],
         cwd=str(VAULT), capture_output=True, timeout=10,
     )
@@ -169,5 +165,5 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except Exception:
-        pass  # hooks nunca deben romper el flujo de Claude
+    except Exception as exc:
+        print(f'journal hook failed: {exc}', file=sys.stderr)
