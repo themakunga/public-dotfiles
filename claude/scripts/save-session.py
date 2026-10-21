@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Claude Code Stop hook — guarda un resumen de sesión en agent-wiki/journal/.
-Escribe en ~/.vaults/agent-wiki/journal/YYYY-MM-DD.md y hace git commit.
+Delega la transacción pull/append/commit/push al escritor compartido.
 """
 import json, sys, os, subprocess
 from datetime import datetime
@@ -10,33 +10,8 @@ from pathlib import Path
 VAULT = Path.home() / '.vaults' / 'agent-wiki'
 JOURNAL = VAULT / 'journal'
 
-
-def run_rollup() -> list:
-    """Run rollup and return list of actions taken."""
-    r = subprocess.run(
-        [sys.executable, str(VAULT / 'scripts' / 'journal_rollup.py'), '--run'],
-        cwd=str(VAULT), capture_output=True, text=True, timeout=30,
-    )
-    return [l.strip() for l in r.stdout.splitlines() if l.strip()]
-
-
-def pending_summary() -> str:
-    """Check if any rollup work is still pending after run."""
-    r = subprocess.run(
-        [sys.executable, str(VAULT / 'scripts' / 'journal_rollup.py')],
-        cwd=str(VAULT), capture_output=True, text=True, timeout=10,
-    )
-    try:
-        data = json.loads(r.stdout)
-        missing = [k for k, v in data.get('missing', {}).items() if v]
-        old = data.get('old_daily_files', [])
-        items = missing + [f'stale: {f}' for f in old]
-        return ', '.join(items) if items else 'none'
-    except Exception:
-        return 'unavailable'
-
-
 def main():
+    # Leer contexto del hook (stdin)
     try:
         ctx = json.loads(sys.stdin.read())
     except Exception:
@@ -44,8 +19,8 @@ def main():
 
     transcript_path = ctx.get('transcript_path', '')
     cwd             = ctx.get('cwd', os.getcwd())
-    session_id      = ctx.get('session_id', 'unknown')
 
+    # Parsear transcript
     files_modified = []
     user_messages  = []
 
@@ -60,6 +35,7 @@ def main():
 
                 kind = entry.get('type')
 
+                # Mensajes del usuario (primeros 5, máx 120 chars)
                 if kind == 'user' and len(user_messages) < 5:
                     msg = entry.get('message', {})
                     content = msg.get('content', '')
@@ -72,6 +48,7 @@ def main():
                         ).strip()
                     else:
                         text = ''
+                    # Ignorar mensajes de sistema, XML interno, continuaciones
                     skip = (
                         not text
                         or len(text) <= 3
@@ -84,6 +61,7 @@ def main():
                     if not skip:
                         user_messages.append(text[:120].replace('\n', ' '))
 
+                # Archivos modificados (Edit / Write)
                 elif kind == 'assistant':
                     for c in entry.get('message', {}).get('content', []):
                         if not isinstance(c, dict) or c.get('type') != 'tool_use':
@@ -94,73 +72,29 @@ def main():
                                 seen_files.add(fp)
                                 files_modified.append(fp)
 
+    # No guardar sesiones vacías
     if not files_modified and not user_messages:
         return
 
-    # Rollup: crea el archivo de hoy si no existe, mueve viejos a su semana
-    rollup_actions = run_rollup()
-
-    now      = datetime.now()
-    today    = now.strftime('%Y-%m-%d')
-    time_str = now.strftime('%H:%M')
-    sid      = session_id[:8] if session_id != 'unknown' else 'unknown'
-
-    hostname = subprocess.run(
-        ['hostname', '-s'], capture_output=True, text=True, timeout=5,
-    ).stdout.strip() or 'local'
-
-    lines = [f'\n### {time_str} - {sid} - Claude Code - {hostname}\n']
-
-    # Work: resumen de solicitudes como contexto de lo trabajado
+    # Construir entrada
+    timestamp = datetime.now().astimezone().isoformat(timespec='microseconds')
+    hostname = subprocess.run(['hostname', '-s'], capture_output=True, text=True, timeout=5).stdout.strip() or 'local'
+    lines = [f'### {timestamp} - Claude Code - {hostname}', '', '**Work:** Session driven by the following requests:']
     if user_messages:
-        lines.append('\n**Work:** Session driven by the following requests:\n')
         for msg in user_messages:
-            lines.append(f'- {msg}\n')
-    else:
-        lines.append(f'\n**Work:** Automated session — no user prompts captured.\n')
-
-    lines.append(f'\n**cwd:** `{cwd}`\n')
-
-    lines.append('\n**Files:**\n')
+            lines.append(f'- {msg}')
+    lines.extend(['', f'**cwd:** `{cwd}`', '', '**Files:**'])
     if files_modified:
         for fp in files_modified[:30]:
-            lines.append(f'- `{fp}`\n')
+            lines.append(f'- `{fp}`')
     else:
-        lines.append('- none\n')
-
-    lines.append('\n**Verification:** Auto-captured by Stop hook; content not independently verified.\n')
-    lines.append('\n**Tokens:** unavailable (runtime does not expose usage to hooks)\n')
-
-    pending = pending_summary()
-    lines.append(f'\n**Pending:** {pending}\n')
-
-    if rollup_actions:
-        lines.append('\n**Rollup:**\n')
-        for action in rollup_actions:
-            lines.append(f'- {action}\n')
-
-    entry = ''.join(lines)
-
-    journal_file = JOURNAL / f'{today}.md'
+        lines.append('- unavailable (Stop hook did not observe file edits)')
+    lines.extend(['', '**Verification:** Auto-captured by Stop hook; content not independently verified.', '', '**Tokens:** unavailable (runtime does not expose usage to hooks)', '', '**Pending:** none'])
+    entry = '\n'.join(lines)
     subprocess.run(
         [sys.executable, str(VAULT / 'scripts' / 'journal_append.py')],
-        input=entry, text=True, check=True, timeout=10,
+        input=entry, text=True, check=True, timeout=180,
     )
-
-    if (VAULT / '.git/rebase-merge').exists() or (VAULT / '.git/rebase-apply').exists():
-        return
-
-    # Git commit — solo journal/, identidad GLaDOS
-    subprocess.run(['git', 'add', str(journal_file)], cwd=str(VAULT), capture_output=True, timeout=10)
-    subprocess.run(
-        [
-            'git', '-c', 'user.name=GLaDOS',
-            '-c', f'user.email=GLaDOS@{hostname}',
-            'commit', '--only', '-m', f'journal: auto-save {today} {time_str}', '--', str(journal_file),
-        ],
-        cwd=str(VAULT), capture_output=True, timeout=10,
-    )
-
 
 if __name__ == '__main__':
     try:

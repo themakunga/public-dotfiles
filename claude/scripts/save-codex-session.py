@@ -35,7 +35,6 @@ def main():
         return
 
     cwd = ctx.get('cwd', os.getcwd())
-    session_id = 'unknown'
     user_messages = []
     seen_texts = set()
 
@@ -49,7 +48,6 @@ def main():
             payload = entry.get('payload', {})
 
             if t == 'session_meta':
-                session_id = payload.get('session_id', 'unknown')
                 cwd = payload.get('cwd', cwd)
 
             elif t == 'response_item' and payload.get('role') == 'user':
@@ -72,30 +70,17 @@ def main():
     if not user_messages:
         return
 
-    now = datetime.now()
-    today = now.strftime('%Y-%m-%d')
-    time_str = now.strftime('%H:%M')
-    sid = session_id[:8] if session_id != 'unknown' else 'unknown'
-
+    timestamp = datetime.now().astimezone().isoformat(timespec='microseconds')
     hostname = subprocess.run(['hostname', '-s'], capture_output=True, text=True, timeout=5).stdout.strip() or 'local'
-    lines = [f'### {time_str} - {sid} - Codex - {hostname}', '', '**Work:** Session driven by the following requests:']
+    lines = [f'### {timestamp} - Codex - {hostname}', '', '**Work:** Session driven by the following requests:']
     for msg in user_messages:
         lines.append(f'- {msg}')
     lines.extend(['', f'**cwd:** `{cwd}`', '', '**Files:**', '- unavailable (SessionEnd hook does not inspect file changes)', '', '**Verification:** Auto-captured by SessionEnd hook; content not independently verified.', '', '**Tokens:** unavailable (runtime does not expose usage to hooks)', '', '**Pending:** none'])
     entry_text = '\n'.join(lines)
 
-    journal_file = JOURNAL / f'{today}.md'
-    if journal_file.exists() and sid != 'unknown' and sid in journal_file.read_text():
-        return
-    subprocess.run([sys.executable, str(VAULT / 'scripts' / 'journal_append.py')], input=entry_text, text=True, check=True, timeout=10)
-
-    if (VAULT / '.git/rebase-merge').exists() or (VAULT / '.git/rebase-apply').exists():
-        return
-
-    subprocess.run(['git', 'add', str(journal_file)], cwd=str(VAULT), capture_output=True, timeout=10)
     subprocess.run(
-        ['git', '-c', 'user.name=GLaDOS', '-c', f'user.email=GLaDOS@{hostname}', 'commit', '--only', '-m', f'journal: codex {today} {time_str}', '--', str(journal_file)],
-        cwd=str(VAULT), capture_output=True, timeout=10,
+        [sys.executable, str(VAULT / 'scripts' / 'journal_append.py')],
+        input=entry_text, text=True, check=True, timeout=180,
     )
 
 
