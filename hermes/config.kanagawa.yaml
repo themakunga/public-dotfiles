@@ -2,7 +2,7 @@
 # Installed declaratively by nix-systems; secrets live in ~/.hermes/.env.
 
 model:
-  default: gemini-2.5-flash
+  default: gemini-3.8-flash
   provider: gemini
   base_url: https://generativelanguage.googleapis.com/v1beta
 
