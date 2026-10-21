@@ -3,7 +3,7 @@
 Codex SessionEnd hook — guarda un resumen de sesión en agent-wiki/journal/.
 Recibe JSON por stdin desde Codex (puede estar vacío o contener script_path/cwd).
 """
-import json, sys, os, subprocess
+import hashlib, json, sys, os, subprocess
 from datetime import datetime
 from pathlib import Path
 
@@ -35,6 +35,7 @@ def main():
         return
 
     cwd = ctx.get('cwd', os.getcwd())
+    session_id = str(ctx.get('session_id', 'unknown'))
     user_messages = []
     seen_texts = set()
 
@@ -49,6 +50,7 @@ def main():
 
             if t == 'session_meta':
                 cwd = payload.get('cwd', cwd)
+                session_id = str(payload.get('session_id') or payload.get('id') or session_id)
 
             elif t == 'response_item' and payload.get('role') == 'user':
                 if len(user_messages) >= 5:
@@ -71,8 +73,9 @@ def main():
         return
 
     timestamp = datetime.now().astimezone().isoformat(timespec='microseconds')
+    session_hash = hashlib.sha256(session_id.encode()).hexdigest()[:8]
     hostname = subprocess.run(['hostname', '-s'], capture_output=True, text=True, timeout=5).stdout.strip() or 'local'
-    lines = [f'### {timestamp} - Codex - {hostname}', '', '**Work:** Session driven by the following requests:']
+    lines = [f'### {timestamp[11:16]} - {session_hash} - Codex - {hostname}', f'<!-- journal-timestamp: {timestamp} -->', '', '**Work:** Session driven by the following requests:']
     for msg in user_messages:
         lines.append(f'- {msg}')
     lines.extend(['', f'**cwd:** `{cwd}`', '', '**Files:**', '- unavailable (SessionEnd hook does not inspect file changes)', '', '**Verification:** Auto-captured by SessionEnd hook; content not independently verified.', '', '**Tokens:** unavailable (runtime does not expose usage to hooks)', '', '**Pending:** none'])

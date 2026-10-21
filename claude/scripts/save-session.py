@@ -3,7 +3,7 @@
 Claude Code Stop hook — guarda un resumen de sesión en agent-wiki/journal/.
 Delega la transacción pull/append/commit/push al escritor compartido.
 """
-import json, sys, os, subprocess
+import hashlib, json, sys, os, subprocess
 from datetime import datetime
 from pathlib import Path
 
@@ -19,6 +19,7 @@ def main():
 
     transcript_path = ctx.get('transcript_path', '')
     cwd             = ctx.get('cwd', os.getcwd())
+    session_id      = str(ctx.get('session_id', 'unknown'))
 
     # Parsear transcript
     files_modified = []
@@ -78,8 +79,9 @@ def main():
 
     # Construir entrada
     timestamp = datetime.now().astimezone().isoformat(timespec='microseconds')
+    session_hash = hashlib.sha256(session_id.encode()).hexdigest()[:8]
     hostname = subprocess.run(['hostname', '-s'], capture_output=True, text=True, timeout=5).stdout.strip() or 'local'
-    lines = [f'### {timestamp} - Claude Code - {hostname}', '', '**Work:** Session driven by the following requests:']
+    lines = [f'### {timestamp[11:16]} - {session_hash} - Claude Code - {hostname}', f'<!-- journal-timestamp: {timestamp} -->', '', '**Work:** Session driven by the following requests:']
     if user_messages:
         for msg in user_messages:
             lines.append(f'- {msg}')
