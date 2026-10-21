@@ -63,6 +63,7 @@ def main():
                         not text or len(text) <= 3
                         or text.startswith('<')
                         or text.startswith('[SYSTEM')
+                        or text.startswith('# AGENTS.md instructions')
                         or 'task-notification' in text
                     )
                     if not skip and text not in seen_texts:

@@ -55,6 +55,7 @@ def main():
                         or len(text) <= 3
                         or text.startswith('<')
                         or text.startswith('[SYSTEM')
+                        or text.startswith('# AGENTS.md instructions')
                         or text.startswith('Caveat:')
                         or text.startswith('This session is being continued')
                         or 'task-notification' in text
