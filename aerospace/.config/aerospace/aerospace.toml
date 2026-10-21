@@ -17,17 +17,11 @@ alt-j = "focus down"
 alt-k = "focus up"
 alt-l = "focus right"
 
-# Move window — alt + shift + hjkl
-alt-shift-h = "move left"
-alt-shift-j = "move down"
-alt-shift-k = "move up"
-alt-shift-l = "move right"
-
-# Resize — alt + ctrl + hjkl
-alt-ctrl-h = "resize width -50"
-alt-ctrl-j = "resize height +50"
-alt-ctrl-k = "resize height -50"
-alt-ctrl-l = "resize width +50"
+# Resize — alt + shift + hjkl
+alt-shift-h = "resize width -50"
+alt-shift-j = "resize height +50"
+alt-shift-k = "resize height -50"
+alt-shift-l = "resize width +50"
 
 # Layouts
 alt-slash = "layout tiles horizontal vertical"
@@ -42,33 +36,42 @@ alt-f = "fullscreen"
 # Reload config
 alt-shift-semicolon = "reload-config"
 
-# Workspaces 1–9 — alt + number
+# Rotate position in workspace (cycle tiling axis)
+alt-shift-o = "layout tiles horizontal vertical"
+
+# Split below — active app below previous, half space
+alt-shift-x = "join-with down"
+
+# Split right — active app to the right of previous, half space
+alt-shift-v = "join-with right"
+
+# Workspaces 1–5 — alt + number
 alt-1 = "workspace 1"
 alt-2 = "workspace 2"
 alt-3 = "workspace 3"
 alt-4 = "workspace 4"
 alt-5 = "workspace 5"
-alt-6 = "workspace 6"
-alt-7 = "workspace 7"
-alt-8 = "workspace 8"
-alt-9 = "workspace 9"
 
-# Move window to workspace — alt + shift + number
+# Move window to workspace (current monitor) — alt + shift + number
 alt-shift-1 = "move-node-to-workspace 1"
 alt-shift-2 = "move-node-to-workspace 2"
 alt-shift-3 = "move-node-to-workspace 3"
 alt-shift-4 = "move-node-to-workspace 4"
 alt-shift-5 = "move-node-to-workspace 5"
-alt-shift-6 = "move-node-to-workspace 6"
-alt-shift-7 = "move-node-to-workspace 7"
-alt-shift-8 = "move-node-to-workspace 8"
-alt-shift-9 = "move-node-to-workspace 9"
 
-# Cycle workspaces
+# Cycle workspaces on current monitor
 alt-shift-left = "workspace prev --wrap-around"
 alt-shift-right = "workspace next --wrap-around"
+
+# Switch monitor above / below (no-op if only one monitor)
+alt-shift-up = "focus-monitor up"
+alt-shift-down = "focus-monitor down"
+
+# Move app to the other monitor (no-op if only one monitor)
+alt-shift-m = "move-node-to-monitor --wrap-around next"
+
+# Back and forth
 alt-tab = "workspace-back-and-forth"
-alt-shift-tab = "move-workspace-to-monitor --wrap-around next"
 
 [[on-window-detected]]
 if.app-name-regex-substring = "System Settings|Calendar|App Store|Calculator"
