@@ -322,6 +322,7 @@ M.plugin = function()
   end
 
   require('mason').setup(mason_opts)
+  vim.lsp.config('cspell_ls', { filetypes = { 'markdown' } })
   require('mason-lspconfig').setup({ automatic_enable = { exclude = { 'efm', 'glint', 'snyk_ls' } } })
   require('mason-tool-installer').setup(opts)
   require('plugins.mason.updates').setup()
