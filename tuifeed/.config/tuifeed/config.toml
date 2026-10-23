@@ -1,0 +1,11 @@
+[article-title]
+show-author = true
+show-timestamp = true
+
+[sources]
+"#AlertaCIPER" = "https://anchor.fm/s/183afe68/podcast/rss"
+"Animales Políticos" = "https://anchor.fm/s/106ac41b0/podcast/rss"
+"CIPER en tus Oídos" = "https://anchor.fm/s/434ed6ec/podcast/rss"
+"Lo Que Importa con Daniel Matamala" = "https://anchor.fm/s/110684f50/podcast/rss"
+"Nota de Voz de Mesa Central" = "https://mdstrm.com/feeds/5c58a34e176c2c0813b22e4b/6038f72f9e02ee086674a41b?property=itunes"
+"Radar CIPER" = "https://anchor.fm/s/106d15518/podcast/rss"
