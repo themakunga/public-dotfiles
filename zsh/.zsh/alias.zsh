@@ -36,3 +36,16 @@ alias ai-logs-all='tail -f /opt/glados/*.log'
 
 # --- Markdown ---
 alias md='glow --pager'
+
+# =========================================================
+# Screensavers de terminal
+# =========================================================
+alias matrix='cmatrix -C cyan -s'
+alias bonsai='cbonsai -l'
+alias nyan='nyancat'
+# pipes → ya es el nombre del binario
+
+function funky() {
+  local _s=(matrix bonsai pipes nyan)
+  ${_s[$(( RANDOM % ${#_s[@]} + 1 ))]}
+}
