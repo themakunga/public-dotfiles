@@ -72,6 +72,7 @@ local ensure_installed = {
   'tombi',
   'tsc',
   'yamlls',
+  'github-actions-language-server',
   -- Nix LSPs instalados fuera de Mason:
   --   brew install nil        (o: nix profile install nixpkgs#nil)
   --   brew install nixd       (o: nix profile install nixpkgs#nixd)
@@ -325,6 +326,9 @@ M.plugin = function()
   vim.lsp.config('cspell_ls', { filetypes = { 'markdown' } })
   require('mason-lspconfig').setup({ automatic_enable = { exclude = { 'efm', 'glint', 'snyk_ls' } } })
   require('mason-tool-installer').setup(opts)
+
+  -- GitHub Actions LS: auto-read desde lsp/github_actions.lua, solo activa en .github/workflows/
+  vim.lsp.enable('github_actions')
   require('plugins.mason.updates').setup()
 
   vim.diagnostic.config(diagnostic_config)
