@@ -72,7 +72,6 @@ local ensure_installed = {
   'tombi',
   'tsc',
   'yamlls',
-  'github-actions-language-server',
   -- Nix LSPs instalados fuera de Mason:
   --   brew install nil        (o: nix profile install nixpkgs#nil)
   --   brew install nixd       (o: nix profile install nixpkgs#nixd)
