@@ -1,0 +1,30 @@
+prSections:
+  - title: My Pull Requests
+    filters: is:open author:@me
+  - title: Needs My Review
+    filters: is:open review-requested:@me
+
+issuesSections:
+  - title: My Issues
+    filters: is:open author:@me assignee:@me
+
+runSections:
+  - title: nix-systems
+    filters: ""
+    layout:
+      name:
+        grow: true
+      status:
+        width: 8
+      branch:
+        width: 22
+      time:
+        width: 15
+
+repoPaths:
+  themakunga/nix-systems: ~/Projects/personal/nix-systems
+
+keybindings:
+  runs:
+    - key: r
+      command: gh run rerun {{.Run.ID}} --failed
