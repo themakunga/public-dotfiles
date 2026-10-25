@@ -38,6 +38,8 @@ local plugins = {
   'gitsigns',
   'octo',
   'gitlab',
+  'github-actions',
+  'gh-versions',
   'which-key',
   'codecompanion',
   'claude-code',
