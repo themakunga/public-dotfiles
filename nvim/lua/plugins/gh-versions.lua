@@ -1,8 +1,7 @@
 local M = {}
 
-local ns      = vim.api.nvim_create_namespace('gh_action_versions')
-local ns_virt = vim.api.nvim_create_namespace('gh_action_versions_virt')
-local _cache  = {}
+local ns     = vim.api.nvim_create_namespace('gh_action_versions')
+local _cache = {}
 
 local function flush_diags(bufnr)
   if not vim.api.nvim_buf_is_valid(bufnr) then return end
@@ -21,18 +20,6 @@ local function flush_diags(bufnr)
   vim.diagnostic.set(ns, bufnr, diags)
 end
 
-local function redraw_virt(bufnr)
-  if not vim.api.nvim_buf_is_valid(bufnr) then return end
-  vim.api.nvim_buf_clear_namespace(bufnr, ns_virt, 0, -1)
-  local lnum  = vim.api.nvim_win_get_cursor(0)[1] - 1
-  local entry = (_cache[bufnr] or {})[lnum]
-  if not entry then return end
-  vim.api.nvim_buf_set_extmark(bufnr, ns_virt, lnum, 0, {
-    virt_text     = { { entry.message, entry.severity == vim.diagnostic.severity.INFO and 'DiagnosticHint' or 'DiagnosticWarn' } },
-    virt_text_pos = 'eol',
-  })
-end
-
 local function is_workflow(bufnr)
   return vim.api.nvim_buf_get_name(bufnr):match('%.github[/\\]workflows[/\\]') ~= nil
 end
@@ -48,7 +35,7 @@ local function fetch_version(token, owner, repo, ref, bufnr, lnum)
     if res.code ~= 0 or not res.stdout then return end
     local ok, data = pcall(vim.json.decode, res.stdout)
     if not ok or type(data) ~= 'table' or not data.tag_name then return end
-    local latest    = data.tag_name
+    local latest     = data.tag_name
     local up_to_date = latest == ref
     vim.schedule(function()
       if not vim.api.nvim_buf_is_valid(bufnr) then return end
@@ -81,45 +68,37 @@ end
 
 M.plugin = function()
   vim.diagnostic.config({
-    signs        = { text = { [vim.diagnostic.severity.INFO] = '✓', [vim.diagnostic.severity.WARN] = '⬆' } },
-    virtual_text = false,
-    underline    = false,
+    signs = {
+      text = {
+        [vim.diagnostic.severity.INFO] = '✓',
+        [vim.diagnostic.severity.WARN] = '⬆',
+      },
+    },
+    -- virtual_text siempre visible; formato: "✓ owner/repo@ref is latest"
+    virtual_text = {
+      format = function(d) return d.message end,
+      prefix  = '',
+    },
+    underline = false,
   }, ns)
 
   vim.api.nvim_create_augroup('gh-action-versions', { clear = true })
   vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
-    group   = 'gh-action-versions',
-    pattern = { '*.yml', '*.yaml' },
+    group    = 'gh-action-versions',
+    pattern  = { '*.yml', '*.yaml' },
     callback = function(args) scan_buffer(args.buf) end,
   })
-  vim.api.nvim_create_autocmd('CursorMoved', {
-    group   = 'gh-action-versions',
-    pattern = { '*.yml', '*.yaml' },
-    callback = function(args)
-      if is_workflow(args.buf) then redraw_virt(args.buf) end
-    end,
-  })
 
-  -- Debug: muestra cache del buffer actual y fuerza redraw
-  KM.map({
-    motion = '<leader>ogd',
-    cmd    = function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local lnum  = vim.api.nvim_win_get_cursor(0)[1] - 1
-      local cache = _cache[bufnr] or {}
-      local count = 0
-      for _ in pairs(cache) do count = count + 1 end
-      local entry = cache[lnum]
-      vim.notify(
-        ('[gh-versions] buf=%d lnum=%d cache_entries=%d entry=%s'):format(
-          bufnr, lnum, count, vim.inspect(entry)
-        ),
-        vim.log.levels.INFO
-      )
-      redraw_virt(bufnr)
-    end,
-    opts = { desc = 'gh-versions: debug cache + force redraw' },
-  })
+  -- Comando de debug: :GhVersions
+  vim.api.nvim_create_user_command('GhVersions', function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local diags = vim.diagnostic.get(bufnr, { namespace = ns })
+    local cache_count = 0
+    for _ in pairs(_cache[bufnr] or {}) do cache_count = cache_count + 1 end
+    vim.notify(('[gh-versions] buf=%d cache=%d diags=%d workflow=%s'):format(
+      bufnr, cache_count, #diags, tostring(is_workflow(bufnr))
+    ), vim.log.levels.INFO)
+  end, {})
 end
 
 return M
