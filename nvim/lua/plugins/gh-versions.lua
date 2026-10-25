@@ -1,7 +1,8 @@
 local M = {}
 
-local ns = vim.api.nvim_create_namespace('gh_action_versions')
-local _cache = {}
+local ns      = vim.api.nvim_create_namespace('gh_action_versions')
+local ns_virt = vim.api.nvim_create_namespace('gh_action_versions_virt')
+local _cache  = {}
 
 local function flush_diags(bufnr)
   if not vim.api.nvim_buf_is_valid(bufnr) then return end
@@ -18,6 +19,18 @@ local function flush_diags(bufnr)
     })
   end
   vim.diagnostic.set(ns, bufnr, diags)
+end
+
+local function redraw_virt(bufnr)
+  if not vim.api.nvim_buf_is_valid(bufnr) then return end
+  vim.api.nvim_buf_clear_namespace(bufnr, ns_virt, 0, -1)
+  local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+  local entry = (_cache[bufnr] or {})[lnum]
+  if not entry then return end
+  vim.api.nvim_buf_set_extmark(bufnr, ns_virt, lnum, 0, {
+    virt_text     = { { entry.message, entry.severity == vim.diagnostic.severity.INFO and 'DiagnosticHint' or 'DiagnosticWarn' } },
+    virt_text_pos = 'eol',
+  })
 end
 
 local function is_workflow(bufnr)
@@ -87,6 +100,13 @@ M.plugin = function()
     group   = 'gh-action-versions',
     pattern = { '*.yml', '*.yaml' },
     callback = function(args) scan_buffer(args.buf) end,
+  })
+  vim.api.nvim_create_autocmd('CursorMoved', {
+    group   = 'gh-action-versions',
+    pattern = { '*.yml', '*.yaml' },
+    callback = function(args)
+      if is_workflow(args.buf) then redraw_virt(args.buf) end
+    end,
   })
 end
 
