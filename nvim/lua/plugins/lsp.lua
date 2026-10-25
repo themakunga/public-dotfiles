@@ -330,6 +330,8 @@ M.plugin = function()
   vim.lsp.enable('github_actions')
   -- actionlint vía efm: linting de workflows, solo activa en .github/workflows/
   vim.lsp.enable('efm')
+  -- GitLab CI LS: instalado vía Nix, activa solo en .gitlab-ci.yml
+  vim.lsp.enable('gitlab_ci')
   require('plugins.mason.updates').setup()
 
   vim.diagnostic.config(diagnostic_config)
