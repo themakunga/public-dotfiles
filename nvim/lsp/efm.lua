@@ -14,7 +14,7 @@ return {
       cb(root)
     end
   end,
-  settings = {
+  init_options = {
     rootMarkers = { '.git/' },
     languages = {
       yaml = {
@@ -22,7 +22,7 @@ return {
           lintCommand = 'actionlint -stdin-filename ${INPUT} -',
           lintStdin = true,
           lintFormats = { '%f:%l:%c: %m' },
-          lintSeverity = 1, -- ERROR
+          lintSeverity = 1,
         },
       },
     },

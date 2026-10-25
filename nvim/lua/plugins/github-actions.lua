@@ -1,12 +1,9 @@
 local M = {}
 
 M.plugin = function()
-  if not Checker.check('gama-tui') then
-    return
-  end
+  if not Checker.check('gama-tui') then return end
 
   local Terminal = require('toggleterm.terminal').Terminal
-
   local gama = Terminal:new({
     cmd = 'gama-tui',
     direction = 'float',
@@ -17,12 +14,9 @@ M.plugin = function()
       height = math.floor(vim.o.lines * 0.88),
     },
   })
-
   KM.map({
     motion = '<leader>oga',
-    cmd = function()
-      gama:toggle()
-    end,
+    cmd = function() gama:toggle() end,
     opts = { desc = 'GitHub Actions monitor (gama-tui)' },
   })
 end
