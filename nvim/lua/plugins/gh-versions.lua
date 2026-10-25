@@ -24,7 +24,7 @@ end
 local function redraw_virt(bufnr)
   if not vim.api.nvim_buf_is_valid(bufnr) then return end
   vim.api.nvim_buf_clear_namespace(bufnr, ns_virt, 0, -1)
-  local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+  local lnum  = vim.api.nvim_win_get_cursor(0)[1] - 1
   local entry = (_cache[bufnr] or {})[lnum]
   if not entry then return end
   vim.api.nvim_buf_set_extmark(bufnr, ns_virt, lnum, 0, {
@@ -48,7 +48,7 @@ local function fetch_version(token, owner, repo, ref, bufnr, lnum)
     if res.code ~= 0 or not res.stdout then return end
     local ok, data = pcall(vim.json.decode, res.stdout)
     if not ok or type(data) ~= 'table' or not data.tag_name then return end
-    local latest = data.tag_name
+    local latest    = data.tag_name
     local up_to_date = latest == ref
     vim.schedule(function()
       if not vim.api.nvim_buf_is_valid(bufnr) then return end
@@ -80,17 +80,8 @@ local function scan_buffer(bufnr)
 end
 
 M.plugin = function()
-  -- Signs propios para gh-versions (fuera del namespace, via sign_define)
-  vim.fn.sign_define('DiagnosticSignGhInfo', { text = '✓', texthl = 'DiagnosticSignInfo' })
-  vim.fn.sign_define('DiagnosticSignGhWarn', { text = '⬆', texthl = 'DiagnosticSignWarn' })
-
   vim.diagnostic.config({
-    signs = {
-      text = {
-        [vim.diagnostic.severity.INFO] = '✓',
-        [vim.diagnostic.severity.WARN] = '⬆',
-      },
-    },
+    signs        = { text = { [vim.diagnostic.severity.INFO] = '✓', [vim.diagnostic.severity.WARN] = '⬆' } },
     virtual_text = false,
     underline    = false,
   }, ns)
@@ -107,6 +98,27 @@ M.plugin = function()
     callback = function(args)
       if is_workflow(args.buf) then redraw_virt(args.buf) end
     end,
+  })
+
+  -- Debug: muestra cache del buffer actual y fuerza redraw
+  KM.map({
+    motion = '<leader>ogd',
+    cmd    = function()
+      local bufnr = vim.api.nvim_get_current_buf()
+      local lnum  = vim.api.nvim_win_get_cursor(0)[1] - 1
+      local cache = _cache[bufnr] or {}
+      local count = 0
+      for _ in pairs(cache) do count = count + 1 end
+      local entry = cache[lnum]
+      vim.notify(
+        ('[gh-versions] buf=%d lnum=%d cache_entries=%d entry=%s'):format(
+          bufnr, lnum, count, vim.inspect(entry)
+        ),
+        vim.log.levels.INFO
+      )
+      redraw_virt(bufnr)
+    end,
+    opts = { desc = 'gh-versions: debug cache + force redraw' },
   })
 end
 
