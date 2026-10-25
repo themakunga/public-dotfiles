@@ -328,6 +328,8 @@ M.plugin = function()
 
   -- GitHub Actions LS: auto-read desde lsp/github_actions.lua, solo activa en .github/workflows/
   vim.lsp.enable('github_actions')
+  -- actionlint vía efm: linting de workflows, solo activa en .github/workflows/
+  vim.lsp.enable('efm')
   require('plugins.mason.updates').setup()
 
   vim.diagnostic.config(diagnostic_config)
