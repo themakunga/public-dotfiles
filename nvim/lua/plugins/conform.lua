@@ -2,6 +2,7 @@ local M = {}
 
 local formatters_by_ft = {
   lua = { 'stylua' },
+  markdown = { 'prettier', 'prettierd' },
   astro = { 'prettier', 'prettierd' },
   javascript = { 'biome', 'prettier', 'prettierd' },
   javascriptreact = { 'biome', 'prettier', 'prettierd' },
@@ -32,6 +33,8 @@ local biome_supported = {
 
 -- Filetypes only supported by Prettier
 local prettier_only = {
+  astro = true,
+  markdown = true,
   graphql = true,
   handlebars = true,
   html = true,
@@ -41,7 +44,7 @@ local prettier_only = {
   yaml = true,
 }
 
-local format_after_save = function(bufnr)
+local format_on_save = function(bufnr)
   if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
     return
   end
@@ -63,6 +66,7 @@ local format_after_save = function(bufnr)
   if biome_supported[filetype] or prettier_only[filetype] then
     return {
       formatters = { 'prettier', 'prettierd' },
+      stop_after_first = true,
       timeout_ms = 2000,
     }
   end
@@ -81,7 +85,7 @@ M.plugin = function()
 
   local opts = {
     formatters_by_ft = formatters_by_ft,
-    format_after_save = format_after_save,
+    format_on_save = format_on_save,
   }
 
   require('conform').setup(opts)

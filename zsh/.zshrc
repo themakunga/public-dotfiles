@@ -122,3 +122,6 @@ clear
 if command -v fastfetch &> /dev/null; then
   fastfetch
 fi
+
+# Hermes Agent command
+case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac

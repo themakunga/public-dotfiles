@@ -25,6 +25,13 @@ local function setup()
     },
 
     pattern = {
+      -- Handlebars templates inherit the underlying document language.
+      ['.*%.markdown%.hbs'] = 'markdown',
+      ['.*%.md%.hbs'] = 'markdown',
+      ['.*%.yaml%.hbs'] = 'yaml',
+      ['.*%.yml%.hbs'] = 'yaml',
+      ['.*%.toml%.hbs'] = 'toml',
+
       -- ollama
       ['.*[Mm]odelfile%..*'] = 'modelfile',
 
