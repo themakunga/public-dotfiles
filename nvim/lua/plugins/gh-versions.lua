@@ -89,16 +89,6 @@ M.plugin = function()
     callback = function(args) scan_buffer(args.buf) end,
   })
 
-  -- Comando de debug: :GhVersions
-  vim.api.nvim_create_user_command('GhVersions', function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local diags = vim.diagnostic.get(bufnr, { namespace = ns })
-    local cache_count = 0
-    for _ in pairs(_cache[bufnr] or {}) do cache_count = cache_count + 1 end
-    vim.notify(('[gh-versions] buf=%d cache=%d diags=%d workflow=%s'):format(
-      bufnr, cache_count, #diags, tostring(is_workflow(bufnr))
-    ), vim.log.levels.INFO)
-  end, {})
 end
 
 return M
