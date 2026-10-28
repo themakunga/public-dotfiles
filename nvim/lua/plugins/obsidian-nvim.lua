@@ -22,6 +22,14 @@ local opts = {
       name = 'site-content',
       path = '~/Projects/Personal/personal-content',
     },
+    {
+      name = 'journal',
+      path = '~/.vaults/journal/',
+    },
+    {
+      name = 'wiki',
+      path = '~/.vaults/wiki',
+    },
   },
 }
 
