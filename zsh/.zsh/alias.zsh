@@ -49,3 +49,7 @@ function funky() {
   local _s=(matrix bonsai pipes nyan)
   ${_s[$(( RANDOM % ${#_s[@]} + 1 ))]}
 }
+
+
+# --- shorcuts ---
+alias nv='nvim'
