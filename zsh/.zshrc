@@ -125,3 +125,6 @@ fi
 
 # Hermes Agent command
 case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
+
+# Added by codeen install
+export PATH="/Users/nicolas/.local/bin/codeen:$PATH"

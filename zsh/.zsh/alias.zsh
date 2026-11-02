@@ -52,4 +52,4 @@ function funky() {
 
 
 # --- shorcuts ---
-alias nv='nvim'
+alias nv='nvimr
