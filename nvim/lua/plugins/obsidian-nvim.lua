@@ -11,10 +11,6 @@ local opts = {
       path = '~/.vaults/personal',
     },
     {
-      name = 'agent-wiki',
-      path = '~/.vaults/agent-wiki',
-    },
-    {
       name = 'outcast',
       path = '~/.vaults/outcast',
     },
@@ -29,6 +25,10 @@ local opts = {
     {
       name = 'wiki',
       path = '~/.vaults/wiki',
+    },
+    {
+      name = 'amgmt',
+      path = '~/.vaults/amgmt',
     },
   },
 }
