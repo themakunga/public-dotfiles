@@ -29,8 +29,8 @@ M.plugin = function()
   require('toggleterm').setup(opts)
 
   KM.bulk_map({
-    { mode = 'n', motion = '<A-t>', cmd = '<cmd>ToggleTerm<cr>', opts = { desc = 'Toggle Terminal' } },
-    { mode = 't', motion = '<A-t>', cmd = '<C-\\><C-n><cmd>ToggleTerm<CR>', opts = { desc = 'Hide Terminal' } },
+    { mode = 'n', motion = '<leader>tt', cmd = '<cmd>ToggleTerm<cr>', opts = { desc = 'Toggle Terminal' } },
+    { mode = 't', motion = '<C-t>', cmd = '<C-\\><C-n><cmd>ToggleTerm<CR>', opts = { desc = 'Hide Terminal' } },
     { mode = 't', motion = '<Esc><Esc>', cmd = '<C-\\><C-n><cmd>ToggleTerm<CR>', opts = { desc = 'Hide Terminal' } },
   })
 end

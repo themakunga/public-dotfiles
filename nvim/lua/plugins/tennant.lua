@@ -13,7 +13,7 @@ M.plugin = function()
   end
 
   require('tennant').setup({
-    prefix = '<leader>tv',
+    prefix = '<leader>v',
   })
 end
 

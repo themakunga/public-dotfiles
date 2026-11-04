@@ -12,7 +12,9 @@ M.plugin = function()
   ---@module 'which-key'
   local wk = require('which-key')
 
-  vim.keymap.set({ 'n', 'v', 'i' }, '<C-s>', function() wk.show() end, { desc = 'Which-key' })
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-s>', function()
+    wk.show()
+  end, { desc = 'Which-key' })
 
   local opts = {
     preset = 'helix',
@@ -80,9 +82,9 @@ M.plugin = function()
       { '<leader>a', group = 'AI', icon = { icon = '󱚦', color = 'cyan' } },
 
       -- Claude Code
-      { '<leader>A',  group = 'Claude',      icon = { icon = '', color = 'purple' } },
+      { '<leader>A', group = 'Claude', icon = { icon = '', color = 'purple' } },
       { '<leader>AC', group = 'Claude Code', icon = { icon = '', color = 'purple' } },
-      { '<leader>AX', group = 'Codex',       icon = { icon = '󱚦', color = 'cyan' } },
+      { '<leader>AX', group = 'Codex', icon = { icon = '󱚦', color = 'cyan' } },
 
       -- Octo (GitHub)
       { '<leader>o', group = 'GitHub', icon = { icon = '', color = 'blue' } },
@@ -104,6 +106,9 @@ M.plugin = function()
       -- UI
       { '<leader>u', group = 'UI', icon = { icon = '', color = 'cyan' } },
 
+      -- Custom Tennant
+      { '<leader>v', group = 'Tennat VoiceOver', icon = { color = 'cyan', icon = '󰗋' } },
+
       -- Trouble / Diagnostics
       { '<leader>x', group = 'Diagnostics', icon = { icon = '󰅚', color = 'red' } },
 
@@ -112,8 +117,8 @@ M.plugin = function()
 
       -- LSP completion (insert mode, buffer-local — visible cuando LSP está adjunto)
       { '<C-Space>', desc = 'Completion: trigger manual', mode = 'i', icon = { icon = '', color = 'green' } },
-      { '<Tab>',     desc = 'Completion: siguiente / tabout', mode = 'i' },
-      { '<S-Tab>',   desc = 'Completion: anterior',           mode = 'i' },
+      { '<Tab>', desc = 'Completion: siguiente / tabout', mode = 'i' },
+      { '<S-Tab>', desc = 'Completion: anterior', mode = 'i' },
     },
   }
 
