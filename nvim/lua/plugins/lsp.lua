@@ -140,7 +140,9 @@ end
 
 local lsp_autocompletion_fn = function(args)
   local client = vim.lsp.get_client_by_id(args.data.client_id)
-  if not client then return end
+  if not client then
+    return
+  end
 
   if not client:supports_method('textDocument/completion') then
     return
@@ -322,7 +324,6 @@ M.plugin = function()
   end
 
   require('mason').setup(mason_opts)
-  vim.lsp.config('cspell_ls', { filetypes = { 'markdown' } })
   require('mason-lspconfig').setup({ automatic_enable = { exclude = { 'efm', 'glint', 'snyk_ls' } } })
   require('mason-tool-installer').setup(opts)
 
