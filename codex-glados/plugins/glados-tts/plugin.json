@@ -1,7 +1,7 @@
 {
   "name": "glados-tts",
-  "version": "1.0.0",
-  "description": "GLaDOS Portal-style TTS commentary for task start and stop events.",
+  "version": "1.1.0",
+  "description": "Retired compatibility package. The standalone glados skill owns lifecycle speech.",
   "author": {
     "name": "Nicolas Villarroel"
   },

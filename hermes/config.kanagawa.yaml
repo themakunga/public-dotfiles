@@ -1,12 +1,12 @@
-# Hermes Agent configuration for kanagawa.
-# Installed declaratively by nix-systems; secrets live in ~/.hermes/.env.
-
 model:
   default: gemini-3.8-flash
   provider: gemini
   base_url: https://generativelanguage.googleapis.com/v1beta
-
 terminal:
   cwd: /Users/nicolas/Projects/Personal
-
 _config_version: 51
+hooks:
+  pre_llm_call:
+    - command: '"$HOME/.local/bin/glados-agent" --agent hermes hook'
+  post_llm_call:
+    - command: '"$HOME/.local/bin/glados-agent" --agent hermes hook'
