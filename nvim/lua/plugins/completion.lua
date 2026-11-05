@@ -1,22 +1,49 @@
--- Native buffer + path completion alongside vim.lsp.completion
+-- Native date/time + buffer + path completion alongside vim.lsp.completion
 -- Buffer words: deferred so LSP gets priority in the popup
 -- Path: immediate trigger on path-like prefixes (./  ../  /  ~/)
 
 local M = {}
 
+local time_formats = {
+  { 'date', '%Y-%m-%d' },
+  { 'time', '%H:%M:%S' },
+  { 'datetime', '%Y-%m-%dT%H:%M:%S%z' },
+  { 'timestamp' }, -- Unix seconds
+}
+
+local function time_items(prefix)
+  local items = {}
+  if #prefix < 2 then
+    return items
+  end
+  local now = os.time()
+  for _, entry in ipairs(time_formats) do
+    if entry[1]:sub(1, #prefix) == prefix:lower() then
+      local value = entry[2] and os.date(entry[2], now) or tostring(now)
+      table.insert(items, {
+        word = value,
+        abbr = entry[1] .. ' → ' .. value,
+        kind = ' Time',
+        equal = 1, -- Generated values do not start with the typed trigger.
+      })
+    end
+  end
+  return items
+end
+
 ---@return string
 local function word_before_cursor()
   local col = vim.fn.col('.') - 1
-  if col == 0 then return '' end
+  if col == 0 then
+    return ''
+  end
   return vim.api.nvim_get_current_line():sub(1, col):match('[%w_.~/%-]+$') or ''
 end
 
 ---@param prefix string
 ---@return boolean
 local function is_path(prefix)
-  return prefix:match('^%.%.?/') ~= nil
-    or prefix:match('^~/') ~= nil
-    or prefix:match('^/') ~= nil
+  return prefix:match('^%.%.?/') ~= nil or prefix:match('^~/') ~= nil or prefix:match('^/') ~= nil
 end
 
 ---@param prefix string
@@ -35,11 +62,15 @@ end
 ---@param curbuf integer
 ---@return table
 local function buf_items(prefix, curbuf)
-  if #prefix < 2 then return {} end
+  if #prefix < 2 then
+    return {}
+  end
   local items, seen = {}, {}
   local low = prefix:lower()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if not vim.api.nvim_buf_is_loaded(buf) then goto continue end
+    if not vim.api.nvim_buf_is_loaded(buf) then
+      goto continue
+    end
     local is_cur = buf == curbuf
     for _, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
       for word in line:gmatch('[%w_]+') do
@@ -68,10 +99,14 @@ M.init = function()
     desc = 'Native path completion on / and ~',
     callback = function()
       local ch = vim.v.char
-      if ch ~= '/' and ch ~= '~' then return end
+      if ch ~= '/' and ch ~= '~' then
+        return
+      end
       vim.schedule(function()
         local prefix = word_before_cursor() .. ch
-        if not is_path(prefix) then return end
+        if not is_path(prefix) then
+          return
+        end
         local items = path_items(prefix)
         if #items > 0 then
           vim.fn.complete(vim.fn.col('.') - #prefix, items)
@@ -93,7 +128,9 @@ M.init = function()
       local prefix = word_before_cursor()
 
       -- path prefixes are handled by InsertCharPre above
-      if is_path(prefix) then return end
+      if is_path(prefix) then
+        return
+      end
 
       local curbuf = vim.api.nvim_get_current_buf()
       local start_col = vim.fn.col('.') - #prefix
@@ -101,8 +138,11 @@ M.init = function()
       -- 60 ms: enough for most LSP servers to respond; skip if popup already visible
       timer = vim.defer_fn(function()
         timer = nil
-        if vim.fn.pumvisible() == 1 then return end
-        local items = buf_items(prefix, curbuf)
+        if vim.fn.pumvisible() == 1 then
+          return
+        end
+        local items = time_items(prefix)
+        vim.list_extend(items, buf_items(prefix, curbuf))
         if #items > 0 then
           vim.fn.complete(start_col, items)
         end
