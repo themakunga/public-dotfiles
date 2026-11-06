@@ -10,3 +10,10 @@ terminal theme for the matching `#24283b` background.
 
 Only the theme is managed here. Keep `config.json`, accounts, OAuth tokens,
 passwords, caches and encryption metadata outside this public repository.
+
+Private account configuration belongs in the existing `secrets` repository.
+The Nix module deploys SOPS binary-encrypted files from `shared-conf/matcha/`
+to `~/.config/matcha/`, owned by the primary user with mode `0600`.
+Store credentials in SOPS `common.yaml` and use Matcha's `pass_cmd` to read
+their `sops-nix` runtime files. Account entries and credential keys must be
+configured together; this mapping alone does not create them.
