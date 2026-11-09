@@ -33,6 +33,7 @@ local ensure_installed = {
   'bash-debug-adapter',
   'bashls',
   'cssls',
+  'codebook',
   'debugpy',
   'delve',
   'diagnosticls',

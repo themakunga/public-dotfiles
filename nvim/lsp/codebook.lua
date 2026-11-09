@@ -1,7 +1,15 @@
 return {
+  cmd = {
+    'codebook-lsp',
+    'server',
+  },
   filetypes = {
-    'markdown',
     'text',
-    'html',
+    'markdown',
+  },
+  root_markers = {
+    '.git',
+    'codebook.toml',
+    '.codebook.toml',
   },
 }

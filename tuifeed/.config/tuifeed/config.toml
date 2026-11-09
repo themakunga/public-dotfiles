@@ -3,9 +3,87 @@ show-author = true
 show-timestamp = true
 
 [sources]
-"#AlertaCIPER" = "https://anchor.fm/s/183afe68/podcast/rss"
-"Animales Políticos" = "https://anchor.fm/s/106ac41b0/podcast/rss"
-"CIPER en tus Oídos" = "https://anchor.fm/s/434ed6ec/podcast/rss"
-"Lo Que Importa con Daniel Matamala" = "https://anchor.fm/s/110684f50/podcast/rss"
-"Nota de Voz de Mesa Central" = "https://mdstrm.com/feeds/5c58a34e176c2c0813b22e4b/6038f72f9e02ee086674a41b?property=itunes"
-"Radar CIPER" = "https://anchor.fm/s/106d15518/podcast/rss"
+
+# Chilean news
+"Chile | CIPER" = "https://www.ciperchile.cl/feed/"
+"Chile | Cooperativa" = "https://www.cooperativa.cl/noticias/site/tax/port/all/rss____1.xml"
+"Chile | BioBioChile" = "https://feeds.feedburner.com/biobiochile"
+"Chile | El Ciudadano" = "https://www.elciudadano.com/feed/"
+"Chile | Radio Universidad de Chile" = "https://radio.uchile.cl/feed/"
+"Chile | El Regionalista" = "https://regionalista.cl/feed/"
+"Chile | La Tercera" = "https://www.latercera.com/arc/outboundfeeds/rss/?outputType=xml"
+"Chile | The Clinic" = "https://www.theclinic.cl/feed/"
+"Chile | ADN Radio" = "https://www.adnradio.cl/arc/outboundfeeds/rss/?outputType=xml"
+"Chile | El Rancagüino" = "https://www.elrancaguino.cl/feed/"
+
+# Technology
+"Tecnología | Xataka" = "https://www.xataka.com/index.xml"
+"Tecnología | Genbeta" = "https://www.genbeta.com/index.xml"
+"Tecnología | Applesfera" = "https://www.applesfera.com/index.xml"
+"Tecnología | Xataka Móvil" = "https://www.xatakamovil.com/index.xml"
+"Tecnología | Hipertextual" = "https://hipertextual.com/feed"
+"Tecnología | Microsiervos" = "https://www.microsiervos.com/index.xml"
+"Tecnología | MuyLinux" = "https://www.muylinux.com/feed/"
+"Tecnología | MuyComputer" = "https://www.muycomputer.com/feed/"
+"Tecnología | WWWhatsnew" = "https://wwwhatsnew.com/feed/"
+"Tecnología | Desde Linux" = "https://blog.desdelinux.net/feed/"
+
+# Hobbies
+"Hobbies | Vida Extra" = "https://www.vidaextra.com/index.xml"
+"Hobbies | 3DJuegos" = "https://www.3djuegos.com/index.xml"
+"Hobbies | Directo al Paladar" = "https://www.directoalpaladar.com/index.xml"
+"Hobbies | Decoesfera" = "https://decoracion.trendencias.com/index.xml"
+"Hobbies | Diario del Viajero" = "https://www.diariodelviajero.com/index.xml"
+"Hobbies | iMisut" = "https://misutmeeple.com/feed/"
+"Hobbies | Zona Negativa" = "https://www.zonanegativa.com/feed/"
+"Hobbies | Bricoydeco" = "https://www.bricoydeco.com/feed/"
+"Hobbies | dzoom" = "https://www.dzoom.org.es/feed/"
+"Hobbies | Jardinería On" = "https://www.jardineriaon.com/feed"
+
+# Animation and movies
+"Animación y películas | Espinof" = "https://www.espinof.com/index.xml"
+"Animación y películas | Ramen Para Dos" = "https://ramenparados.com/feed/"
+"Animación y películas | Cinemascomics" = "https://www.cinemascomics.com/feed/"
+"Animación y películas | No es cine todo lo que reluce" = "https://noescinetodoloquereluce.com/feed"
+"Animación y películas | Cine en Serio" = "https://www.cineenserio.com/feed/"
+"Animación y películas | Anmo Sugoi" = "https://www.anmosugoi.com/feed/"
+"Animación y películas | Cine y Tele" = "https://www.cineytele.com/feed/"
+"Animación y películas | Cinemagavia" = "https://cinemagavia.es/feed/"
+"Animación y películas | Cinéfilo Serial" = "https://cinefiloserial.com.ar/feed/"
+"Animación y películas | BlogVisual" = "https://blogvisual.es/feed/"
+
+# Sports
+"Deportes | AS" = "https://feeds.as.com/mrss-s/pages/as/site/as.com/portada"
+"Deportes | Marca" = "https://e00-marca.uecdn.es/rss/portada.xml"
+"Deportes | Mundo Deportivo" = "https://www.mundodeportivo.com/rss/home.xml"
+"Deportes | Olé" = "https://www.ole.com.ar/rss/ultimas-noticias/"
+"Deportes | La Tercera - El Deportivo" = "https://www.latercera.com/arc/outboundfeeds/rss/category/el-deportivo/?outputType=xml"
+"Deportes | Cooperativa Deportes" = "https://www.cooperativa.cl/noticias/site/tax/port/all/rss____2.xml"
+"Deportes | Basquet Plus" = "https://basquetplus.com/rss.xml"
+"Deportes | Gigantes del Basket" = "https://www.gigantes.com/feed/"
+"Deportes | Mundo Ciclístico" = "https://www.revistamundociclistico.com/feed/"
+"Deportes | Motorpasión Moto" = "https://www.motorpasionmoto.com/index.xml"
+
+# International news
+"Internacional | BBC Mundo" = "https://feeds.bbci.co.uk/mundo/rss.xml"
+"Internacional | DW Español" = "https://rss.dw.com/rdf/rss-sp-all"
+"Internacional | France 24 Español" = "https://www.france24.com/es/rss"
+"Internacional | RFI Español" = "https://www.rfi.fr/es/rss"
+"Internacional | Euronews Español" = "https://es.euronews.com/rss"
+"Internacional | El País" = "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/internacional/portada"
+"Internacional | El Mundo" = "https://e00-elmundo.uecdn.es/elmundo/rss/internacional.xml"
+"Internacional | elDiario.es" = "https://www.eldiario.es/rss/internacional/"
+"Internacional | Noticias ONU" = "https://news.un.org/feed/subscribe/es/news/all/rss.xml"
+"Internacional | Europa Press" = "https://www.europapress.es/rss/rss.aspx?ch=00069"
+
+# Economics
+"Economía | Expansión" = "https://e00-expansion.uecdn.es/rss/portada.xml"
+"Economía | El Blog Salmón" = "https://www.elblogsalmon.com/index.xml"
+"Economía | Economipedia" = "https://economipedia.com/feed"
+"Economía | El País" = "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada"
+"Economía | El Economista México" = "https://www.eleconomista.com.mx/rss/ultimas-noticias"
+"Economía | Ámbito" = "https://www.ambito.com/rss/home.xml"
+"Economía | Diario Financiero" = "https://www.df.cl/noticias/site/list/port/rss.xml"
+"Economía | Economía Digital" = "https://www.economiadigital.es/feed"
+"Economía | El Boletín" = "https://www.elboletin.com/feed/"
+"Economía | El Cronista" = "https://www.cronista.com/files/rss/news.xml"
