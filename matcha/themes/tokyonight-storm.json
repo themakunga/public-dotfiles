@@ -1,0 +1,16 @@
+{
+  "name": "Tokyo Night Storm",
+  "accent": "#7aa2f7",
+  "accent_dark": "#3d59a1",
+  "accent_text": "#24283b",
+  "secondary": "#737aa2",
+  "subtle_text": "#565f89",
+  "muted_text": "#a9b1d6",
+  "dim_text": "#c0caf5",
+  "danger": "#f7768e",
+  "warning": "#ff9e64",
+  "tip": "#e0af68",
+  "link": "#7dcfff",
+  "directory": "#9ece6a",
+  "contrast": "#24283b"
+}
