@@ -9,7 +9,21 @@ M.plugin = function()
     return
   end
 
-  require('trouble').setup()
+  require('trouble').setup({
+    keys = {
+      ['<leader>ca'] = {
+        desc = 'Code Action',
+        action = function(view, ctx)
+          if not ctx.item then
+            return
+          end
+          view:jump(ctx.item)
+          vim.lsp.buf.code_action()
+          view.win:focus()
+        end,
+      },
+    },
+  })
   KM.bulk_map({
     {
       motion = '<leader>xx',

@@ -1,7 +1,7 @@
 return {
   cmd = {
     'codebook-lsp',
-    'server',
+    'serve',
   },
   filetypes = {
     'text',

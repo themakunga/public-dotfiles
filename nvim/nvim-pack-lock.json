@@ -41,6 +41,10 @@
       "rev": "af04fbf9c27c5c06b4d1ff022b551aa94e1df4aa",
       "src": "https://github.com/coder/claudecode.nvim"
     },
+    "clipboard-image.nvim": {
+      "rev": "d1550dc26729b7954f95269952e90471b838fa25",
+      "src": "https://github.com/ekickx/clipboard-image.nvim"
+    },
     "codecompanion.nvim": {
       "rev": "9cc3c1352181253d6a65c709431f30a90a45eb05",
       "src": "https://github.com/olimorris/codecompanion.nvim"

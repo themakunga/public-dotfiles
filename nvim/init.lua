@@ -33,6 +33,7 @@ local plugins = {
   'nvim-treesitter',
   'render-markdown',
   'obsidian-nvim',
+  'clipboard-image',
   'gitblame',
   'lazygit',
   'gitsigns',
