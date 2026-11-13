@@ -37,14 +37,37 @@ local opts = {
         frontmatter = {
           func = function(note)
             local frontmatter = require('obsidian.builtin').frontmatter(note)
-            if tostring(note.path:relative_to(Obsidian.workspace.root)):match('^posts/') then
-              local schema_path = tostring(Obsidian.workspace.root / '.utils/frontmatter.schema.json')
-              local schema = vim.json.decode(table.concat(vim.fn.readfile(schema_path), '\n'))
+            local relative = tostring(note.path:relative_to(Obsidian.workspace.root))
+            local article = relative:match('^posts/')
+            local portfolio = relative:match('^portfolio/')
+            if not article and not portfolio then
+              return frontmatter
+            end
+            local schema_name = article and 'article.frontmatter.schema.json' or 'portfolio.frontmatter.schema.json'
+            local schema_path = tostring(Obsidian.workspace.root / ('.utils/' .. schema_name))
+            if article and vim.fn.filereadable(schema_path) == 0 then
+              local legacy_path = tostring(Obsidian.workspace.root / '.utils/frontmatter.schema.json')
+              if vim.fn.filereadable(legacy_path) == 1 then
+                schema_path = legacy_path
+              end
+            end
+            local ok, schema = pcall(function()
+              return vim.json.decode(table.concat(vim.fn.readfile(schema_path), '\n'))
+            end)
+            if ok and type(schema) == 'table' and type(schema.properties) == 'table' then
               for field, property in pairs(schema.properties) do
-                if (frontmatter[field] == nil or frontmatter[field] == vim.NIL) and property.default ~= nil then
+                if
+                  type(property) == 'table'
+                  and (frontmatter[field] == nil or frontmatter[field] == vim.NIL)
+                  and property.default ~= nil
+                then
                   frontmatter[field] = vim.deepcopy(property.default)
                 end
               end
+            else
+              vim.notify_once('Obsidian: schema unavailable or invalid: ' .. schema_path, vim.log.levels.WARN)
+            end
+            if article then
               local now = os.date('%Y-%m-%dT%H:%M:%S%z')
               if frontmatter.created_at == nil or frontmatter.created_at == vim.NIL or frontmatter.created_at == '' then
                 frontmatter.created_at = now
