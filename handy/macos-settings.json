@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "selected_model": "handy-computer/whisper-medium-gguf/whisper-medium-Q8_0.gguf",
+    "selected_language": "auto",
+    "spoken_languages": ["en", "es"],
+    "translate_to_english": false,
+    "post_process_enabled": false,
+    "auto_submit": false,
+    "onboarding_completed": true,
+    "autostart_enabled": false,
+    "shortcut_activation": "toggle",
+    "bindings": {
+      "transcribe": {
+        "id": "transcribe",
+        "name": "Transcribe",
+        "description": "Converts your speech into text.",
+        "default_binding": "ctrl+alt+space",
+        "current_binding": "ctrl+alt+space"
+      }
+    }
+  }
+}
