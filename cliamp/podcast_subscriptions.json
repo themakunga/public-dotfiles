@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1505263490",
+    "title": "#AlertaCIPER",
+    "feed_url": "https://anchor.fm/s/183afe68/podcast/rss",
+    "author": "CIPER",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts112/v4/76/9a/21/769a2115-3ae6-ddfb-44cf-8a9252294315/mza_13681869825708756971.jpg/600x600bb.jpg",
+    "genre": "News",
+    "episode_count": 30
+  },
+  {
+    "id": "1835784761",
+    "title": "Radar CIPER",
+    "feed_url": "https://anchor.fm/s/106d15518/podcast/rss",
+    "author": "CIPER",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/35/45/73/354573cb-4bc2-f43a-4379-f44c8a15d970/mza_9588635961679866216.jpg/600x600bb.jpg",
+    "genre": "News",
+    "episode_count": 67
+  },
+  {
+    "id": "1543787556",
+    "title": "CIPER en tus Oídos",
+    "feed_url": "https://anchor.fm/s/434ed6ec/podcast/rss",
+    "author": "CIPER",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts125/v4/51/6e/6b/516e6bc8-ff33-fed7-c9fa-585ecb3d4469/mza_5321208574607377377.jpg/600x600bb.jpg",
+    "genre": "News",
+    "episode_count": 85
+  },
+  {
+    "id": "1556125368",
+    "title": "Nota de Voz de Mesa Central",
+    "feed_url": "https://mdstrm.com/feeds/5c58a34e176c2c0813b22e4b/6038f72f9e02ee086674a41b?property=itunes",
+    "author": "Tele 13 Radio",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/95/92/28/95922832-0fcb-652f-4636-93296ad714d2/mza_401983733854635504.jpeg/600x600bb.jpg",
+    "genre": "News",
+    "episode_count": 1470
+  },
+  {
+    "id": "1831788874",
+    "title": "Animales Políticos",
+    "feed_url": "https://anchor.fm/s/106ac41b0/podcast/rss",
+    "author": "Casa Editorial Lo Que Importa",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/08/d0/e1/08d0e149-38e0-3dcb-48b6-535250505eef/mza_7469109532877582824.jpg/600x600bb.jpg",
+    "genre": "Politics",
+    "episode_count": 59
+  },
+  {
+    "id": "1741841902",
+    "title": "Lo Que Importa con Daniel Matamala",
+    "feed_url": "https://anchor.fm/s/110684f50/podcast/rss",
+    "author": "Casa Editorial Lo Que Importa",
+    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/41/cb/5a/41cb5a17-bf98-ff9d-7934-bd4225845f31/mza_7655342341570748578.jpg/600x600bb.jpg",
+    "genre": "News Commentary",
+    "episode_count": 102
+  }
+]

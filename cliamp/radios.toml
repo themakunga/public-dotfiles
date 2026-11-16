@@ -1,0 +1,4 @@
+# Add custom stations here; restart cliamp after editing the live file.
+# [[station]]
+# name = "My station"
+# url = "https://example.com/live.mp3"

@@ -1,0 +1,97 @@
+[[station]]
+name = "Rock and Pop"
+url = "http://24493.live.streamtheworld.com/ROCK_AND_POPAAC_SC"
+country = "Chile"
+state = "Santiago"
+bitrate = 56
+codec = "AAC+"
+tags = "pop,rock"
+homepage = "http://www.rockandpop.cl/"
+
+[[station]]
+name = "Radio Bio Bio"
+url = "https://unlimited3-cl.dps.live/biobiosantiago/mp3/icecast.audio"
+country = "Chile"
+state = "Santiago"
+codec = "MP3"
+homepage = "https://www.biobiochile.cl/"
+
+[[station]]
+name = "Futuro"
+url = "http://27323.live.streamtheworld.com/FUTUROAAC_SC"
+country = "Chile"
+bitrate = 56
+codec = "AAC+"
+homepage = "https://www.futuro.cl/"
+
+[[station]]
+name = "Rock and Pop"
+url = "http://14073.live.streamtheworld.com/ROCK_AND_POP_SC"
+country = "Chile"
+bitrate = 128
+codec = "MP3"
+tags = "misc"
+homepage = "https://www.rockandpop.cl/"
+
+[[station]]
+name = "Radio Retro Online"
+url = "https://sonic.streamingchilenos.com/8138/stream"
+country = "Chile"
+state = "Santiago"
+bitrate = 128
+codec = "MP3"
+tags = "80s,dance,pop"
+homepage = "https://radiofmdance.cl/"
+
+[[station]]
+name = "Radio Club 80 Trance FLAC"
+url = "https://stream.radioclub80.cl:8052/trance80.flac"
+country = "Chile"
+bitrate = 6144
+codec = "OGG"
+tags = "trance"
+homepage = "https://www.radioclub80.cl/"
+
+[[station]]
+name = "Radio Futuro"
+url = "https://playerservices.streamtheworld.com/api/livestream-redirect/FUTURO_SC.mp3"
+country = "Chile"
+bitrate = 192
+codec = "MP3"
+tags = "classic rock,pop rock,rock"
+homepage = "http://envivo.futuro.cl/"
+
+[[station]]
+name = "Radio Club 80 Euro FLAC"
+url = "https://stream.radioclub80.cl:8032/stream.euro80flac"
+country = "Chile"
+bitrate = 3072
+codec = "OGG"
+homepage = "https://www.radioclub80.cl/"
+
+[[station]]
+name = "Anime Para Ti"
+url = "https://stream.zeno.fm/qpn8mkt8c4duv"
+country = "Japan"
+bitrate = 128
+codec = "MP3"
+tags = "anime,anime openings,jpop,music"
+homepage = "https://www.facebook.com/radioanimeparati"
+
+[[station]]
+name = "Radio Anime Nexus"
+url = "http://radio.animenexus.mx:8000/animenexus"
+country = "Mexico"
+bitrate = 128
+codec = "MP3"
+tags = "anime,city pop,game,jpop,jrock,kpop"
+homepage = "https://www.animenexusla.com/"
+
+[[station]]
+name = "animePOP! Online Anime Radio "
+url = "https://stream.zeno.fm/1peyavabbl1tv"
+country = "The United States Of America"
+bitrate = 160
+codec = "MP3"
+tags = "anime radio,japanese anime soundtracks game jpop vgm ost"
+homepage = "https://soundmasteradio.com/"

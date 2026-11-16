@@ -1,0 +1,12 @@
+# Public starter settings. Keep provider credentials in the private config.
+theme = ""
+eq_preset = "Custom"
+eq = [4, 4, 2, -1, -2, 2, 4, 5, 5, 5]
+speed = 1.0
+visualizer = "BarsDot"
+
+[podcast]
+country = "cl"
+
+[radio]
+country = "CL"
