@@ -15,19 +15,20 @@ vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
 
 local root = vim.fn.tempname()
 vim.fn.mkdir(root, 'p')
-vim.fn.writefile({ 'dictionaries = ["en_us"]' }, root .. '/.codebook.toml')
+root = assert(vim.uv.fs_realpath(root))
+vim.fn.writefile({ '{"version":"0.2","language":"en"}' }, root .. '/cspell.json')
 vim.cmd.edit(root .. '/note.md')
 vim.bo.filetype = 'markdown'
 vim.api.nvim_buf_set_lines(0, 0, -1, false, { 'A wrod in this sentence.' })
 local source = vim.api.nvim_get_current_buf()
-local config = dofile(config_root .. '/lsp/codebook.lua')
-config.name, config.root_dir = 'codebook', root
+local config = dofile(config_root .. '/lsp/cspell_ls.lua')
+config.name, config.root_dir = 'cspell_ls', root
 local client = assert(vim.lsp.start(config))
 assert(
   vim.wait(10000, function()
     return #vim.diagnostic.get(source) > 0
   end),
-  'Codebook did not publish diagnostics'
+  'CSpell did not publish diagnostics'
 )
 assert(vim.lsp.get_client_by_id(client):supports_method('textDocument/codeAction'))
 local other = vim.api.nvim_create_buf(true, false)
@@ -87,6 +88,16 @@ assert(
 assert(view:is_open(), 'Correction must not close Trouble')
 assert(vim.api.nvim_get_current_buf() == trouble_buffer, 'Correction must retain Trouble focus')
 assert(vim.api.nvim_buf_get_lines(other, 0, 1, false)[1] == 'Keep this text intact.')
+config.commands['cSpell.editText']({
+  arguments = {
+    vim.uri_from_bufnr(source),
+    0,
+    {
+      { range = { start = { line = 0, character = 2 }, ['end'] = { line = 0, character = 6 } }, newText = 'stale' },
+    },
+  },
+}, { client_id = client })
+assert(vim.api.nvim_buf_get_lines(source, 0, 1, false)[1] == 'A word in this sentence.', 'Reject stale correction')
 vim.lsp.get_client_by_id(client):stop(true)
 vim.fn.delete(root, 'rf')
-print('Trouble Codebook action: source correction and panel focus OK')
+print('Trouble CSpell action: source correction and panel focus OK')

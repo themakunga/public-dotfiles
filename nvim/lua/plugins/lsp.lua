@@ -33,7 +33,6 @@ local ensure_installed = {
   'bash-debug-adapter',
   'bashls',
   'cssls',
-  'codebook',
   'debugpy',
   'delve',
   'diagnosticls',
@@ -324,7 +323,9 @@ M.plugin = function()
   end
 
   require('mason').setup(mason_opts)
-  require('mason-lspconfig').setup({ automatic_enable = { exclude = { 'cspell_ls', 'efm', 'glint', 'snyk_ls' } } })
+  require('mason-lspconfig').setup({
+    automatic_enable = { exclude = { 'codebook', 'cspell_ls', 'efm', 'glint', 'snyk_ls' } },
+  })
   require('mason-tool-installer').setup(opts)
 
   -- GitHub Actions LS: auto-read desde lsp/github_actions.lua, solo activa en .github/workflows/
@@ -333,7 +334,7 @@ M.plugin = function()
   vim.lsp.enable('efm')
   -- GitLab CI LS: instalado vía Nix, activa solo en .gitlab-ci.yml
   vim.lsp.enable('gitlab_ci')
-  vim.lsp.enable('codebook')
+  vim.lsp.enable({ 'agnix', 'cspell_ls' })
   require('plugins.mason.updates').setup()
 
   vim.diagnostic.config(diagnostic_config)

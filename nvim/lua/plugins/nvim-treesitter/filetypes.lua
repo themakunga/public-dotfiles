@@ -3,9 +3,12 @@ local M = {}
 local function setup()
   vim.filetype.add({
     extension = {
+      Modelfile = 'modelfile',
+      modelfile = 'modelfile',
       ini = 'dosini',
       cfg = 'dosini',
       tofu = 'opentofy',
+      mdc = 'markdown',
     },
 
     filename = {
@@ -15,6 +18,9 @@ local function setup()
       -- Ollama
       ['Modelfile'] = 'modelfile',
       ['modelfile'] = 'modelfile',
+      ['SKILL'] = 'markdown',
+      ['AGENT'] = 'markdown',
+      ['AGENTS'] = 'markdown',
 
       -- podman / docker
       ['Containerfile'] = 'dockerfile',
@@ -66,7 +72,6 @@ local function setup()
 
   local reg = vim.treesitter.language.register
 
-  reg('dockerfile', 'modelfile')
   reg('ini', 'dosini')
   reg('bash', 'sh')
   reg('terraform', {
