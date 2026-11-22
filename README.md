@@ -5,6 +5,10 @@
 
 # Public Dotfiles
 
+![Lua](https://img.shields.io/badge/Lua-2C2D72?style=flat-square&logo=lua&logoColor=white)
+![Shell](https://img.shields.io/badge/Shell-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
+![Neovim](https://img.shields.io/badge/Neovim-57A143?style=flat-square&logo=neovim&logoColor=white)
+
 Repositorio centralizado para el almacenamiento, versionado y despliegue de archivos de configuración del sistema (dotfiles).
 
 ## Dependencias y Requisitos Previos
@@ -81,3 +85,16 @@ El pipeline de GitHub Actions validará los siguientes puntos en cada push a dev
 ## Licencia
 
 Este proyecto está distribuido bajo la licencia MIT. Consulta el archivo LICENSE para más información.
+
+## Repository reference
+
+| Path                   | Purpose                             |
+| ---------------------- | ----------------------------------- |
+| [`nvim/`](nvim/)       | Neovim configuration                |
+| [`tmux/`](tmux/)       | tmux configuration                  |
+| [`handy/`](handy/)     | Handy dictation configuration       |
+| [`zsh/`](zsh/)         | Zsh configuration                   |
+| [`scripts/`](scripts/) | Maintenance and validation commands |
+
+The default branch is `main`. Use the tracked manifests and scripts above
+when preparing changes; keep local credentials and generated files out of commits.
