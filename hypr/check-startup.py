@@ -27,7 +27,7 @@ with tempfile.TemporaryDirectory(prefix="hypr startup ") as temporary:
         for rule, command in commands:
             log.write_text("")
             result = subprocess.run(shlex.split(command), env=env, capture_output=True)
-            assert result.returncode in (0, 1) and not result.stderr, result.stderr
+            assert result.returncode == 0 and not result.stderr, result.stderr
             selected.extend((rule, call) for call in log.read_text().splitlines())
         if user == "wheatley":
             assert selected == [(
