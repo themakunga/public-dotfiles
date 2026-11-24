@@ -7,7 +7,7 @@ vim.fn.writefile({ '{}' }, root .. '/parent/cspell.json')
 local project = root .. '/parent/project'
 local buf = vim.api.nvim_create_buf(true, false)
 vim.api.nvim_buf_set_name(buf, project .. '/docs/note.md')
-local cspell = dofile('lsp/cspell_ls.lua')
+local cspell = dofile('after/lsp/cspell_ls.lua')
 local function resolved(config)
   local found
   config.root_dir(buf, function(dir)
@@ -25,12 +25,16 @@ for _, name in ipairs({
   'cspell.config.js',
   '.cspell.config.mjs',
   'cspell.config.ts',
-  '.config/cspell.config.yaml',
-  '.vscode/cspell.json',
 }) do
   vim.fn.mkdir(vim.fs.dirname(project .. '/' .. name), 'p')
   vim.fn.writefile({ '{}' }, project .. '/' .. name)
   assert(resolved(cspell) == project, name)
+  vim.fn.delete(project .. '/' .. name)
+end
+for _, name in ipairs({ '.config/cspell.config.yaml', '.vscode/cspell.json' }) do
+  vim.fn.mkdir(vim.fs.dirname(project .. '/' .. name), 'p')
+  vim.fn.writefile({ '{}' }, project .. '/' .. name)
+  assert(not resolved(cspell), 'Only a root-level file opts in: ' .. name)
   vim.fn.delete(project .. '/' .. name)
 end
 for _, content in ipairs({ '{}', '{"name":"project"}', 'invalid JSON', '{"cspell":false}' }) do

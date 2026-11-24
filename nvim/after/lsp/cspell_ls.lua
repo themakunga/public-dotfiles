@@ -14,10 +14,6 @@ for _, extension in ipairs({ 'json', 'jsonc', 'yaml', 'yml', 'js', 'cjs', 'mjs',
   config_files[#config_files + 1] = 'cspell.config.' .. extension
   config_files[#config_files + 1] = '.cspell.config.' .. extension
 end
-for _, name in ipairs(vim.deepcopy(config_files)) do
-  config_files[#config_files + 1] = '.config/' .. name
-end
-vim.list_extend(config_files, { '.vscode/cspell.json', '.vscode/cSpell.json', '.vscode/.cspell.json' })
 
 ---@type vim.lsp.Config
 return {
@@ -39,6 +35,8 @@ return {
   end,
   settings = {
     cSpell = {
+      checkOnlyEnabledFileTypes = false,
+      spellCheckOnlyWorkspaceFiles = true,
       -- shortcut: edit dictionaries in the project config; add client commands when needed.
       hideAddToDictionaryCodeActions = true,
     },

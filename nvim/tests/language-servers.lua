@@ -22,7 +22,7 @@ for i, fixture in ipairs(formats) do
   vim.cmd.edit(project .. '/note.md')
   vim.bo.filetype = 'markdown'
   vim.api.nvim_buf_set_lines(0, 0, -1, false, { 'Sprocketwobble wrod' })
-  local config = dofile('lsp/cspell_ls.lua')
+  local config = dofile('after/lsp/cspell_ls.lua')
   config.name, config.root_dir = 'cspell_ls', project
   local id = assert(vim.lsp.start(config))
   local buf = vim.api.nvim_get_current_buf()

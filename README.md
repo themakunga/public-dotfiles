@@ -97,3 +97,35 @@ Este proyecto está distribuido bajo la licencia MIT. Consulta el archivo LICENS
 
 The default branch is `main`. Use the tracked manifests and scripts above
 when preparing changes; keep local credentials and generated files out of commits.
+
+## CSpell project scope
+
+Neovim checks all file types only when the project root contains its own CSpell
+configuration file, or a `cspell` object in the root `package.json`. Configurations
+only inside `.config/`, `.vscode/` or other subdirectories do not opt the project
+in. Nested Git repositories opt in independently.
+
+Use the root configuration's `files` and `ignorePaths` to select files. For example,
+save `.cspell.config.yaml` at the project root:
+
+```yaml
+version: "0.2"
+files:
+  - "**/*"
+ignorePaths:
+  - "dist/**"
+  - "generated/**"
+```
+
+The override in `nvim/after/lsp/cspell_ls.lua` uses the official
+`cspell-language-server` supplied by the Nix Neovim module; the old Mason
+`cspell-lsp` is not a compatible substitute. Executable configuration files use
+Neovim's native trust approval. From `nvim/`, run:
+
+```sh
+nvim --headless -u NONE -i NONE -l tests/project-lsp.lua
+nvim --headless -u NONE -i NONE -l tests/cspell-scope.lua
+```
+
+The scope check requires `nvim-lspconfig` and the official server on `PATH`. It
+verifies root opt-in, normal/custom/unset file types and real file exclusions.

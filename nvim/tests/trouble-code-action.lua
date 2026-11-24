@@ -21,7 +21,7 @@ vim.cmd.edit(root .. '/note.md')
 vim.bo.filetype = 'markdown'
 vim.api.nvim_buf_set_lines(0, 0, -1, false, { 'A wrod in this sentence.' })
 local source = vim.api.nvim_get_current_buf()
-local config = dofile(config_root .. '/lsp/cspell_ls.lua')
+local config = dofile(config_root .. '/after/lsp/cspell_ls.lua')
 config.name, config.root_dir = 'cspell_ls', root
 local client = assert(vim.lsp.start(config))
 assert(
