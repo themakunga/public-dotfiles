@@ -28,6 +28,10 @@ setopt hist_save_no_dups
 setopt hist_find_no_dups
 
 # ===== GESTOR DE PLUGINS (ZINIT) =====
+if [[ -r /etc/zsh/plugins.zsh ]]; then
+  # Nix provides the same plugins without downloads during shell startup.
+  source /etc/zsh/plugins.zsh
+else
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
 if [[ ! -d "$ZINIT_HOME" ]]; then
@@ -58,6 +62,7 @@ zinit wait lucid for \
   OMZP::docker \
   OMZP::gitignore \
   OMZP::node
+fi
 
 # ===== PROMPT Y INTEGRACIONES =====
 eval "$(oh-my-posh init zsh --config "${HOME}/.config/ohmyposh/config.yaml")"
@@ -127,4 +132,6 @@ fi
 case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
 
 # Added by codeen install
-export PATH="/Users/nicolas/.local/bin/codeen:$PATH"
+if [[ -d "$HOME/.local/bin/codeen" ]]; then
+  export PATH="$HOME/.local/bin/codeen:$PATH"
+fi
