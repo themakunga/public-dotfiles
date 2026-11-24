@@ -11,3 +11,8 @@ belong in these public templates. GLaDOS lifecycle hooks are managed by the
 standalone skill in the vault.
 
 The legacy `config.yaml` is a container template, not the native CLI config.
+
+Aperture's companion GitHub CLI settings live in
+`gh/config.aperture-science.yml`. Nix seeds `~/.config/gh/config.yml` with HTTPS
+cloning so interactive users do not need a separate GitHub SSH key. Existing
+runtime configuration is preserved.
