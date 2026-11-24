@@ -70,6 +70,8 @@ local ensure_installed = {
   'tofu_ls',
   'tombi',
   'tsc',
+  'ts_ls',
+  'vue_ls',
   'yamlls',
   -- Nix LSPs instalados fuera de Mason:
   --   brew install nil        (o: nix profile install nixpkgs#nil)
