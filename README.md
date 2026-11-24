@@ -1,7 +1,6 @@
-[![CI & Auto PR](https://github.com/themakunga/public-dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/themakunga/public-dotfiles/actions)
+[![CI & Auto PR](https://github.com/themakunga/public-dotfiles/actions/workflows/ci.yaml/badge.svg)](https://github.com/themakunga/public-dotfiles/actions/workflows/ci.yaml)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![Security: Gitleaks](https://img.shields.io/badge/Security-Gitleaks-blueviolet)](https://github.com/gitleaks/gitleaks)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 # Public Dotfiles
 
