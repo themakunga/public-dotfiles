@@ -4,123 +4,96 @@
 
 # Public Dotfiles
 
-Personal application, editor, shell and desktop configuration for macOS and Linux.
-Packages and host-specific deployment are declared in
-[nix-systems](https://github.com/themakunga/nix-systems); this repository holds the
-public configuration those declarations deploy.
+![Lua](https://img.shields.io/badge/Lua-2C2D72?style=flat-square&logo=lua&logoColor=white)
+![Shell](https://img.shields.io/badge/Shell-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
+![Neovim](https://img.shields.io/badge/Neovim-57A143?style=flat-square&logo=neovim&logoColor=white)
 
-## Configuration map
+Repositorio centralizado para el almacenamiento, versionado y despliegue de archivos de configuración del sistema (dotfiles).
 
-| Area                | Directories                                                                                                      | Notes                                                                                                 |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Editor              | [nvim](nvim/), [zed](zed/)                                                                                       | Neovim plugins, native LSP configuration, syntax and regression checks.                               |
-| Shell and terminals | [zsh](zsh/), [bash](bash/), [wezterm](wezterm/), [ghostty](ghostty/), [tmux](tmux/)                              | Shell startup, terminal appearance and persistent sessions.                                           |
-| Linux desktop       | [hypr](hypr/), [waybar](waybar/), [wofi](wofi/)                                                                  | Hyprland startup, shortcuts, status bar and launcher.                                                 |
-| macOS desktop       | [aerospace](aerospace/), [yabai](yabai/), [skhd](skhd/)                                                          | Window management and shortcuts; enabled components depend on the host.                               |
-| CLI tools           | [git](git/), [gh](gh/), [lazygit](lazygit/), [yazi](yazi/), [btop](btop/)                                        | Git workflows, file navigation and monitoring.                                                        |
-| Dictation and media | [handy](handy/README.md), [cliamp](cliamp/README.md)                                                             | Offline bilingual dictation and public podcast/radio starter settings.                                |
-| Agents              | [agent](agent/), [codex](codex/), [claude](claude/), [hermes](hermes/), [gemini](gemini/), [zeroclaw](zeroclaw/) | Public runtime settings; private identity, authentication and speech catalogs are managed separately. |
+## Dependencias y Requisitos Previos
 
-Directories are deployed selectively. Their presence here does not mean every
-application is enabled on every host.
+Para utilizar y desarrollar en este repositorio, asegúrate de tener instaladas las siguientes herramientas en tu entorno local:
 
-## Deployment
+- Git: Para el control de versiones.
+- Pre-commit: Para la ejecución de hooks locales antes de cada commit.
+- Gitleaks: Herramienta de análisis estático para prevenir la filtración de secretos (ejecutada mediante pre-commit y CI).
+- Node.js & npm (Opcional pero recomendado): Para herramientas de validación de commits locales si decides integrar Commitizen o Husky.
 
-The managed checkout is normally `~/.public-dotfiles` for each runtime user:
+## Instalación y Uso
 
-```sh
-git clone https://github.com/themakunga/public-dotfiles.git ~/.public-dotfiles
-```
+1. Clona el repositorio en tu máquina local:
+   git clone https://github.com/themakunga/public-dotfiles.git ~/.dotfiles
+   cd ~/.dotfiles
 
-Cloning alone does not link configuration or install applications. The
-[`my.dotfiles` module](https://github.com/themakunga/nix-systems/blob/main/modules/modules/common/dotfiles.nix)
-in `nix-systems` selects packages and uses GNU Stow during system activation.
-For example, an application module can declare:
+2. (Aquí puedes agregar el comando específico que usas para enlazar tus dotfiles, por ejemplo, usando GNU Stow o un script bash personalizado).
+   # Ejemplo usando un script de instalación
+   ./install.sh
 
-```nix
-my.dotfiles.packages = [
-  {
-    name = "nvim";
-    isConfig = true;
-  }
-];
-```
+## Flujo de Desarrollo
 
-This maps `nvim/` into `~/.config/nvim/`. Packages without `isConfig` target the
-user's home; `output-name` and `output-path` support application-specific
-locations. `my.dotfiles.additionalUsers` supplies separate checkouts and package
-selections for additional Linux users.
+Este repositorio sigue un flujo de trabajo estructurado e integrado con GitHub Actions para garantizar la calidad y seguridad del código.
 
-Activation attempts a fast-forward update from `origin/main` before deployment.
-An update failure emits a warning and keeps the local checkout. Changes published
-only on `develop` reach managed hosts after merging into `main` and activating
-that host. Review declarations and existing files first: deployment can adopt
-existing files and remove conflicting Stow targets.
+### 1. Gestión de Ramas
 
-Declare application dependencies in `nix-systems`. There is no root `install.sh`.
-The Aperture-specific script under `scripts/` is a separate manual setup path;
-managed hosts use the Nix declarations.
+- main: Rama de producción. No se deben hacer commits directos aquí.
+- develop: Rama principal de desarrollo. Todos los cambios deben integrarse primero en esta rama.
 
-## Neovim and terminal behavior
+Cuando se realiza un push a la rama develop, el pipeline de Integración Continua (CI) ejecuta las validaciones y, si son exitosas, genera automáticamente un Pull Request hacia main.
 
-Neovim uses `vim.pack` and native `vim.lsp.config`/`vim.lsp.enable`. Nix supplies
-system tools, while the existing Mason tool list manages additional editor
-servers. LSP configuration lives in `nvim/lsp/`; overrides that must take
-precedence over plugin defaults go in `nvim/after/lsp/`.
+### 2. Configuración del Entorno de Desarrollo
 
-- Vue uses `vue_ls` with `ts_ls` and the `@vue/typescript-plugin` bundled with
-  Mason's Vue language server. `ts_ls` handles Vue buffers; ordinary TypeScript
-  and JavaScript retain the configured TypeScript 7 server.
-- CSpell requires the project's own CSpell configuration. Nested Git repositories
-  opt in independently; executable configurations require Neovim's native trust.
-- agnix validates supported agent, skill and MCP configuration files.
-- Ollama Modelfiles use native syntax highlighting rather than Docker parsing.
+Para evitar que el pipeline falle remotamente, debes configurar la validación de secretos de forma local:
 
-Run focused checks from `nvim/` after their required tools/plugins are available:
+# 1. Instalar pre-commit (si usas Python/pip)
 
-```sh
-cd ~/.public-dotfiles/nvim
-nvim --headless -u NONE -i NONE -l tests/project-lsp.lua
-nvim --headless -u NONE -i NONE -l tests/vue.lua
-```
+pip install pre-commit
 
-The Vue check requires `nvim-lspconfig` and Mason's Vue/TypeScript servers; it
-verifies both client attachment and real TypeScript diagnostics in a component.
-Other files in `nvim/tests/` document their commands and prerequisites.
+# 2. Instalar los hooks en el repositorio
 
-On Aperture Science, Wheatley's Hyprland session opens one fullscreen WezTerm
-window and creates or reattaches the `main` tmux session. Other users retain the
-existing terminal layout. Check the startup scenarios from the repository root
-with `python3 hypr/check-startup.py`.
-
-## Contributing
-
-Base changes on an up-to-date `develop` checkout or a topic branch from it.
-Preserve unrelated edits and review the diff before committing. Changes reach
-`develop` first; `main` is the deployment branch.
-
-With Git, pre-commit and the applicable formatters available, enable the configured
-pre-commit, commit-message and pre-push hooks, then check affected files:
-
-```sh
 pre-commit install
-pre-commit run --files README.md
-```
 
-[Local hooks](.pre-commit-config.yaml) cover YAML/JSON, whitespace, file size,
-forbidden files, Prettier, StyLua and Conventional Commits. Gitleaks runs at the
-pre-push stage. Use English [Conventional Commits](https://conventionalcommits.org):
+Esto garantizará que Gitleaks analice tu código localmente antes de permitir la creación de un commit.
 
-```sh
-git commit -m "docs: update configuration and deployment guide"
-```
+### 3. Convención de Commits
 
-Push reviewed changes to `develop`. The [CI workflow](.github/workflows/ci.yaml)
-checks commit messages, scans for secrets, rejects forbidden files and creates or
-updates the pull request into `main` after successful checks. Application-specific
-regression checks remain separate from that workflow.
+Este proyecto utiliza Commitlint. Todos los mensajes de commit deben seguir la especificación de Conventional Commits (https://www.conventionalcommits.org/).
 
-Keep credentials, private account settings, runtime histories and transcripts out
-of this public repository. Use the existing encrypted secrets repository for
-sensitive configuration and copy only reviewed public defaults from live apps.
-The Handy and cliamp guides explain their writable settings and seeding behavior.
+Formato requerido:
+<tipo>[ámbito opcional]: <descripción>
+
+Tipos permitidos:
+
+- feat: Nueva característica o archivo de configuración.
+- fix: Solución de errores.
+- chore: Mantenimiento, actualización de dependencias o ajustes de CI.
+- docs: Cambios en la documentación.
+- style: Formato de código (espacios, comas, etc).
+- refactor: Refactorización de código sin agregar funcionalidades ni corregir errores.
+
+Ejemplo válido:
+git commit -m "feat(zsh): agregar alias para actualización del sistema"
+
+### 4. Reglas de Validación en CI
+
+El pipeline de GitHub Actions validará los siguientes puntos en cada push a develop:
+
+1.  Commitlint: Verifica que el historial de commits respete la nomenclatura estándar.
+2.  Gitleaks: Escanea el código en busca de credenciales, tokens o llaves privadas expuestas.
+3.  Archivos del Sistema: Bloquea la subida de archivos residuales como .DS_Store, Thumbs.db, .env, .pem o .key.
+
+## Licencia
+
+Este proyecto está distribuido bajo la licencia MIT. Consulta el archivo LICENSE para más información.
+
+## Repository reference
+
+| Path                   | Purpose                             |
+| ---------------------- | ----------------------------------- |
+| [`nvim/`](nvim/)       | Neovim configuration                |
+| [`tmux/`](tmux/)       | tmux configuration                  |
+| [`handy/`](handy/)     | Handy dictation configuration       |
+| [`zsh/`](zsh/)         | Zsh configuration                   |
+| [`scripts/`](scripts/) | Maintenance and validation commands |
+
+The default branch is `main`. Use the tracked manifests and scripts above
+when preparing changes; keep local credentials and generated files out of commits.
