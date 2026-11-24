@@ -129,3 +129,18 @@ nvim --headless -u NONE -i NONE -l tests/cspell-scope.lua
 
 The scope check requires `nvim-lspconfig` and the official server on `PATH`. It
 verifies root opt-in, normal/custom/unset file types and real file exclusions.
+
+## Prisma in Neovim
+
+The existing Mason tool list includes `prismals`, which is enabled automatically
+when installed. The Tree-sitter parser and filetype lists include `prisma` for
+parsing and highlighting `.prisma` files through the existing runtime installer.
+
+After the configured tools and parser are installed, run from `nvim/`:
+
+```sh
+nvim --headless -u NONE -i NONE -l tests/prisma.lua
+```
+
+This checks native filetype detection, actual parsing/highlighting and a real
+Prisma language-server diagnostic, without connecting to a database.

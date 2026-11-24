@@ -47,6 +47,7 @@ M.parsers = {
   'markdown',
   'markdown_inline',
   'python',
+  'prisma',
   'query',
   'sql',
   'todotxt',
@@ -122,6 +123,7 @@ M.filetypes = {
   'lua',
   'python',
   'sql',
+  'prisma',
   'todotxt',
   'vim',
 }
