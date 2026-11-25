@@ -1,0 +1,15 @@
+{
+  "date_format": "yyyy-MM-dd",
+  "time_format": "HH:mm",
+  "agents": [
+    "Codex",
+    "Claude Code",
+    "Gemini",
+    "Hermes",
+    "OpenClaw",
+    "ZeroClaw"
+  ],
+  "authorized_dirs": [
+    { "path": "Projects", "permissions": "0755", "enable": true }
+  ]
+}
