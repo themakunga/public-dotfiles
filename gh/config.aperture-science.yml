@@ -1,0 +1,11 @@
+git_protocol: https
+editor: nvim
+prompt: enabled
+pager: less
+aliases:
+  cl: repo clone
+  prs: pr list --author "@me"
+  prc: pr create -a "@me"
+  run: run list --branch "@current"
+  iv: issue view
+  st: status
