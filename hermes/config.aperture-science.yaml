@@ -1,0 +1,7 @@
+model:
+  default: gemini-3.8-flash
+  provider: gemini
+  base_url: https://generativelanguage.googleapis.com/v1beta
+terminal:
+  cwd: "~"
+_config_version: 51

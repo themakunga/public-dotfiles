@@ -4,10 +4,11 @@
 
 # Public Dotfiles
 
-Personal application, editor, shell and desktop configuration for macOS and Linux.
-Packages and host-specific deployment are declared in
-[nix-systems](https://github.com/themakunga/nix-systems); this repository holds the
-public configuration those declarations deploy.
+![Lua](https://img.shields.io/badge/Lua-2C2D72?style=flat-square&logo=lua&logoColor=white)
+![Shell](https://img.shields.io/badge/Shell-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
+![Neovim](https://img.shields.io/badge/Neovim-57A143?style=flat-square&logo=neovim&logoColor=white)
+
+Repositorio centralizado para el almacenamiento, versionado y despliegue de archivos de configuración del sistema (dotfiles).
 
 ## Configuration map
 
@@ -124,6 +125,53 @@ Keep credentials, private account settings, runtime histories and transcripts ou
 of this public repository. Use the existing encrypted secrets repository for
 sensitive configuration and copy only reviewed public defaults from live apps.
 The Handy and cliamp guides explain their writable settings and seeding behavior.
+
+## CSpell project scope
+
+Neovim checks all file types only when the project root contains its own CSpell
+configuration file, or a `cspell` object in the root `package.json`. Configurations
+only inside `.config/`, `.vscode/` or other subdirectories do not opt the project
+in. Nested Git repositories opt in independently.
+
+Use the root configuration's `files` and `ignorePaths` to select files. For example,
+save `.cspell.config.yaml` at the project root:
+
+```yaml
+version: "0.2"
+files:
+  - "**/*"
+ignorePaths:
+  - "dist/**"
+  - "generated/**"
+```
+
+The override in `nvim/after/lsp/cspell_ls.lua` uses the official
+`cspell-language-server` supplied by the Nix Neovim module; the old Mason
+`cspell-lsp` is not a compatible substitute. Executable configuration files use
+Neovim's native trust approval. From `nvim/`, run:
+
+```sh
+nvim --headless -u NONE -i NONE -l tests/project-lsp.lua
+nvim --headless -u NONE -i NONE -l tests/cspell-scope.lua
+```
+
+The scope check requires `nvim-lspconfig` and the official server on `PATH`. It
+verifies root opt-in, normal/custom/unset file types and real file exclusions.
+
+Este proyecto está distribuido bajo la licencia MIT. Consulta el archivo LICENSE para más información.
+
+## Repository reference
+
+| Path                   | Purpose                             |
+| ---------------------- | ----------------------------------- |
+| [`nvim/`](nvim/)       | Neovim configuration                |
+| [`tmux/`](tmux/)       | tmux configuration                  |
+| [`handy/`](handy/)     | Handy dictation configuration       |
+| [`zsh/`](zsh/)         | Zsh configuration                   |
+| [`scripts/`](scripts/) | Maintenance and validation commands |
+
+The default branch is `main`. Use the tracked manifests and scripts above
+when preparing changes; keep local credentials and generated files out of commits.
 
 ## CSpell project scope
 
