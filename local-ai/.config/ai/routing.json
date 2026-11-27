@@ -23,11 +23,11 @@
     },
     {
       "capability": "reasoning",
-      "pattern": "arquitectura|architecture|debug|seguridad|security|race condition|concurrency"
+      "pattern": "arquitectura|architecture|debug|depur|seguridad|security|race condition|concurrency|concurrencia|dise\u00f1o|design|rendimiento|performance|deadlock|matem[a\u00e1]tica|reason|razona"
     },
     {
       "capability": "code",
-      "pattern": "\\b(implement|refactor|test|tests|funci\u00f3n|function|c\u00f3digo|code|typescript|golang)\\b"
+      "pattern": "\\b(implement\\w*|refactor\\w*|tests?|funci[o\u00f3]n|functions?|c[o\u00f3]digo|code|typescript|golang|python|javascript|nix|compila\\w*)\\b"
     }
   ],
   "models": {

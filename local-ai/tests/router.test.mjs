@@ -21,7 +21,7 @@ function fixture(model = {providerID:"local",id:"auto"}, tokens = 0) {
 }
 
 test("routes questions, code and reasoning locally before OpenAI", () => {
-  for(const [text,first] of [["Explain DNS","flash"],["Implement a TypeScript function","coder"],["Review concurrency security","reasoning"]]) {
+  for(const [text,first] of [["Explain DNS","flash"],["Implement a TypeScript function","coder"],["Review concurrency security","reasoning"],["Implementa una funcion en Python","coder"],["Depura un problema de concurrencia","reasoning"],["What is OpenCode?","flash"]]) {
     const chain=candidates(policy,text)
     assert.equal(chain[0].id,first)
     assert.ok(chain.slice(0,-1).every(model=>model.providerID==="local"))
