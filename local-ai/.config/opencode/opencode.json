@@ -4,7 +4,7 @@
   "model": "local/coder",
   "instructions": [
     "~/.vaults/amgmt/agents/SOUL.md",
-    "~/.vaults/amgmt/opencode/JOURNAL.md"
+    "~/.config/opencode/JOURNAL.md"
   ],
   "permissions": [
     {

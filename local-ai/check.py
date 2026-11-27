@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parent.parent
 class LocalAI(unittest.TestCase):
     def test_context_and_published_presets(self):
         config = json.loads((ROOT / 'local-ai/.config/opencode/opencode.json').read_text())
+        self.assertIn('~/.config/opencode/JOURNAL.md', config['instructions'])
+        self.assertTrue((ROOT / 'local-ai/.config/opencode/JOURNAL.md').is_file())
         presets = configparser.ConfigParser()
         presets.read(ROOT / 'local-ai/.config/ai/models.ini')
         for name, model in config['providers']['local']['models'].items():
