@@ -3,7 +3,7 @@
   "rules": [
     {
       "capability": "image",
-      "pattern": "(genera|crea|dibuja|generate|draw).*(imagen|image|ilustración|illustration)"
+      "pattern": "(genera|crea|dibuja|generate|draw).*(imagen|image|ilustraci\u00f3n|illustration)"
     },
     {
       "capability": "vision",
@@ -27,7 +27,17 @@
     },
     {
       "capability": "code",
-      "pattern": "implement|refactor|test|función|function|código|code|typescript|golang"
+      "pattern": "\\b(implement|refactor|test|tests|funci\u00f3n|function|c\u00f3digo|code|typescript|golang)\\b"
     }
-  ]
+  ],
+  "models": {
+    "text": ["flash", "fast", "coder", "reasoning"],
+    "code": ["coder", "reasoning", "fast", "flash"],
+    "reasoning": ["reasoning", "coder", "fast", "flash"]
+  },
+  "fallback": {
+    "providerID": "openai",
+    "id": "gpt-6.1-sol"
+  },
+  "headroom": 8192
 }

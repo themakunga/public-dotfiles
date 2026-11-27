@@ -1,6 +1,6 @@
 {
   "text": {
-    "model": "fast",
+    "model": "flash",
     "engine": "llama.cpp"
   },
   "code": {

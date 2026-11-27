@@ -4,12 +4,17 @@
   "agents": [
     "Codex",
     "Claude Code",
+    "OpenCode",
     "Gemini",
     "Hermes",
     "OpenClaw",
     "ZeroClaw"
   ],
   "authorized_dirs": [
-    { "path": "Projects", "permissions": "0755", "enable": true }
+    {
+      "path": "Projects",
+      "permissions": "0755",
+      "enable": true
+    }
   ]
 }

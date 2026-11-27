@@ -19,7 +19,7 @@ class LocalAI(unittest.TestCase):
         presets = configparser.ConfigParser()
         presets.read(ROOT / 'local-ai/.config/ai/models.ini')
         for name, model in config['providers']['local']['models'].items():
-            self.assertEqual(model['limit']['context'], int(presets[name]['ctx-size']))
+            self.assertEqual(model['limit']['context'], int(presets[model.get('modelID', name)]['ctx-size']))
             self.assertLess(model['limit']['output'], model['limit']['context'])
         tracked = subprocess.check_output(['git', 'ls-files', 'local-ai/.config/ai/models.ini'], cwd=ROOT, text=True)
         self.assertTrue(tracked.strip(), 'Router presets must be published')
@@ -39,7 +39,7 @@ class LocalAI(unittest.TestCase):
                 path.chmod(0o755)
             env = os.environ | {'HOME': str(home), 'PATH': str(bin_dir) + os.pathsep + os.environ['PATH']}
             for args, expected in [
-                ([], ['mini', '--model', 'local/coder']),
+                ([], ['mini', '--model', 'local/auto']),
                 (['--model', 'fast'], ['mini', '--model', 'local/fast']),
                 (['--model', 'flash', 'Explain DNS'], ['run', '--model', 'local/flash', 'Explain DNS']),
             ]:
@@ -48,6 +48,24 @@ class LocalAI(unittest.TestCase):
                 self.assertEqual((home / 'args').read_text().splitlines(), expected)
             result = subprocess.run(['bash', str(ROOT / 'local-ai/.local/bin/ai'), '--model', 'missing', 'test'], env=env, capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
+
+
+    def test_raw_llama_cli_uses_the_same_presets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            shutil.copytree(ROOT / 'local-ai/.config/ai', home / '.config/ai')
+            bin_dir = home / 'bin'; bin_dir.mkdir()
+            cli = bin_dir / 'llama-cli'
+            cli.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$HOME/args"\n')
+            cli.chmod(0o755)
+            env = os.environ | {'HOME':str(home),'PATH':str(bin_dir)+os.pathsep+os.environ['PATH']}
+            for model, context in [('flash','32768'),('fast','65536'),('coder','131072'),('reasoning','131072')]:
+                result = subprocess.run(['bash',str(ROOT/'local-ai/.local/bin/ai-model'),'chat',model],env=env,capture_output=True,text=True)
+                self.assertEqual(result.returncode,0,result.stderr)
+                args = (home/'args').read_text().splitlines()
+                self.assertEqual(args[args.index('-c')+1],context)
+                self.assertEqual('--rope-scale' in args,model!='flash')
+                self.assertFalse((home/'.local/state/ai/heavy.lock').exists())
 
 
 unittest.main()

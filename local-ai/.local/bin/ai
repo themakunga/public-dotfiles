@@ -12,22 +12,22 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 if [[ $# -eq 0 && -z "$cap$input$output" ]]; then
-  model=${model:-coder}
-  case "$model" in flash|fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
-  server_ready || die 'Start ai-server first'
+  model=${model:-auto}
+  case "$model" in auto|flash|fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
   exec opencode mini --model "local/$model"
 fi
 [[ $# -gt 0 ]] || die 'Provide a prompt'
 prompt="$*"
 if [[ -n "$model" && -z "$cap" ]]; then cap=code; fi
 if [[ -z "$cap" ]]; then cap=$(ai-route "$prompt" | jq -er .capability); fi
-if [[ -z "$model" ]]; then model=$(jq -er --arg cap "$cap" '.[$cap].model' "$AI_CONFIG/capabilities.json"); fi
+if [[ -z "$model" ]]; then
+  case "$cap" in text|code|reasoning) model=auto;; *) model=$(jq -er --arg cap "$cap" '.[$cap].model' "$AI_CONFIG/capabilities.json");; esac
+fi
 printf 'Capability: %s; model: %s\n' "$cap" "$model" >&2
 case "$cap" in
   text|code|reasoning)
-    case "$model" in flash|fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
-    server_ready || die 'Start ai-server first'
-    exec opencode run --model "local/$model" "$prompt" ;;
+    case "$model" in auto|flash|fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
+      exec opencode run --model "local/$model" "$prompt" ;;
   image) if [[ -n "$output" ]]; then exec ai-image "$prompt" "$output"; else exec ai-image "$prompt"; fi ;;
   vision) [[ -n "$input" ]] || die 'Use --input IMAGE'; exec ai-vision "$input" "$prompt" ;;
   transcribe) [[ -n "$input" ]] || die 'Use --input AUDIO'; exec ai-transcribe "$input" ;;

@@ -4,14 +4,25 @@ case "${1:-list}" in
   list|status) curl -fsS "$AI_URL/v1/models" | jq . ;;
   chat)
     [[ $# -eq 2 ]] || die 'Usage: ai-model chat flash|fast|coder|reasoning'
-    case "$2" in
-      flash) repo=Qwen/Qwen3-0.6B-GGUF ;;
-      fast) repo=Qwen/Qwen3-4B-GGUF ;;
-      coder) repo=Qwen/Qwen2.5-Coder-7B-Instruct-GGUF ;;
-      reasoning) repo=Qwen/Qwen3-8B-GGUF ;;
-      *) die 'Unknown model' ;;
-    esac
+    case "$2" in flash|fast|coder|reasoning) ;; *) die 'Unknown model';; esac
+    need_file "$AI_CONFIG/models.ini"
     lock_heavy
-    llama-cli -hf "$repo:Q4_K_M" -ngl 99 -c 8192 --conversation ;;
+    python3 - "$AI_CONFIG/models.ini" "$2" <<'PYTHON'
+import configparser
+import os
+import sys
+
+presets = configparser.ConfigParser()
+presets.read(sys.argv[1])
+common, model = presets['*'], presets[sys.argv[2]]
+args = ['llama-cli', '-hf', model['hf-repo'], '--conversation', '-c', model['ctx-size']]
+for key in ['n-gpu-layers', 'flash-attn', 'cache-type-k', 'cache-type-v']:
+    args.extend(['--' + key, common[key]])
+for key in ['rope-scaling', 'rope-scale', 'yarn-orig-ctx', 'chat-template-kwargs']:
+    if key in model:
+        args.extend(['--' + key, model[key]])
+os.execvp(args[0], args)
+PYTHON
+    ;;
   *) die 'Usage: ai-model list|status|chat MODEL' ;;
 esac

@@ -1,10 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugins": ["-opencode.provider.openai-context-caps"],
-  "model": "local/coder",
+  "model": "local/auto",
   "instructions": [
     "~/.vaults/amgmt/agents/SOUL.md",
-    "~/.config/opencode/JOURNAL.md"
+    "~/.config/opencode/JOURNAL.md",
+    "~/.public-dotfiles/agent/WORKSPACE.md"
   ],
   "permissions": [
     {
@@ -79,27 +80,45 @@
         "fast": {
           "name": "Qwen3 4B",
           "limit": {
-            "context": 32768,
+            "context": 65536,
             "output": 4096
           },
           "body": {
             "chat_template_kwargs": {
               "enable_thinking": false
             }
+          },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "freeform": []
           }
         },
         "coder": {
           "name": "Qwen2.5 Coder 7B",
           "limit": {
-            "context": 32768,
+            "context": 131072,
             "output": 8192
+          },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "freeform": []
           }
         },
         "reasoning": {
           "name": "Qwen3 8B",
           "limit": {
-            "context": 32768,
+            "context": 131072,
             "output": 8192
+          },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "freeform": []
           }
         },
         "flash": {
@@ -112,6 +131,26 @@
             "chat_template_kwargs": {
               "enable_thinking": false
             }
+          },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "freeform": []
+          }
+        },
+        "auto": {
+          "name": "Local-first task router",
+          "modelID": "coder",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "freeform": []
           }
         }
       }
@@ -125,8 +164,8 @@
   "compaction": {
     "auto": true,
     "keep": {
-      "tokens": 4096
+      "tokens": 8192
     },
-    "buffer": 4096
+    "buffer": 8192
   }
 }

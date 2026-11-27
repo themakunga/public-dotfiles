@@ -2,3 +2,4 @@
 ^check\.py$
 ^\.stow-local-ignore$
 ^templates/
+^tests/
