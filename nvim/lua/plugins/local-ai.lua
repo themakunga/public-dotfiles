@@ -68,7 +68,7 @@ local function toggle(model)
   local command = { 'ai' }
 
   if model then
-    command = { 'opencode', '--model', 'local/' .. model }
+    command = { 'ai', '--model', model }
   end
 
   ai_job = vim.fn.jobstart(command, {
@@ -109,6 +109,7 @@ local function select_model()
   end
 
   vim.ui.select({
+    'flash',
     'fast',
     'coder',
     'reasoning',

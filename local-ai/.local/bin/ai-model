@@ -3,8 +3,9 @@ source "$HOME/.config/ai/common.sh"
 case "${1:-list}" in
   list|status) curl -fsS "$AI_URL/v1/models" | jq . ;;
   chat)
-    [[ $# -eq 2 ]] || die 'Usage: ai-model chat fast|coder|reasoning'
+    [[ $# -eq 2 ]] || die 'Usage: ai-model chat flash|fast|coder|reasoning'
     case "$2" in
+      flash) repo=Qwen/Qwen3-0.6B-GGUF ;;
       fast) repo=Qwen/Qwen3-4B-GGUF ;;
       coder) repo=Qwen/Qwen2.5-Coder-7B-Instruct-GGUF ;;
       reasoning) repo=Qwen/Qwen3-8B-GGUF ;;

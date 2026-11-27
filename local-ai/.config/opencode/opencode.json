@@ -7,7 +7,11 @@
     "~/.vaults/amgmt/opencode/JOURNAL.md"
   ],
   "permissions": [
-    { "action": "shell", "resource": "*", "effect": "ask" },
+    {
+      "action": "shell",
+      "resource": "*",
+      "effect": "ask"
+    },
     {
       "action": "shell",
       "resource": "journal-maintenance *",
@@ -43,7 +47,11 @@
       "resource": "lua scripts/publish.lua *",
       "effect": "allow"
     },
-    { "action": "shell", "resource": "glados-agent *", "effect": "allow" },
+    {
+      "action": "shell",
+      "resource": "glados-agent *",
+      "effect": "allow"
+    },
     {
       "action": "shell",
       "resource": "python scripts/glados.py *",
@@ -54,7 +62,11 @@
       "resource": "python3 scripts/glados.py *",
       "effect": "allow"
     },
-    { "action": "edit", "resource": "*", "effect": "ask" }
+    {
+      "action": "edit",
+      "resource": "*",
+      "effect": "ask"
+    }
   ],
   "providers": {
     "local": {
@@ -67,25 +79,54 @@
         "fast": {
           "name": "Qwen3 4B",
           "limit": {
-            "context": 1000000,
-            "output": 32768
+            "context": 32768,
+            "output": 4096
+          },
+          "body": {
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            }
           }
         },
         "coder": {
           "name": "Qwen2.5 Coder 7B",
           "limit": {
-            "context": 1000000,
-            "output": 32768
+            "context": 32768,
+            "output": 8192
           }
         },
         "reasoning": {
           "name": "Qwen3 8B",
           "limit": {
-            "context": 1000000,
-            "output": 32768
+            "context": 32768,
+            "output": 8192
+          }
+        },
+        "flash": {
+          "name": "Qwen3 0.6B (quick questions)",
+          "limit": {
+            "context": 32768,
+            "output": 2048
+          },
+          "body": {
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            }
           }
         }
       }
     }
+  },
+  "agents": {
+    "title": {
+      "model": "local/flash"
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "keep": {
+      "tokens": 4096
+    },
+    "buffer": 4096
   }
 }

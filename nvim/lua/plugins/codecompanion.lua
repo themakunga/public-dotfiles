@@ -28,6 +28,7 @@ local adapters = {
           default = 'coder',
 
           choices = {
+            'flash',
             'fast',
             'coder',
             'reasoning',

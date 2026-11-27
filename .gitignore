@@ -53,3 +53,7 @@ yarn-error.log*
 *.swp
 *~
 .netrwhist
+
+# Public local-AI presets; generated OpenCode authentication stays private.
+!local-ai/.config/ai/models.ini
+local-ai/.config/opencode/service.json

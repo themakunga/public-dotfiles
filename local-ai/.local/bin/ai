@@ -11,9 +11,11 @@ while [[ $# -gt 0 ]]; do
     *) break;;
   esac
 done
-if [[ $# -eq 0 && -z "$cap$model$input$output" ]]; then
+if [[ $# -eq 0 && -z "$cap$input$output" ]]; then
+  model=${model:-coder}
+  case "$model" in flash|fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
   server_ready || die 'Start ai-server first'
-  exec opencode --model local/coder
+  exec opencode mini --model "local/$model"
 fi
 [[ $# -gt 0 ]] || die 'Provide a prompt'
 prompt="$*"
@@ -23,7 +25,7 @@ if [[ -z "$model" ]]; then model=$(jq -er --arg cap "$cap" '.[$cap].model' "$AI_
 printf 'Capability: %s; model: %s\n' "$cap" "$model" >&2
 case "$cap" in
   text|code|reasoning)
-    case "$model" in fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
+    case "$model" in flash|fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
     server_ready || die 'Start ai-server first'
     exec opencode run --model "local/$model" "$prompt" ;;
   image) if [[ -n "$output" ]]; then exec ai-image "$prompt" "$output"; else exec ai-image "$prompt"; fi ;;
