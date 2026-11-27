@@ -1,6 +1,61 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "plugins": ["-opencode.provider.openai-context-caps"],
   "model": "local/coder",
+  "instructions": [
+    "~/.vaults/amgmt/agents/SOUL.md",
+    "~/.vaults/amgmt/opencode/JOURNAL.md"
+  ],
+  "permissions": [
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    {
+      "action": "shell",
+      "resource": "journal-maintenance *",
+      "effect": "allow"
+    },
+    {
+      "action": "shell",
+      "resource": "lua scripts/sync.lua *",
+      "effect": "allow"
+    },
+    {
+      "action": "shell",
+      "resource": "lua scripts/weekly.lua *",
+      "effect": "allow"
+    },
+    {
+      "action": "shell",
+      "resource": "lua scripts/monthly.lua *",
+      "effect": "allow"
+    },
+    {
+      "action": "shell",
+      "resource": "lua scripts/history.lua *",
+      "effect": "allow"
+    },
+    {
+      "action": "shell",
+      "resource": "lua scripts/entry.lua *",
+      "effect": "allow"
+    },
+    {
+      "action": "shell",
+      "resource": "lua scripts/publish.lua *",
+      "effect": "allow"
+    },
+    { "action": "shell", "resource": "glados-agent *", "effect": "allow" },
+    {
+      "action": "shell",
+      "resource": "python scripts/glados.py *",
+      "effect": "allow"
+    },
+    {
+      "action": "shell",
+      "resource": "python3 scripts/glados.py *",
+      "effect": "allow"
+    },
+    { "action": "edit", "resource": "*", "effect": "ask" }
+  ],
   "providers": {
     "local": {
       "package": "@opencode/ai/providers/openai-compatible",
@@ -12,29 +67,25 @@
         "fast": {
           "name": "Qwen3 4B",
           "limit": {
-            "context": 8192,
-            "output": 2048
+            "context": 1000000,
+            "output": 32768
           }
         },
         "coder": {
           "name": "Qwen2.5 Coder 7B",
           "limit": {
-            "context": 8192,
-            "output": 2048
+            "context": 1000000,
+            "output": 32768
           }
         },
         "reasoning": {
           "name": "Qwen3 8B",
           "limit": {
-            "context": 8192,
-            "output": 2048
+            "context": 1000000,
+            "output": 32768
           }
         }
       }
     }
-  },
-  "permission": {
-    "bash": "ask",
-    "edit": "ask"
   }
 }
