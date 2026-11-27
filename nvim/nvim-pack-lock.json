@@ -49,6 +49,10 @@
       "rev": "9cc3c1352181253d6a65c709431f30a90a45eb05",
       "src": "https://github.com/olimorris/codecompanion.nvim"
     },
+    "colorful-winsep.nvim": {
+      "rev": "7a8664fb8e91bd3435b3128c18dc814b3ddb11f5",
+      "src": "https://github.com/nvim-zh/colorful-winsep.nvim"
+    },
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"

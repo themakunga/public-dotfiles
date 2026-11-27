@@ -16,6 +16,10 @@ M.plugin = function()
       floats = 'transparent',
       sidebars = 'transparent',
     },
+    on_highlights = function(hl, colors)
+      hl.WinSeparator = { fg = colors.dark3, bg = 'NONE' }
+      hl.FloatBorder = { fg = colors.blue, bg = 'NONE' }
+    end,
   }
 
   require('tokyonight').setup(opts)

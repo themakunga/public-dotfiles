@@ -9,33 +9,29 @@ local M = {}
 --   OLLAMA_API_URL     → URL de Ollama (default: http://127.0.0.1:11434)
 --   OLLAMA_MODEL       → modelo (default: llama3.1:latest)
 
-local default_adapter = vim.env.AI_ADAPTER or 'ollama'
+local default_adapter = vim.env.AI_ADAPTER or (vim.fn.executable('ai') == 1 and 'llamacpp' or 'ollama')
 
 local adapters = {
-  anthropic = function()
-    return require('codecompanion.adapters').extend('anthropic', {
-      env = {
-        api_key = 'ANTHROPIC_API_KEY',
-      },
-      schema = {
-        model = {
-          default = 'claude-sonnet-4-5',
-        },
-      },
-    })
-  end,
+  llamacpp = function()
+    return require('codecompanion.adapters').extend('openai_compatible', {
+      name = 'llamacpp',
+      formatted_name = 'Local AI',
 
-  ollama = function()
-    return require('codecompanion.adapters').extend('ollama', {
       env = {
-        url = vim.env.OLLAMA_API_URL or 'http://127.0.0.1:11434',
+        url = 'http://127.0.0.1:8080',
+        api_key = 'local',
+        chat_url = '/v1/chat/completions',
       },
+
       schema = {
         model = {
-          default = vim.env.OLLAMA_MODEL or 'llama3.1:latest',
-        },
-        num_ctx = {
-          default = 16384,
+          default = 'coder',
+
+          choices = {
+            'fast',
+            'coder',
+            'reasoning',
+          },
         },
       },
     })
@@ -46,27 +42,27 @@ local adapters = {
 local keymaps = {
   {
     mode = 'n',
-    motion = '<leader>ai',
+    motion = '<leader>AAi',
     cmd = '<cmd>CodeCompanionChat Toggle<cr>',
     opts = { desc = 'AI: Toggle Chat' },
   },
   {
     mode = { 'n', 'v' },
-    motion = '<leader>aa',
+    motion = '<leader>AAa',
     cmd = '<cmd>CodeCompanionChat Add<cr>',
     opts = { desc = 'AI: Add selección al Chat' },
   },
 
   {
     mode = { 'n', 'v' },
-    motion = '<leader>ac',
+    motion = '<leader>AAc',
     cmd = '<cmd>CodeCompanion<cr>',
     opts = { desc = 'AI: Inline Assistant' },
   },
 
   {
     mode = { 'n', 'v' },
-    motion = '<leader>ap',
+    motion = '<leader>AAp',
     cmd = '<cmd>CodeCompanionActions<cr>',
     opts = { desc = 'AI: Actions Palette' },
   },

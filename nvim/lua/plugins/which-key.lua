@@ -78,14 +78,11 @@ M.plugin = function()
       { '<leader>gh', group = 'Hunks', icon = { icon = '', color = 'orange' } },
       { '<leader>gl', group = 'Log', icon = { icon = '󰒙', color = 'orange' } },
 
-      -- AI (CodeCompanion)
-      { '<leader>a', group = 'AI', icon = { icon = '󱚦', color = 'cyan' } },
-
-      -- Claude Code
-      { '<leader>A', group = 'Claude', icon = { icon = '', color = 'purple' } },
-      { '<leader>AC', group = 'Claude Code', icon = { icon = '', color = 'purple' } },
-      { '<leader>AX', group = 'Codex', icon = { icon = '󱚦', color = 'cyan' } },
-
+      -- AI companiuns
+      { '<leader>A', group = 'AI Agents' },
+      { '<leader>AC', group = 'Claude Code' },
+      { '<leader>AX', group = 'Codex' },
+      { '<leader>AL', group = 'Local AI' },
       -- Octo (GitHub)
       { '<leader>o', group = 'GitHub', icon = { icon = '', color = 'blue' } },
       { '<leader>oi', group = 'Issues', icon = { icon = '', color = 'blue' } },

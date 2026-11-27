@@ -1,79 +1,5 @@
 local M = {}
 
-local highlights = {
-  fill = {
-    guifg = { attribute = 'fg', highlight = '#ff0000' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  background = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  buffer_visible = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  close_button = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  close_button_visible = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  tab_selected = {
-    guifg = { attribute = 'fg', highlight = 'Normal' },
-    guibg = { attribute = 'bg', highlight = 'Normal' },
-  },
-  tab = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  tab_close = {
-    guifg = { attribute = 'fg', highlight = 'TabLineSel' },
-    guibg = { attribute = 'bg', highlight = 'Normal' },
-  },
-  duplicate_selected = {
-    guifg = { attribute = 'fg', highlight = 'TabLineSel' },
-    guibg = { attribute = 'bg', highlight = 'TabLineSel' },
-    gui = 'italic',
-  },
-  duplicate_visible = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-    gui = 'italic',
-  },
-  duplicate = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-    gui = 'italic',
-  },
-  modified = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  modified_selected = {
-    guifg = { attribute = 'fg', highlight = 'Normal' },
-    guibg = { attribute = 'bg', highlight = 'Normal' },
-  },
-  modified_visible = {
-    guifg = { attribute = 'fg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  separator = {
-    guifg = { attribute = 'bg', highlight = 'TabLine' },
-    guibg = { attribute = 'bg', highlight = 'TabLine' },
-  },
-  separator_selected = {
-    guifg = { attribute = 'bg', highlight = 'Normal' },
-    guibg = { attribute = 'bg', highlight = 'Normal' },
-  },
-  indicator_selected = {
-    guifg = { attribute = 'fg', highlight = 'LspDiagnosticsDefaultHint' },
-    guibg = { attribute = 'bg', highlight = 'Normal' },
-  },
-}
-
 M.plugin = function()
   vim.pack.add({
     { src = 'https://github.com/akinsho/bufferline.nvim' },
@@ -83,7 +9,25 @@ M.plugin = function()
     return
   end
 
+  -- shortcut: Bufferline only supports paired caps through slant; use a native rounded style when available.
+  require('bufferline.constants').sep_chars.slant = { '', '' }
+
+  local colors = require('tokyonight.colors').setup()
+  local highlights = { fill = { bg = 'NONE' } }
+  for _, state in ipairs({
+    { suffix = '', buffer = 'background', fg = colors.fg_dark, bg = colors.bg_dark },
+    { suffix = '_visible', buffer = 'buffer_visible', fg = colors.fg, bg = colors.bg_highlight },
+    { suffix = '_selected', buffer = 'buffer_selected', fg = colors.bg_dark, bg = colors.blue },
+  }) do
+    highlights[state.buffer] = { fg = state.fg, bg = state.bg, bold = state.suffix == '_selected', italic = false }
+    highlights['separator' .. state.suffix] = { fg = state.bg, bg = 'NONE' }
+    for _, group in ipairs({ 'close_button', 'modified', 'duplicate' }) do
+      highlights[group .. state.suffix] = { fg = state.fg, bg = state.bg, italic = false }
+    end
+  end
+
   local opts = {
+    highlights = highlights,
     options = {
       close_command = function(n)
         require('snacks').bufdelete(n)
@@ -93,7 +37,8 @@ M.plugin = function()
       end,
       numbers = 'none',
       middle_mouse_command = nil,
-      indicator_icon = '▎',
+      indicator = { style = 'none' },
+      separator_style = 'slant',
       buffer_close_icon = '',
       modified_icon = '●',
       close_icon = '',
@@ -101,13 +46,12 @@ M.plugin = function()
       right_trunc_marker = '',
       max_name_length = 30,
       max_prefix_length = 30, -- prefix used when a buffer is de-duplicated
-      tab_size = 21,
+      tab_size = 16,
       diagnostics = false, -- | "nvim_lsp" | "coc",
       diagnostics_update_in_insert = false,
       always_show_bufferline = true,
 
       offsets = { { filetype = 'NvimTree', text = '', padding = 1 } },
-      highlights = highlights,
     },
   }
 
@@ -124,7 +68,11 @@ M.plugin = function()
 
   KM.bulk_map({
     { motion = '<leader>dp', cmd = ':BufferLineTogglePin<CR>', opts = { desc = 'Toggle Pin' } },
-    { motion = '<leader>bP', cmd = ':BufferLineGroupClose ungrouped<CR>', opts = { desc = 'Delete Non-Pinned Buffers' } },
+    {
+      motion = '<leader>bP',
+      cmd = ':BufferLineGroupClose ungrouped<CR>',
+      opts = { desc = 'Delete Non-Pinned Buffers' },
+    },
     { motion = '<leader>br', cmd = '<Cmd>BufferLineCloseRight<CR>', opts = { desc = 'Delete Buffers to the Right' } },
     { motion = '<leader>bl', cmd = '<Cmd>BufferLineCloseLeft<CR>', opts = { desc = 'Delete Buffers to the Left' } },
     { motion = '<S-h>', cmd = '<cmd>BufferLineCyclePrev<cr>', opts = { desc = 'Prev Buffer' } },
