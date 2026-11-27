@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+[[ $# -eq 2 ]] || die 'Usage: ai-vision IMAGE PROMPT'
+need_file "$1"
+model=${VISION_MODEL:-$AI_DATA/vision/model.gguf}
+projector=${VISION_MMPROJ:-$AI_DATA/vision/mmproj.gguf}
+need_file "$model"; need_file "$projector"
+lock_heavy
+llama-mtmd-cli -m "$model" --mmproj "$projector" --image "$1" -p "$2" -ngl 99 -c 4096

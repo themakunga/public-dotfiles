@@ -1,0 +1,33 @@
+{
+  "default": "text",
+  "rules": [
+    {
+      "capability": "image",
+      "pattern": "(genera|crea|dibuja|generate|draw).*(imagen|image|ilustración|illustration)"
+    },
+    {
+      "capability": "vision",
+      "pattern": "(analiza|describe|explain).*(imagen|image|screenshot|captura)"
+    },
+    {
+      "capability": "transcribe",
+      "pattern": "transcrib|transcript"
+    },
+    {
+      "capability": "speak",
+      "pattern": "lee en voz alta|text.to.speech|sintetiza voz"
+    },
+    {
+      "capability": "embed",
+      "pattern": "embedding|vectoriza"
+    },
+    {
+      "capability": "reasoning",
+      "pattern": "arquitectura|architecture|debug|seguridad|security|race condition|concurrency"
+    },
+    {
+      "capability": "code",
+      "pattern": "implement|refactor|test|función|function|código|code|typescript|golang"
+    }
+  ]
+}

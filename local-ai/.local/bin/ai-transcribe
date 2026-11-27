@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+[[ $# -eq 1 ]] || die 'Usage: ai-transcribe AUDIO'
+need_file "$1"
+model=${WHISPER_MODEL:-$AI_DATA/audio/ggml-small.bin}
+need_file "$model"
+lock_heavy
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"; rmdir "$AI_STATE/heavy.lock"' EXIT
+ffmpeg -nostdin -v error -i "$1" -ar 16000 -ac 1 -c:a pcm_s16le "$tmp/audio.wav"
+whisper-cli -m "$model" -f "$tmp/audio.wav" -l "${WHISPER_LANGUAGE:-auto}"

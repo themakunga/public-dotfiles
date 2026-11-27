@@ -1,0 +1,34 @@
+{
+  "text": {
+    "model": "fast",
+    "engine": "llama.cpp"
+  },
+  "code": {
+    "model": "coder",
+    "engine": "llama.cpp"
+  },
+  "reasoning": {
+    "model": "reasoning",
+    "engine": "llama.cpp"
+  },
+  "image": {
+    "model": "sd15",
+    "engine": "stable-diffusion.cpp"
+  },
+  "vision": {
+    "model": "vision",
+    "engine": "llama.cpp"
+  },
+  "transcribe": {
+    "model": "whisper-small",
+    "engine": "whisper.cpp"
+  },
+  "speak": {
+    "model": "glados",
+    "engine": "piper"
+  },
+  "embed": {
+    "model": "embedding",
+    "engine": "llama.cpp"
+  }
+}

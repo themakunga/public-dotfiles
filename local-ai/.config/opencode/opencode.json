@@ -1,0 +1,40 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "local/coder",
+  "providers": {
+    "local": {
+      "package": "@opencode/ai/providers/openai-compatible",
+      "name": "Local llama.cpp",
+      "settings": {
+        "baseURL": "http://127.0.0.1:8080/v1"
+      },
+      "models": {
+        "fast": {
+          "name": "Qwen3 4B",
+          "limit": {
+            "context": 8192,
+            "output": 2048
+          }
+        },
+        "coder": {
+          "name": "Qwen2.5 Coder 7B",
+          "limit": {
+            "context": 8192,
+            "output": 2048
+          }
+        },
+        "reasoning": {
+          "name": "Qwen3 8B",
+          "limit": {
+            "context": 8192,
+            "output": 2048
+          }
+        }
+      }
+    }
+  },
+  "permission": {
+    "bash": "ask",
+    "edit": "ask"
+  }
+}

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+need_file "$AI_CONFIG/models.ini"
+lock_heavy
+llama-server --models-preset "$AI_CONFIG/models.ini" --models-max 1 --host 127.0.0.1 --port 8080

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+[[ $# -gt 0 ]] || die 'Usage: ai-embed TEXT'
+server_ready || die 'Start ai-server first'
+jq -n --arg input "$*" '{model:"embedding",input:$input}' | curl -fsS "$AI_URL/v1/embeddings" -H 'Content-Type: application/json' --data-binary @- | jq .

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+[[ $# -gt 0 ]] || die 'Usage: ai-route <prompt>'
+cap=$(jq -er --arg prompt "$*" 'first(.rules[] | select(.pattern as $p | $prompt | test($p; "i")) | .capability) // .default' "$AI_CONFIG/routing.json")
+jq -e --arg cap "$cap" '.[$cap] + {capability:$cap} | select(.model != null)' "$AI_CONFIG/capabilities.json"

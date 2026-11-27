@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+[[ $# -ge 1 && $# -le 2 ]] || die 'Usage: ai-image PROMPT [OUTPUT.png]'
+model=${SD_MODEL:-$AI_DATA/images/sd15.safetensors}
+need_file "$model"
+output=${2:-$PWD/image-$(date +%s).png}
+[[ "$output" == *.png ]] || die 'Output must end in .png'
+[[ ! -e "$output" && ! -L "$output" ]] || die 'Output already exists'
+lock_heavy
+if command -v sd-cli >/dev/null; then engine=sd-cli; else engine=sd; fi
+"$engine" -m "$model" -p "$1" -W "${SD_WIDTH:-512}" -H "${SD_HEIGHT:-512}" --steps "${SD_STEPS:-20}" -s "${SD_SEED:--1}" -o "$output"
+[[ -s "$output" ]] || die 'Generation did not produce a file'
+printf '%s\n' "$output"

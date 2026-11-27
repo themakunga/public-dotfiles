@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+[[ $# -gt 0 ]] || die 'Usage: ai-speak TEXT'
+command -v glados-say >/dev/null || die 'Enable the existing glados-tts module'
+exec glados-say "$*"

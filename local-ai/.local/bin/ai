@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+model=; cap=; input=; output=
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --model|--capability|--input|--output)
+      [[ $# -ge 2 ]] || die "Missing value for $1"
+      case "$1" in --model) model=$2;; --capability) cap=$2;; --input) input=$2;; --output) output=$2;; esac
+      shift 2;;
+    --) shift; break;;
+    *) break;;
+  esac
+done
+if [[ $# -eq 0 && -z "$cap$model$input$output" ]]; then
+  server_ready || die 'Start ai-server first'
+  exec opencode --model local/coder
+fi
+[[ $# -gt 0 ]] || die 'Provide a prompt'
+prompt="$*"
+if [[ -n "$model" && -z "$cap" ]]; then cap=code; fi
+if [[ -z "$cap" ]]; then cap=$(ai-route "$prompt" | jq -er .capability); fi
+if [[ -z "$model" ]]; then model=$(jq -er --arg cap "$cap" '.[$cap].model' "$AI_CONFIG/capabilities.json"); fi
+printf 'Capability: %s; model: %s\n' "$cap" "$model" >&2
+case "$cap" in
+  text|code|reasoning)
+    case "$model" in fast|coder|reasoning) ;; *) die 'Unknown chat model';; esac
+    server_ready || die 'Start ai-server first'
+    exec opencode run --model "local/$model" "$prompt" ;;
+  image) if [[ -n "$output" ]]; then exec ai-image "$prompt" "$output"; else exec ai-image "$prompt"; fi ;;
+  vision) [[ -n "$input" ]] || die 'Use --input IMAGE'; exec ai-vision "$input" "$prompt" ;;
+  transcribe) [[ -n "$input" ]] || die 'Use --input AUDIO'; exec ai-transcribe "$input" ;;
+  speak) exec ai-speak "$prompt" ;;
+  embed) exec ai-embed "$prompt" ;;
+  *) die "Unknown capability: $cap" ;;
+esac

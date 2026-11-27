@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+source "$HOME/.config/ai/common.sh"
+case "${1:-list}" in
+  list|status) curl -fsS "$AI_URL/v1/models" | jq . ;;
+  chat)
+    [[ $# -eq 2 ]] || die 'Usage: ai-model chat fast|coder|reasoning'
+    case "$2" in
+      fast) repo=Qwen/Qwen3-4B-GGUF ;;
+      coder) repo=Qwen/Qwen2.5-Coder-7B-Instruct-GGUF ;;
+      reasoning) repo=Qwen/Qwen3-8B-GGUF ;;
+      *) die 'Unknown model' ;;
+    esac
+    lock_heavy
+    llama-cli -hf "$repo:Q4_K_M" -ngl 99 -c 8192 --conversation ;;
+  *) die 'Usage: ai-model list|status|chat MODEL' ;;
+esac
